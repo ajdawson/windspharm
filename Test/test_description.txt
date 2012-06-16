@@ -1,0 +1,7 @@
+The computational tests compare the solution for the various quantities
+to a reference solution obtained using the NCL Spherepack interface, which
+is very well tested and used.
+
+The reference solutions are stored in NumPy binary files in the subdirectory
+'data'. There is one file per reference field.
+
