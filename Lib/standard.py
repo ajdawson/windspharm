@@ -65,16 +65,20 @@ class VectorWind(object):
         >>> vw = VectorWind(u, v, gridtype='gaussian')
 
         """
+        # For both the input components check if there are missing values by
+        # attempting to fill missing values and detect them. If the inputs are
+        # not masked arrays then this check isn't needed so take a copy.
         try:
-            # Fill in missing values in masked arrays and check that none are
-            # actually present.
             self.u = u.filled()
-            self.v = v.filled()
-            if (u.filled() == u.fill_value).any() or (v.filled() == v.fill_value).any():
+            if (self.u == u.fill_value).any():
                 raise ValueError('u and v cannot contain missing values')
         except AttributeError:
-            # Input is not a masked array, make a copy.
             self.u = u.copy()
+        try:
+            self.v = v.filled()
+            if (self.v == v.fill_value).any():
+                raise ValueError('u and v cannot contain missing values')
+        except AttributeError:
             self.v = v.copy()
         # Check for NaN values.
         if np.isnan(self.u).any() or np.isnan(self.v).any():
