@@ -27,7 +27,9 @@ the ``cdms2`` module is required. ``cdms2`` is part of the Climate Data Analysis
 Documentation
 -------------
 
-The package docstrings are the primary source of documentation at the current time.
+Documentation is available [online](http://ajdawson.github.com/windspharm). The package
+docstrings are also very complete and can be used as a source of reference when working
+interactively.
 
 
 Frequently asked questions
