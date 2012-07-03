@@ -40,21 +40,22 @@ The two interfaces support exactly the same sets of operations, the only differe
 
 Regardless of which interface you use, the basic usage is the same. All computation is handled by the :py:class:`windspharm.standard.VectorWind` or :py:class:`windspharm.metadata.VectorWind` classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.
 
-The following is a very simple example which computes the streamfunction and vorticity associated with a global vector wind field using the `standard` interface:
+The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the `metadata` interface:
 
 .. code-block:: python
 
-   import numpy as np
-   from windspharm.standard import VectorWind
+   import cdms2
+   from windspharm.metadata import VectorWind
 
 
-   # The eastward and northward components of the vector wind on an
-   # equally-spaced global grid.
-   u = ...
-   v = ...
+   # Read u and v wind components from file.
+   ncin = cdms2.open('uv_components.nc')
+   u = ncin('u')
+   v = ncin('v')
+   ncin.close()
 
    # Create an instance of the VectorWind class to do the computations.
-   w = VectorWind(u, v, gridtype='regular')
+   w = VectorWind(u, v)
 
    # Call methods to compute streamfunction and relative vorticity.
    psi = w.streamfunction()

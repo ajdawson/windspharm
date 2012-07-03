@@ -78,18 +78,19 @@
 The <cite>standard</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt> arrays; the <cite>metadata</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">cdms2</span></tt> variables.
 The two interfaces support exactly the same sets of operations, the only difference is the <cite>metadata</cite> interface uses the meta-data stored in <tt class="xref py py-mod docutils literal"><span class="pre">cdms2</span></tt> variables.</p>
 <p>Regardless of which interface you use, the basic usage is the same. All computation is handled by the <a class="reference internal" href="refstd.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> or <a class="reference internal" href="refmeta.html#windspharm.metadata.VectorWind" title="windspharm.metadata.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.metadata.VectorWind</span></tt></a> classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
-<p>The following is a very simple example which computes the streamfunction and vorticity associated with a global vector wind field using the <cite>standard</cite> interface:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">windspharm.standard</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+<p>The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the <cite>metadata</cite> interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cdms2</span>
+<span class="kn">from</span> <span class="nn">windspharm.metadata</span> <span class="kn">import</span> <span class="n">VectorWind</span>
 
 
-<span class="c"># The eastward and northward components of the vector wind on an</span>
-<span class="c"># equally-spaced global grid.</span>
-<span class="n">u</span> <span class="o">=</span> <span class="o">...</span>
-<span class="n">v</span> <span class="o">=</span> <span class="o">...</span>
+<span class="c"># Read u and v wind components from file.</span>
+<span class="n">ncin</span> <span class="o">=</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;uv_components.nc&#39;</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">ncin</span><span class="p">(</span><span class="s">&#39;u&#39;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">ncin</span><span class="p">(</span><span class="s">&#39;v&#39;</span><span class="p">)</span>
+<span class="n">ncin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <span class="c"># Create an instance of the VectorWind class to do the computations.</span>
-<span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="s">&#39;regular&#39;</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 <span class="c"># Call methods to compute streamfunction and relative vorticity.</span>
 <span class="n">psi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">streamfunction</span><span class="p">()</span>
