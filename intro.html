@@ -1,0 +1,187 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction &mdash; windspharm 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="windspharm 1.0 documentation" href="index.html" />
+    <link rel="next" title="Standard Interface Example" href="exstd.html" />
+    <link rel="prev" title="windspharm’s Documentation Contents" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="exstd.html" title="Standard Interface Example"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="windspharm’s Documentation Contents"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">windspharm 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p><tt class="xref py py-mod docutils literal"><span class="pre">windspharm</span></tt> is a Python package for performing computations on global wind fields in spherical geometry. It provides a high level interface for computations using spherical harmonics. <tt class="xref py py-mod docutils literal"><span class="pre">windspharm</span></tt> is capable of computing the following quantities from an input vector wind:</p>
+<ul class="simple">
+<li>divergence</li>
+<li>vorticity (relative and absolute)</li>
+<li>streamfunction</li>
+<li>velocity potential</li>
+<li>irrotational and non-divergent components of the wind (Helmholtz decomposition)</li>
+<li>vector gradient of a scalar function</li>
+<li>magnitude (wind speed)</li>
+</ul>
+<div class="section" id="download-installation">
+<h2>Download &amp; Installation<a class="headerlink" href="#download-installation" title="Permalink to this headline">¶</a></h2>
+<p>The package can be downloaded from <a class="reference external" href="http://github.com/ajdawson/windspharm">github</a>. To get the latest source and install the module on your system run:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone git://github.com/ajdawson/windspharm.git
+<span class="nv">$ </span><span class="nb">cd </span>windspharm
+<span class="nv">$ </span>sudo python setup.py install
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="xref py py-mod docutils literal"><span class="pre">windspharm</span></tt> package provides two interfaces for performing computations.
+The <cite>standard</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt> arrays; the <cite>metadata</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">cdms2</span></tt> variables.
+The two interfaces support exactly the same sets of operations, the only difference is the <cite>metadata</cite> interface uses the meta-data stored in <tt class="xref py py-mod docutils literal"><span class="pre">cdms2</span></tt> variables.</p>
+<p>Regardless of which interface you use, the basic usage is the same. All computation is handled by the <a class="reference internal" href="refstd.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> or <a class="reference internal" href="refmeta.html#windspharm.metadata.VectorWind" title="windspharm.metadata.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.metadata.VectorWind</span></tt></a> classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
+<p>The following is a very simple example which computes the streamfunction and vorticity associated with a global vector wind field using the <cite>standard</cite> interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">windspharm.standard</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+
+
+<span class="c"># The eastward and northward components of the vector wind on an</span>
+<span class="c"># equally-spaced global grid.</span>
+<span class="n">u</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">v</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="c"># Create an instance of the VectorWind class to do the computations.</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="s">&#39;regular&#39;</span><span class="p">)</span>
+
+<span class="c"># Call methods to compute streamfunction and relative vorticity.</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">streamfunction</span><span class="p">()</span>
+<span class="n">xi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">vorticity</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>This package requires as a minimum that you have <a class="reference external" href="http://http://numpy.scipy.org/">numpy</a> and <a class="reference external" href="http://code.google.com/p/pyspharm/">pyspharm</a> available. The <cite>metadata</cite> interface can only be used if the <tt class="xref py py-mod docutils literal"><span class="pre">cdms2</span></tt> module is also available. This module is distributed as part of the <a class="reference external" href="http://uv-cdat.llnl.gov">UV-CDAT</a> project. It is also distributed as part of the <a class="reference external" href="http://proj.badc.rl.ac.uk/cedaservices/wiki/CdatLite">cdat_lite</a> package.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is recommended to use pyspharm 1.0.7 or later. There is a bug in previous versions that causes incorrect fields to be returned when there is more than one input field.</p>
+</div>
+</div>
+<div class="section" id="developing-and-contributing">
+<h2>Developing and Contributing<a class="headerlink" href="#developing-and-contributing" title="Permalink to this headline">¶</a></h2>
+<p>All development is done through the <a class="reference external" href="http://github.com/ajdawson/windspharm">github</a> system. To check out the latest sources run:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone git://github.com/ajdawson/windspharm.git
+</pre></div>
+</div>
+<p>Please file bug reports and feature requests using the github <a class="reference external" href="http://github.com/ajdawson/windspharm/issues?state=open">issues</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3>Table Of Contents</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#download-installation">Download &amp; Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#developing-and-contributing">Developing and Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exstd.html">Standard Interface Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exmeta.html">Metadata Interface Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refstd.html">Standard Interface Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refmeta.html">Metadata Interface Reference</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">windspharm&#8217;s Documentation Contents</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="exstd.html"
+                        title="next chapter">Standard Interface Example</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/intro.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="exstd.html" title="Standard Interface Example"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="windspharm’s Documentation Contents"
+             >previous</a> |</li>
+        <li><a href="index.html">windspharm 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Andrew Dawson.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
