@@ -48,7 +48,7 @@ class VectorWind(object):
         components of the vector wind:
 
         >>> from windspharm.metadata import VectorWind
-        >>> vw = VectorWind(u, v)
+        >>> w = VectorWind(u, v)
 
         """
         # Ensure the input are cdms2 variables.
@@ -133,7 +133,7 @@ class VectorWind(object):
 
         **Example:**
 
-        >>> u = vw.u()
+        >>> u = w.u()
 
         """
         u = self.api.u
@@ -146,7 +146,7 @@ class VectorWind(object):
 
         **Example:**
 
-        >>> v = vw.v()
+        >>> v = w.v()
 
         """
         v = self.api.v
@@ -159,7 +159,7 @@ class VectorWind(object):
 
         **Example:**
 
-        >>> spd = vw.magnitude()
+        >>> spd = w.magnitude()
 
         """
         m = self.api.magnitude()
@@ -180,12 +180,12 @@ class VectorWind(object):
 
         Compute the relative vorticity and divergence:
 
-        >>> vrt, div = vw.vrtdiv()
+        >>> vrt, div = w.vrtdiv()
 
         Compute the relative vorticity and divergence and apply spectral
         truncation at triangular T13:
 
-        >>> vrtT13, divT13 = vw.vrtdiv(truncation=13)
+        >>> vrtT13, divT13 = w.vrtdiv(truncation=13)
 
         """
         vrt, div = self.api.vrtdiv(truncation=truncation)
@@ -210,12 +210,12 @@ class VectorWind(object):
 
         Compute the relative vorticity:
 
-        >>> vrt = vw.vorticity()
+        >>> vrt = w.vorticity()
 
         Compute the relative vorticity and apply spectral truncation at
         triangular T13:
 
-        >>> vrtT13 = vw.vorticity(truncation=13)
+        >>> vrtT13 = w.vorticity(truncation=13)
 
         """
         vrt = self.api.vorticity(truncation=truncation)
@@ -237,12 +237,12 @@ class VectorWind(object):
 
         Compute the divergence:
 
-        >>> div = vw.divergence()
+        >>> div = w.divergence()
 
         Compute the divergence and apply spectral truncation at
         triangular T13:
 
-        >>> divT13 = vw.divergence(truncation=13)
+        >>> divT13 = w.divergence(truncation=13)
 
         """
         div = self.api.divergence(truncation=truncation)
@@ -264,11 +264,11 @@ class VectorWind(object):
 
         Compute planetary vorticity using default values:
 
-        >>> pvrt = vw.planetaryvorticity()
+        >>> pvrt = w.planetaryvorticity()
 
         Override the default value for Earth's angular velocity:
 
-        >>> pvrt = vw.planetaryvorticity(omega=7.2921150)
+        >>> pvrt = w.planetaryvorticity(omega=7.2921150)
 
         """
         f = self.api.planetaryvorticity(omega=omega)
@@ -294,13 +294,13 @@ class VectorWind(object):
 
         Compute absolute vorticity:
 
-        >>> avrt = vw.absolutevorticity()
+        >>> avrt = w.absolutevorticity()
 
         Compute absolute vorticity and apply spectral truncation at
         triangular T13, also override the default value for Earth's
         angular velocity:
 
-        >>> avrt = vw.absolutevorticity(omega=7.2921150, truncation=13)
+        >>> avrt = w.absolutevorticity(omega=7.2921150, truncation=13)
 
         """
         avrt = self.api.absolutevorticity(omega=omega, truncation=truncation)
@@ -322,12 +322,12 @@ class VectorWind(object):
 
         Compute streamfunction and velocity potential:
 
-        >>> sf, vp = vw.sfvp()
+        >>> sf, vp = w.sfvp()
 
         Compute streamfunction and velocity potential and apply spectral
         truncation at triangular T13:
 
-        >>> sfT13, vpT13 = vw.sfvp(truncation=13)
+        >>> sfT13, vpT13 = w.sfvp(truncation=13)
 
         """
         sf, vp = self.api.sfvp(truncation=truncation)
@@ -352,12 +352,12 @@ class VectorWind(object):
 
         Compute streamfunction:
 
-        >>> sf = vw.streamfunction()
+        >>> sf = w.streamfunction()
 
         Compute streamfunction and apply spectral truncation at
         triangular T13:
 
-        >>> sfT13 = vw.streamfunction(truncation=13)
+        >>> sfT13 = w.streamfunction(truncation=13)
 
         """
         sf = self.api.streamfunction(truncation=truncation)
@@ -379,12 +379,12 @@ class VectorWind(object):
 
         Compute velocity potential:
 
-        >>> vp = vw.velocity potential()
+        >>> vp = w.velocity potential()
 
         Compute velocity potential and apply spectral truncation at
         triangular T13:
 
-        >>> vpT13 = vw.velocity potential(truncation=13)
+        >>> vpT13 = w.velocity potential(truncation=13)
 
         """
         vp = self.api.velocitypotential(truncation=truncation)
@@ -410,13 +410,13 @@ class VectorWind(object):
         Compute the irrotational and non-divergent components of the
         vector wind:
 
-        >>> uchi, vchi, upsi, vpsi = vw.helmholtz()
+        >>> uchi, vchi, upsi, vpsi = w.helmholtz()
 
         Compute the irrotational and non-divergent components of the
         vector wind and apply spectral truncation at triangular T13:
 
         >>> uchiT13, vchiT13, upsiT13, vpsiT13 = \
-                vw.helmholtz(truncation=13)
+w.helmholtz(truncation=13)
 
         """
         uchi, vchi, upsi, vpsi = self.api.helmholtz(truncation=truncation)
@@ -448,12 +448,12 @@ class VectorWind(object):
 
         Compute the irrotational component of the vector wind:
 
-        >>> uchi, vchi = vw.irrotationalcomponent()
+        >>> uchi, vchi = w.irrotationalcomponent()
 
         Compute the irrotational component of the vector wind and apply
         spectral truncation at triangular T13:
 
-        >>> uchiT13, vchiT13 = vw.irrotationalcomponent(truncation=13)
+        >>> uchiT13, vchiT13 = w.irrotationalcomponent(truncation=13)
 
         """
         uchi, vchi = self.api.irrotationalcomponent(truncation=truncation)
@@ -481,12 +481,12 @@ class VectorWind(object):
 
         Compute the non-divergent component of the vector wind:
 
-        >>> upsi, vpsi = vw.nondivergentcomponent()
+        >>> upsi, vpsi = w.nondivergentcomponent()
 
         Compute the non-divergent component of the vector wind and apply
         spectral truncation at triangular T13:
 
-        >>> upsiT13, vpsiT13 = vw.nondivergentcomponent(truncation=13)
+        >>> upsiT13, vpsiT13 = w.nondivergentcomponent(truncation=13)
 
         """
         upsi, vpsi = self.api.nondivergentcomponent(truncation=truncation)
@@ -519,15 +519,15 @@ class VectorWind(object):
 
         Compute the vector gradient of absolute vorticity:
 
-        >>> avrt = vw.absolutevorticity()
-        >>> avrt_zonal, avrt_meridional = vw.gradient(avrt)
+        >>> avrt = w.absolutevorticity()
+        >>> avrt_zonal, avrt_meridional = w.gradient(avrt)
 
         Compute the vector gradient of absolute vorticity and apply
         spectral truncation at triangular T13:
 
-        >>> avrt = vw.absolutevorticity()
+        >>> avrt = w.absolutevorticity()
         >>> avrt_zonalT13, avrt_meridionalT13 = \
-                vw.gradient(avrt, truncation=13)
+w.gradient(avrt, truncation=13)
 
         """
         # Check that the input is a cdms2 variable.

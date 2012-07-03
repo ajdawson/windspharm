@@ -56,13 +56,13 @@ class VectorWind(object):
         (evenly-spaced) grid:
 
         >>> from windspharm.standard import VectorWind
-        >>> vw = VectorWind(u, v)
+        >>> w = VectorWind(u, v)
 
         Initialize a VectorWind instance with zonal and meridional
         components of the vector wind specified on a Gaussian grid:
 
         >>> from windspharm.standard import VectorWind
-        >>> vw = VectorWind(u, v, gridtype='gaussian')
+        >>> w = VectorWind(u, v, gridtype='gaussian')
 
         """
         # For both the input components check if there are missing values by
@@ -108,7 +108,7 @@ class VectorWind(object):
         
         **Example:**
         
-        >>> spd = vw.magnitude()
+        >>> spd = w.magnitude()
         
         """
         return (u**2 + v**2) ** 0.5
@@ -126,12 +126,12 @@ class VectorWind(object):
 
         Compute the relative vorticity and divergence:
 
-        >>> vrt, div = vw.vrtdiv()
+        >>> vrt, div = w.vrtdiv()
 
         Compute the relative vorticity and divergence and apply spectral
         truncation at triangular T13:
 
-        >>> vrtT13, divT13 = vw.vrtdiv(truncation=13)
+        >>> vrtT13, divT13 = w.vrtdiv(truncation=13)
 
         """
         vrtspec, divspec = self.s.getvrtdivspec(self.u, self.v,
@@ -153,12 +153,12 @@ class VectorWind(object):
 
         Compute the relative vorticity:
 
-        >>> vrt = vw.vorticity()
+        >>> vrt = w.vorticity()
 
         Compute the relative vorticity and apply spectral truncation at
         triangular T13:
 
-        >>> vrtT13 = vw.vorticity(truncation=13)
+        >>> vrtT13 = w.vorticity(truncation=13)
 
         """
         vrtspec, divspec = self.s.getvrtdivspec(self.u, self.v,
@@ -179,12 +179,12 @@ class VectorWind(object):
 
         Compute the divergence:
 
-        >>> div = vw.divergence()
+        >>> div = w.divergence()
 
         Compute the divergence and apply spectral truncation at
         triangular T13:
 
-        >>> divT13 = vw.divergence(truncation=13)
+        >>> divT13 = w.divergence(truncation=13)
 
         """
         vrtspec, divspec = self.s.getvrtdivspec(self.u, self.v,
@@ -205,11 +205,11 @@ class VectorWind(object):
 
         Compute planetary vorticity using default values:
 
-        >>> pvrt = vw.planetaryvorticity()
+        >>> pvrt = w.planetaryvorticity()
 
         Override the default value for Earth's angular velocity:
         
-        >>> pvrt = vw.planetaryvorticity(omega=7.2921150)
+        >>> pvrt = w.planetaryvorticity(omega=7.2921150)
 
         """
         if omega is None:
@@ -247,13 +247,13 @@ class VectorWind(object):
 
         Compute absolute vorticity:
 
-        >>> avrt = vw.absolutevorticity()
+        >>> avrt = w.absolutevorticity()
 
         Compute absolute vorticity and apply spectral truncation at
         triangular T13, also override the default value for Earth's
         angular velocity:
 
-        >>> avrt = vw.absolutevorticity(omega=7.2921150, truncation=13)
+        >>> avrt = w.absolutevorticity(omega=7.2921150, truncation=13)
 
         """
         pvrt = self.planetaryvorticity(omega=omega)
@@ -273,12 +273,12 @@ class VectorWind(object):
 
         Compute streamfunction and velocity potential:
 
-        >>> sf, vp = vw.sfvp()
+        >>> sf, vp = w.sfvp()
 
         Compute streamfunction and velocity potential and apply spectral
         truncation at triangular T13:
 
-        >>> sfT13, vpT13 = vw.sfvp(truncation=13)
+        >>> sfT13, vpT13 = w.sfvp(truncation=13)
 
         """
         psigrid, chigrid = self.s.getpsichi(self.u, self.v, ntrunc=truncation)
@@ -297,12 +297,12 @@ class VectorWind(object):
 
         Compute streamfunction:
 
-        >>> sf = vw.streamfunction()
+        >>> sf = w.streamfunction()
 
         Compute streamfunction and apply spectral truncation at
         triangular T13:
 
-        >>> sfT13 = vw.streamfunction(truncation=13)
+        >>> sfT13 = w.streamfunction(truncation=13)
 
         """
         psigrid, chigrid = self.sfvp(truncation=truncation)
@@ -321,12 +321,12 @@ class VectorWind(object):
 
         Compute velocity potential:
 
-        >>> vp = vw.velocity potential()
+        >>> vp = w.velocity potential()
 
         Compute velocity potential and apply spectral truncation at
         triangular T13:
 
-        >>> vpT13 = vw.velocity potential(truncation=13)
+        >>> vpT13 = w.velocity potential(truncation=13)
 
         """
         psigrid, chigrid = self.sfvp(truncation=truncation)
@@ -349,13 +349,13 @@ class VectorWind(object):
         Compute the irrotational and non-divergent components of the
         vector wind:
 
-        >>> uchi, vchi, upsi, vpsi = vw.helmholtz()
+        >>> uchi, vchi, upsi, vpsi = w.helmholtz()
 
         Compute the irrotational and non-divergent components of the
         vector wind and apply spectral truncation at triangular T13:
 
         >>> uchiT13, vchiT13, upsiT13, vpsiT13 = \
-                vw.helmholtz(truncation=13)
+w.helmholtz(truncation=13)
 
         """
         psigrid, chigrid = self.s.getpsichi(self.u, self.v, ntrunc=truncation)
@@ -383,12 +383,12 @@ class VectorWind(object):
 
         Compute the irrotational component of the vector wind:
 
-        >>> uchi, vchi = vw.irrotationalcomponent()
+        >>> uchi, vchi = w.irrotationalcomponent()
 
         Compute the irrotational component of the vector wind and apply
         spectral truncation at triangular T13:
 
-        >>> uchiT13, vchiT13 = vw.irrotationalcomponent(truncation=13)
+        >>> uchiT13, vchiT13 = w.irrotationalcomponent(truncation=13)
 
         """
         psigrid, chigrid = self.s.getpsichi(self.u, self.v, ntrunc=truncation)
@@ -414,12 +414,12 @@ class VectorWind(object):
 
         Compute the non-divergent component of the vector wind:
 
-        >>> upsi, vpsi = vw.nondivergentcomponent()
+        >>> upsi, vpsi = w.nondivergentcomponent()
 
         Compute the non-divergent component of the vector wind and apply
         spectral truncation at triangular T13:
 
-        >>> upsiT13, vpsiT13 = vw.nondivergentcomponent(truncation=13)
+        >>> upsiT13, vpsiT13 = w.nondivergentcomponent(truncation=13)
 
         """
         psigrid, chigrid = self.s.getpsichi(self.u, self.v, ntrunc=truncation)
@@ -452,15 +452,15 @@ class VectorWind(object):
 
         Compute the vector gradient of absolute vorticity:
 
-        >>> avrt = vw.absolutevorticity()
-        >>> avrt_zonal, avrt_meridional = vw.gradient(avrt)
+        >>> avrt = w.absolutevorticity()
+        >>> avrt_zonal, avrt_meridional = w.gradient(avrt)
 
         Compute the vector gradient of absolute vorticity and apply
         spectral truncation at triangular T13:
 
-        >>> avrt = vw.absolutevorticity()
+        >>> avrt = w.absolutevorticity()
         >>> avrt_zonalT13, avrt_meridionalT13 = \
-                vw.gradient(avrt, truncation=13)
+w.gradient(avrt, truncation=13)
 
         """
         try:
@@ -472,37 +472,5 @@ class VectorWind(object):
 
 
 if __name__ == '__main__':
-    import cdms2
-    import matplotlib.pyplot as plt
-
-# ERROR THESE DATA ARE STORED ON SHORT GRID (70S-70N)!!!
-    f = cdms2.open('/home/jupiter/cpdn/dawson/python/HiGEM_ray_tracing/data/ncep/ubar_rti.nc')
-    u = f('ubar')
-    lon = u.getLongitude()[:]
-    lat = u.getLatitude()[:]
-    f.close()
-    f = cdms2.open('/home/jupiter/cpdn/dawson/python/HiGEM_ray_tracing/data/ncep/vbar_rti.nc')
-    v = f('vbar')
-    f.close()
-    f = cdms2.open('/home/jupiter/cpdn/dawson/python/HiGEM_ray_tracing/data/ncep/psibar_rti.nc')
-    psi = f('psibar')
-    f.close()
-
-    vw = VectorWind(u.asma()[::-1], v.asma()[::-1])
-
-    vrt = vw.vorticity()
-    sf = vw.streamfunction()
-
-    print 'plotting'
-
-    clevs = np.arange(-1e8, 1.1e8, 1e7)
-    print clevs
-    plt.contourf(lon, lat, psi, clevs)
-    plt.colorbar()
-    plt.figure()
-    plt.contourf(lon, lat, sf[::-1], clevs)
-    plt.colorbar()
-    plt.show()
-
-
+    pass
 
