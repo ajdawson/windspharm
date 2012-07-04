@@ -6,7 +6,7 @@ from distutils.core import setup
 
 setup(
     name="windspharm",
-    version="1.0",
+    version="1.0.1",
     description="Vector wind analysis in spherical coordinates.",
     author="Andrew Dawson",
     author_email="dawson@atm.ox.ac.uk",

@@ -38,6 +38,8 @@ try:
     # Try to import the numpy interface.
     import standard
     __all__.append('standard')
+    import tools
+    __all__.append('tools')
 except ImportError:
     # Failure here indicates a missing requirement (pyspharm).
     raise ImportError('windspharm requires spharm (pyspharm)')
