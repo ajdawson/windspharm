@@ -204,12 +204,12 @@
 <span class="sd">    Reverse the dimension corresponding to latitude when it is the first</span>
 <span class="sd">    dimension of the inputs:</span>
 
-<span class="sd">    &gt;&gt;&gt; u, v = invert_latdim_order(u, v)</span>
+<span class="sd">    &gt;&gt;&gt; u, v = reverse_latdim(u, v)</span>
 
 <span class="sd">    Reverse the dimension corresponding to latitude when it is the third</span>
 <span class="sd">    dimension of the inputs:</span>
 
-<span class="sd">    &gt;&gt;&gt; u, v = invert_latdim_order(u, v, axis=2)</span>
+<span class="sd">    &gt;&gt;&gt; u, v = reverse_latdim(u, v, axis=2)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">slicelist</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">ndim</span>
