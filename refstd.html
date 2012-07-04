@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Standard Interface Reference &mdash; windspharm 1.0 documentation</title>
+    <title>Standard Interface Reference &mdash; windspharm 1.0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.0 documentation" href="index.html" />
+    <link rel="top" title="windspharm 1.0.1 documentation" href="index.html" />
     <link rel="next" title="Metadata Interface Reference" href="refmeta.html" />
     <link rel="prev" title="Metadata Interface Example" href="exmeta.html" /> 
   </head>
@@ -37,12 +37,15 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="refmeta.html" title="Metadata Interface Reference"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="exmeta.html" title="Metadata Interface Example"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">windspharm 1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">windspharm 1.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -54,6 +57,8 @@
   <div class="section" id="standard-interface-reference">
 <h1>Standard Interface Reference<a class="headerlink" href="#standard-interface-reference" title="Permalink to this headline">¶</a></h1>
 <p>The <cite>standard</cite> interface is contained in the module <tt class="xref py py-mod docutils literal"><span class="pre">windspharm.standard</span></tt>. It is designed for use with <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt> arrays. Computation is done by creating an instance of the class <a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a>. The <a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">VectorWind</span></tt></a> class is initialized with the eastward and northward components of the global wind field. In the <cite>standard</cite> interface <a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">VectorWind</span></tt></a> also takes a keyword parameter indicating the type of grid the input wind components are on.</p>
+<div class="section" id="windspharm-standard-vectorwind">
+<h2><a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a><a class="headerlink" href="#windspharm-standard-vectorwind" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="windspharm.standard.VectorWind">
 <em class="property">class </em><tt class="descclassname">windspharm.standard.</tt><tt class="descname">VectorWind</tt><big>(</big><em>u</em>, <em>v</em>, <em>gridtype='regular'</em><big>)</big><a class="reference internal" href="_modules/windspharm/standard.html#VectorWind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.standard.VectorWind" title="Permalink to this definition">¶</a></dt>
@@ -397,6 +402,7 @@ spectral truncation at triangular T13:</p>
 </dd></dl>
 
 </div>
+</div>
 
 
           </div>
@@ -409,8 +415,12 @@ spectral truncation at triangular T13:</p>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exstd.html">Standard Interface Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exmeta.html">Metadata Interface Example</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Standard Interface Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Standard Interface Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#windspharm-standard-vectorwind"><tt class="docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="refmeta.html">Metadata Interface Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reftools.html">Tools Reference</a></li>
 </ul>
 
   <h4>Previous topic</h4>
@@ -448,12 +458,15 @@ spectral truncation at triangular T13:</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="refmeta.html" title="Metadata Interface Reference"
              >next</a> |</li>
         <li class="right" >
           <a href="exmeta.html" title="Metadata Interface Example"
              >previous</a> |</li>
-        <li><a href="index.html">windspharm 1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">windspharm 1.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

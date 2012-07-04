@@ -61,10 +61,6 @@ The wind components can now be used to initialize a :py:class:`windspharm.metada
    # Compute streamfunction and velocity potential.
    sf, vp = w.sfvp()
 
-   # Pick the field for December at 200hPa and add a cyclic point.
-   sf_d_200 = sf(time=slice(11,12), level=200, longitude=(0,360), squeeze=True)
-   vp_d_200 = vp(time=slice(11,12), level=200, longitude=(0,360), squeeze=True)
-
 
 Plotting the Results
 --------------------
@@ -77,6 +73,10 @@ We'll now use :py:mod:`matplotlib` along with the :py:mod:`mpl_toolkits.basemap`
    mpl.rcParams['mathtext.default'] = 'regular'
    import matplotlib.pyplot as plt
    from mpl_toolkits.basemap import Basemap
+
+   # Pick the field for December at 200hPa and add a cyclic point.
+   sf_d_200 = sf(time=slice(11,12), level=200, longitude=(0,360), squeeze=True)
+   vp_d_200 = vp(time=slice(11,12), level=200, longitude=(0,360), squeeze=True)
 
    # Create a Basemap object to handle map projections and use it to
    # convert geophysical coordinates to map projection coordinates.

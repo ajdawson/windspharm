@@ -14,6 +14,7 @@ windspharm's Documentation Contents
    exmeta.rst
    refstd.rst
    refmeta.rst
+   reftools.rst
 
 
 Indices and tables

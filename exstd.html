@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Standard Interface Example &mdash; windspharm 1.0 documentation</title>
+    <title>Standard Interface Example &mdash; windspharm 1.0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.0 documentation" href="index.html" />
+    <link rel="top" title="windspharm 1.0.1 documentation" href="index.html" />
     <link rel="next" title="Metadata Interface Example" href="exmeta.html" />
     <link rel="prev" title="Introduction" href="intro.html" /> 
   </head>
@@ -37,12 +37,15 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="exmeta.html" title="Metadata Interface Example"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="intro.html" title="Introduction"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">windspharm 1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">windspharm 1.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -89,27 +92,20 @@
 <span class="n">ncin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>In the standard interface it is required that latitude and longitude are the leading dimensions of our input wind components. A second requirement is that the input wind components must be 2D or 3D. Since the downloaded wind components are 4D and in the order (time, level, latitude, longitude) they must be reordered and reshaped to conform to the specifications. Tools from <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt> are used to achieve this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<p>In the standard interface it is required that latitude and longitude are the leading dimensions of our input wind components. A second requirement is that the input wind components must be 2D or 3D. Since the downloaded wind components are 4D and in the order (time, level, latitude, longitude) they must be reordered and reshaped to conform to the specifications. This is most easily achieved using the tools contained in the <a class="reference internal" href="reftools.html#module-windspharm.tools" title="windspharm.tools"><tt class="xref py py-mod docutils literal"><span class="pre">windspharm.tools</span></tt></a> module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">windspharm.tools</span> <span class="kn">import</span> <span class="n">prep_data</span><span class="p">,</span> <span class="n">order_latdim</span>
 
-<span class="c"># Roll the longitude dimension to the front followed by the</span>
-<span class="c"># latitude dimension. This results in arrays with dimensions</span>
-<span class="c"># (latitude, longitude, time, level).</span>
-<span class="n">ndim</span> <span class="o">=</span> <span class="n">uwnd</span><span class="o">.</span><span class="n">ndim</span>
-<span class="n">uwnd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">uwnd</span><span class="p">,</span> <span class="n">ndim</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">ndim</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">vwnd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">vwnd</span><span class="p">,</span> <span class="n">ndim</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">ndim</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="c"># Use the prep_data function to reorder dimensions and reshape to</span>
+<span class="c"># 3D. We tell the function the order of the dimensions in the input.</span>
+<span class="c"># The info outputs will be used later to process the streamfunction</span>
+<span class="c"># and velocity potential fields.</span>
+<span class="n">uwnd</span><span class="p">,</span> <span class="n">uinfo</span> <span class="o">=</span> <span class="n">prep_data</span><span class="p">(</span><span class="n">uwnd</span><span class="p">,</span> <span class="s">&#39;tzyx&#39;</span><span class="p">)</span>
+<span class="n">vwnd</span><span class="p">,</span> <span class="n">vinfo</span> <span class="o">=</span> <span class="n">prep_data</span><span class="p">(</span><span class="n">vwnd</span><span class="p">,</span> <span class="s">&#39;tzyx&#39;</span><span class="p">)</span>
 
-<span class="c"># Combine the time and level dimensions by reshaping the arrays.</span>
-<span class="n">shp</span> <span class="o">=</span> <span class="n">uwnd</span><span class="o">.</span><span class="n">shape</span>
-<span class="n">uwnd</span> <span class="o">=</span> <span class="n">uwnd</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shp</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shp</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),))</span>
-<span class="n">vwnd</span> <span class="o">=</span> <span class="n">vwnd</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shp</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shp</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),))</span>
-</pre></div>
-</div>
-<p>A final requirement is the latitude dimension must be ordered from north to south. The NCEP/NCAR data is already ordered in this way. It is probably best to check your input data though:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">lat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lat</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-    <span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">uwnd</span> <span class="o">=</span> <span class="n">uwnd</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">vwnd</span> <span class="o">=</span> <span class="n">vwnd</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="c"># Ensure that the latitude dimension is north-to-south. The</span>
+<span class="c"># order_latdim function checks this and reverses the order if</span>
+<span class="c"># necessary.</span>
+<span class="n">lat</span><span class="p">,</span> <span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span> <span class="o">=</span> <span class="n">order_latdim</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -117,6 +113,7 @@
 <h2>Computing Streamfunction and Velocity Potential<a class="headerlink" href="#computing-streamfunction-and-velocity-potential" title="Permalink to this headline">¶</a></h2>
 <p>The prepared wind components can now be used to initialize a <a class="reference internal" href="refstd.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> instance. This can then be used to compute the streamfunction and velocity potential (amongst other things) from the input wind components:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">windspharm.standard</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+<span class="kn">from</span> <span class="nn">windspharm.tools</span> <span class="kn">import</span> <span class="n">recover_data</span>
 
 <span class="c"># The NCEP/NCAR reanalysis is on an evenly-spaced (regular) grid.</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="s">&#39;regular&#39;</span><span class="p">)</span>
@@ -124,25 +121,26 @@
 <span class="c"># Compute streamfunction and velocity potential.</span>
 <span class="n">sf</span><span class="p">,</span> <span class="n">vp</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sfvp</span><span class="p">()</span>
 
-<span class="c"># Reshape streamfunction and velocity potential so that time and</span>
-<span class="c"># level are separate dimensions once again. They will have dimensions</span>
-<span class="c"># of (latitude, longitude, time, level)</span>
-<span class="n">sf</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shp</span><span class="p">)</span>
-<span class="n">vp</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shp</span><span class="p">)</span>
-
-<span class="c"># Pick the field for December at 200hPa and add a cyclic point.</span>
-<span class="n">sf_d_200</span> <span class="o">=</span> <span class="n">addcyclic</span><span class="p">(</span><span class="n">sf</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="n">lon</span><span class="p">)</span>
-<span class="n">vp_d_200</span> <span class="o">=</span> <span class="n">addcyclic</span><span class="p">(</span><span class="n">vp</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="n">lon</span><span class="p">)</span>
+<span class="c"># Use the recover_data function to reshape/reorder the outputs.</span>
+<span class="c"># They will then have the dimensionality of the original inputs</span>
+<span class="c"># (time, level, latitude, longitude).</span>
+<span class="n">sf</span> <span class="o">=</span> <span class="n">recover_data</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">uinfo</span><span class="p">)</span>
+<span class="n">vp</span> <span class="o">=</span> <span class="n">recover_data</span><span class="p">(</span><span class="n">vp</span><span class="p">,</span> <span class="n">uinfo</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="plotting-the-results">
 <h2>Plotting the Results<a class="headerlink" href="#plotting-the-results" title="Permalink to this headline">¶</a></h2>
-<p>We&#8217;ll now use <tt class="xref py py-mod docutils literal"><span class="pre">matplotlib</span></tt> along with the <tt class="xref py py-mod docutils literal"><span class="pre">mpl_toolkits.basemap</span></tt> toolkit to plot streamfunction and velocity potential:</p>
+<p>We&#8217;ll now use <tt class="xref py py-mod docutils literal"><span class="pre">matplotlib</span></tt> along with the <tt class="xref py py-mod docutils literal"><span class="pre">mpl_toolkits.basemap</span></tt> toolkit to plot streamfunction and velocity potential for December at 200 hPa:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mpl</span>
 <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;mathtext.default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;regular&#39;</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span><span class="p">,</span> <span class="n">addcyclic</span>
+
+<span class="c"># Pick the field for December at 200hPa and add a cyclic point.</span>
+<span class="c"># The cyclic point is added only for plotting purposes.</span>
+<span class="n">sf_d_200</span><span class="p">,</span> <span class="n">lon_c</span> <span class="o">=</span> <span class="n">addcyclic</span><span class="p">(</span><span class="n">sf</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="n">lon</span><span class="p">)</span>
+<span class="n">vp_d_200</span><span class="p">,</span> <span class="n">lon_c</span> <span class="o">=</span> <span class="n">addcyclic</span><span class="p">(</span><span class="n">vp</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="n">lon</span><span class="p">)</span>
 
 <span class="c"># Create a Basemap object to handle map projections and use it to</span>
 <span class="c"># convert geophysical coordinates to map projection coordinates.</span>
@@ -199,6 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="exmeta.html">Metadata Interface Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="refstd.html">Standard Interface Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="refmeta.html">Metadata Interface Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reftools.html">Tools Reference</a></li>
 </ul>
 
   <h4>Previous topic</h4>
@@ -236,12 +235,15 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="exmeta.html" title="Metadata Interface Example"
              >next</a> |</li>
         <li class="right" >
           <a href="intro.html" title="Introduction"
              >previous</a> |</li>
-        <li><a href="index.html">windspharm 1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">windspharm 1.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

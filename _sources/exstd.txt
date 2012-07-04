@@ -45,32 +45,23 @@ Once the data is downloaded we'll read it in Python using :py:mod:`netCDF4`:
    vwnd = ncin.variables['vwnd'][:]
    ncin.close()
 
-In the standard interface it is required that latitude and longitude are the leading dimensions of our input wind components. A second requirement is that the input wind components must be 2D or 3D. Since the downloaded wind components are 4D and in the order (time, level, latitude, longitude) they must be reordered and reshaped to conform to the specifications. Tools from :py:mod:`numpy` are used to achieve this:
+In the standard interface it is required that latitude and longitude are the leading dimensions of our input wind components. A second requirement is that the input wind components must be 2D or 3D. Since the downloaded wind components are 4D and in the order (time, level, latitude, longitude) they must be reordered and reshaped to conform to the specifications. This is most easily achieved using the tools contained in the :py:mod:`windspharm.tools` module:
 
 .. code-block:: python
 
-   import numpy as np
+   from windspharm.tools import prep_data, order_latdim
 
-   # Roll the longitude dimension to the front followed by the
-   # latitude dimension. This results in arrays with dimensions
-   # (latitude, longitude, time, level).
-   ndim = uwnd.ndim
-   uwnd = np.rollaxis(np.rollaxis(uwnd, ndim-1), ndim-1)
-   vwnd = np.rollaxis(np.rollaxis(vwnd, ndim-1), ndim-1)
-   
-   # Combine the time and level dimensions by reshaping the arrays.
-   shp = uwnd.shape
-   uwnd = uwnd.reshape(shp[:2]+(np.prod(shp[2:]),))
-   vwnd = vwnd.reshape(shp[:2]+(np.prod(shp[2:]),))
+   # Use the prep_data function to reorder dimensions and reshape to
+   # 3D. We tell the function the order of the dimensions in the input.
+   # The info outputs will be used later to process the streamfunction
+   # and velocity potential fields.
+   uwnd, uinfo = prep_data(uwnd, 'tzyx')
+   vwnd, vinfo = prep_data(vwnd, 'tzyx')
 
-A final requirement is the latitude dimension must be ordered from north to south. The NCEP/NCAR data is already ordered in this way. It is probably best to check your input data though:
-
-.. code-block:: python
-
-   if lat[0] < lat[-1]:
-       lat = lat[::-1]
-       uwnd = uwnd[::-1]
-       vwnd = vwnd[::-1]
+   # Ensure that the latitude dimension is north-to-south. The
+   # order_latdim function checks this and reverses the order if
+   # necessary.
+   lat, uwnd, vwnd = order_latdim(lat, uwnd, vwnd)
 
 
 Computing Streamfunction and Velocity Potential
@@ -81,6 +72,7 @@ The prepared wind components can now be used to initialize a :py:class:`windspha
 .. code-block:: python
 
    from windspharm.standard import VectorWind
+   from windspharm.tools import recover_data
 
    # The NCEP/NCAR reanalysis is on an evenly-spaced (regular) grid.
    w = VectorWind(uwnd, vwnd, gridtype='regular')
@@ -88,21 +80,17 @@ The prepared wind components can now be used to initialize a :py:class:`windspha
    # Compute streamfunction and velocity potential.
    sf, vp = w.sfvp()
 
-   # Reshape streamfunction and velocity potential so that time and
-   # level are separate dimensions once again. They will have dimensions
-   # of (latitude, longitude, time, level)
-   sf = sf.reshape(shp)
-   vp = vp.reshape(shp)
-
-   # Pick the field for December at 200hPa and add a cyclic point.
-   sf_d_200 = addcyclic(sf[..., 11, 9], lon)
-   vp_d_200 = addcyclic(vp[..., 11, 9], lon)
+   # Use the recover_data function to reshape/reorder the outputs.
+   # They will then have the dimensionality of the original inputs
+   # (time, level, latitude, longitude).
+   sf = recover_data(sf, uinfo)
+   vp = recover_data(vp, uinfo)
 
 
 Plotting the Results
 --------------------
 
-We'll now use :py:mod:`matplotlib` along with the :py:mod:`mpl_toolkits.basemap` toolkit to plot streamfunction and velocity potential:
+We'll now use :py:mod:`matplotlib` along with the :py:mod:`mpl_toolkits.basemap` toolkit to plot streamfunction and velocity potential for December at 200 hPa:
 
 .. code-block:: python
 
@@ -110,6 +98,11 @@ We'll now use :py:mod:`matplotlib` along with the :py:mod:`mpl_toolkits.basemap`
    mpl.rcParams['mathtext.default'] = 'regular'
    import matplotlib.pyplot as plt
    from mpl_toolkits.basemap import Basemap, addcyclic
+
+   # Pick the field for December at 200hPa and add a cyclic point.
+   # The cyclic point is added only for plotting purposes.
+   sf_d_200, lon_c = addcyclic(sf[11, 9], lon)
+   vp_d_200, lon_c = addcyclic(vp[11, 9], lon)
 
    # Create a Basemap object to handle map projections and use it to
    # convert geophysical coordinates to map projection coordinates.
