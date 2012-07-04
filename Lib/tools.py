@@ -153,12 +153,12 @@ def reverse_latdim(u, v, axis=0):
     Reverse the dimension corresponding to latitude when it is the first
     dimension of the inputs:
 
-    >>> u, v = invert_latdim_order(u, v)
+    >>> u, v = reverse_latdim(u, v)
 
     Reverse the dimension corresponding to latitude when it is the third
     dimension of the inputs:
 
-    >>> u, v = invert_latdim_order(u, v, axis=2)
+    >>> u, v = reverse_latdim(u, v, axis=2)
 
     """
     slicelist = [slice(0, None)] * u.ndim
