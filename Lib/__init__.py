@@ -24,6 +24,8 @@
 #     from windspharm import *
 __all__ = []
 
+# Package version number.
+__version__ = '1.0.1'
 
 try:
     # Import the meta-data interface.
