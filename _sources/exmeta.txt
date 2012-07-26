@@ -81,7 +81,7 @@ We'll now use :py:mod:`matplotlib` along with the :py:mod:`mpl_toolkits.basemap`
    # Create a Basemap object to handle map projections and use it to
    # convert geophysical coordinates to map projection coordinates.
    m = Basemap(projection='cyl', resolution='c', llcrnrlon=0,
-           llcrnrlat=-90, urcrnrlon=360.01, urcrnclat=90)
+           llcrnrlat=-90, urcrnrlon=360.01, urcrnrlat=90)
    lon, lat = sf_d_200.getLongitude()[:], sf_d_200.getLatitude()[:]
    x, y = m(*np.meshgrid(lon, lat))
 
