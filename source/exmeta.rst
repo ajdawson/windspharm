@@ -69,6 +69,7 @@ We'll now use :py:mod:`matplotlib` along with the :py:mod:`mpl_toolkits.basemap`
 
 .. code-block:: python
 
+   import numpy as np
    import matplotlib as mpl
    mpl.rcParams['mathtext.default'] = 'regular'
    import matplotlib.pyplot as plt
@@ -95,7 +96,6 @@ We'll now use :py:mod:`matplotlib` along with the :py:mod:`mpl_toolkits.basemap`
    m.drawmeridians((0, 60, 120, 180, 240, 300, 360), labels=[0,0,0,1])
    plt.colorbar(orientation='horizontal')
    plt.title('Streamfunction ($10^6$m$^2$s$^{-1}$)', fontsize=16)
-   plt.savefig('example_standard_0.png')
 
    # Plot velocity potential.
    plt.figure()
