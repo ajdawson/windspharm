@@ -98,7 +98,11 @@ class VectorWind(object):
             # Create a Spharmt object to do the computations.
             self.s = Spharmt(nlon, nlat, gridtype=gridtype.lower())
         except ValueError:
-            raise ValueError('invalid grid type: {0:s}'.format(repr(gridtype)))
+            if gridtype.lower() not in ('regular', 'gaussian'):
+                err = 'invalid grid type: {0:s}'.format(repr(gridtype))
+            else:
+                err = 'invalid input dimensions'
+            raise ValueError(err)
         # Method aliases.
         self.rotationalcomponent = self.nondivergentcomponent
         self.divergentcomponent = self.irrotationalcomponent
