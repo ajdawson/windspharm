@@ -147,6 +147,34 @@ class VectorWindMetaDataTestCase(VectorWindTestCase):
                 self.ref['vwnd'])
 
 
+class MultipleFieldsTest(TestCase):
+    """Consistency for multiple field computations."""
+
+    def __str__(self):
+        return 'validating soulution with multiple fields'
+
+    def setUp(self):
+        self.ref = generate_test_data('standard')
+        self.vw = windspharm.standard.VectorWind(self.ref['uwnd'],
+                self.ref['vwnd'])
+
+    def test_multiple_fields(self):
+        identify('multiple fields')
+        uwnd_multi = np.concatenate((self.ref['uwnd'][...,np.newaxis],
+                self.ref['uwnd'][...,np.newaxis]), axis=-1)
+        vwnd_multi = np.concatenate((self.ref['vwnd'][...,np.newaxis],
+                self.ref['vwnd'][...,np.newaxis]), axis=-1)
+        vw_multi = windspharm.standard.VectorWind(uwnd_multi, vwnd_multi)
+        vw_single = windspharm.standard.VectorWind(self.ref['uwnd'],
+                self.ref['vwnd'])
+        vrt_multi = vw_multi.vorticity()
+        vrt_single = vw_single.vorticity()
+        err1 = error(vrt_multi[...,0], vrt_single)
+        err2 = error(vrt_multi[...,1], vrt_single)
+        self.assertAlmostEqual(err1, 0., places=7)
+        self.assertAlmostEqual(err2, 0., places=7)
+
+
 if __name__ == '__main__':
     pass
 

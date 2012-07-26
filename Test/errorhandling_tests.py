@@ -72,6 +72,14 @@ class VectorWindInvalidTestCase(TestCase):
         self.assertRaises(ValueError, windspharm.standard.VectorWind, u, v,
                 gridtype='curvilinear')
 
+    def test_valid_shape(self):
+        identify('valid shape')
+        ref = generate_test_data('standard')
+        u = np.concatenate((ref['uwnd'][np.newaxis],ref['uwnd'][np.newaxis]))
+        v = np.concatenate((ref['vwnd'][np.newaxis],ref['vwnd'][np.newaxis]))
+        self.assertRaises(ValueError, windspharm.standard.VectorWind,
+                u, v, gridtype='regular')
+
 
 @unittest.skipIf('metadata' not in dir(windspharm) or 'cdms2' not in dir(),
         'library component not available')
