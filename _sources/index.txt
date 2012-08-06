@@ -10,11 +10,8 @@ windspharm's Documentation Contents
    :maxdepth: 2
    
    intro.rst
-   exstd.rst
-   exmeta.rst
-   refstd.rst
-   refmeta.rst
-   reftools.rst
+   examples.rst
+   references.rst
 
 
 .. Indices and tables

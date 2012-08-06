@@ -1,0 +1,307 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Examples &mdash; windspharm 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="windspharm 1.0.1 documentation" href="index.html" />
+    <link rel="next" title="API References" href="references.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="API References"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">windspharm 1.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>The following examples illustrate practical uses of <tt class="xref py py-mod docutils literal"><span class="pre">windspharm</span></tt>. There are examples for both the <cite>standard</cite> and <cite>metadata</cite> interfaces.</p>
+<ul class="simple">
+<li>Streamfunction and velocity potential [<a class="reference internal" href="#ex-sfvp-standard"><em>standard</em></a>, <a class="reference internal" href="#ex-sfvp-metadata"><em>metadata</em></a>]</li>
+</ul>
+<div class="section" id="streamfunction-and-velocity-potential-standard-interface">
+<span id="ex-sfvp-standard"></span><h2>Streamfunction and velocity potential [<cite>standard</cite> interface]<a class="headerlink" href="#streamfunction-and-velocity-potential-standard-interface" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Compute streamfunction and velocity potential from the long-term-mean</span>
+<span class="sd">flow.</span>
+
+<span class="sd">This example uses the standard interface.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mpl</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;mathtext.default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;regular&#39;</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span><span class="p">,</span> <span class="n">addcyclic</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="kn">from</span> <span class="nn">windspharm.standard</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+<span class="kn">from</span> <span class="nn">windspharm.tools</span> <span class="kn">import</span> <span class="n">prep_data</span><span class="p">,</span> <span class="n">recover_data</span><span class="p">,</span> <span class="n">order_latdim</span>
+
+
+<span class="c"># Read zonal and meridional wind components from file using the netCDF4</span>
+<span class="c"># module. The components are defined on pressure levels and are in separate</span>
+<span class="c"># files.</span>
+<span class="n">ncu</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;../../example_data/uwnd_mean.nc&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">uwnd</span> <span class="o">=</span> <span class="n">ncu</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&#39;uwnd&#39;</span><span class="p">][:]</span>
+<span class="n">lons</span> <span class="o">=</span> <span class="n">ncu</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&#39;longitude&#39;</span><span class="p">][:]</span>
+<span class="n">lats</span> <span class="o">=</span> <span class="n">ncu</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&#39;latitude&#39;</span><span class="p">][:]</span>
+<span class="n">ncu</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">ncv</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;../../example_data/vwnd_mean.nc&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">vwnd</span> <span class="o">=</span> <span class="n">ncv</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&#39;vwnd&#39;</span><span class="p">][:]</span>
+<span class="n">ncv</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c"># The standard interface requires that latitude and longitude be the leading</span>
+<span class="c"># dimensions of the input wind components, and that wind components must be</span>
+<span class="c"># either 2D or 3D arrays. The data read in is 4D and has latitude and</span>
+<span class="c"># longitude as the last dimensions. The bundled tools can make the process of</span>
+<span class="c"># re-shaping the data a lot easier to manage.</span>
+<span class="n">uwnd</span><span class="p">,</span> <span class="n">uwnd_info</span> <span class="o">=</span> <span class="n">prep_data</span><span class="p">(</span><span class="n">uwnd</span><span class="p">,</span> <span class="s">&#39;tzyx&#39;</span><span class="p">)</span>
+<span class="n">vwnd</span><span class="p">,</span> <span class="n">vwnd_info</span> <span class="o">=</span> <span class="n">prep_data</span><span class="p">(</span><span class="n">vwnd</span><span class="p">,</span> <span class="s">&#39;tzyx&#39;</span><span class="p">)</span>
+
+<span class="c"># It is also required that the latitude dimension is north-to-south. Again the</span>
+<span class="c"># bundled tools make this easy.</span>
+<span class="n">lats</span><span class="p">,</span> <span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span> <span class="o">=</span> <span class="n">order_latdim</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span><span class="p">)</span>
+
+<span class="c"># Create a VectorWind instance to handle the computation of streamfunction and</span>
+<span class="c"># velocity potential.</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span><span class="p">)</span>
+
+<span class="c"># Compute the streamfunction and velocity potential. Also use the bundled</span>
+<span class="c"># tools to re-shape the outputs to the 4D shape of the wind components as they</span>
+<span class="c"># were read off files.</span>
+<span class="n">sf</span><span class="p">,</span> <span class="n">vp</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sfvp</span><span class="p">()</span>
+<span class="n">sf</span> <span class="o">=</span> <span class="n">recover_data</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">uwnd_info</span><span class="p">)</span>
+<span class="n">vp</span> <span class="o">=</span> <span class="n">recover_data</span><span class="p">(</span><span class="n">vp</span><span class="p">,</span> <span class="n">uwnd_info</span><span class="p">)</span>
+
+<span class="c"># Pick out the field for December at 200 hPa and add a cyclic point (the</span>
+<span class="c"># cyclic point is for plotting purposes).</span>
+<span class="n">sf_200</span><span class="p">,</span> <span class="n">lons_c</span> <span class="o">=</span> <span class="n">addcyclic</span><span class="p">(</span><span class="n">sf</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="n">lons</span><span class="p">)</span>
+<span class="n">vp_200</span><span class="p">,</span> <span class="n">lons_c</span> <span class="o">=</span> <span class="n">addcyclic</span><span class="p">(</span><span class="n">vp</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="n">lons</span><span class="p">)</span>
+
+<span class="c"># Plot streamfunction.</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">&#39;cyl&#39;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="n">llcrnrlon</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">llcrnrlat</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span>
+        <span class="n">urcrnrlon</span><span class="o">=</span><span class="mf">360.01</span><span class="p">,</span> <span class="n">urcrnrlat</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lons_c</span><span class="p">,</span> <span class="n">lats</span><span class="p">))</span>
+<span class="n">clevs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">120</span><span class="p">]</span>
+<span class="n">m</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sf_200</span><span class="o">*</span><span class="mf">1e-06</span><span class="p">,</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span>
+        <span class="n">extend</span><span class="o">=</span><span class="s">&#39;both&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawparallels</span><span class="p">((</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawmeridians</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">360</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Streamfunction ($10^6$m$^2$s$^{-1}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c"># Plot velocity potential.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">clevs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="n">m</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vp_200</span><span class="o">*</span><span class="mf">1e-06</span><span class="p">,</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span>
+        <span class="n">extend</span><span class="o">=</span><span class="s">&#39;both&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawparallels</span><span class="p">((</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawmeridians</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">360</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Velocity Potential ($10^6$m$^2$s$^{-1}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./example_scripts/standard/sfvp_example.py">Source code</a>)</p>
+<div class="figure">
+<img alt="_images/sfvp_example_00.png" src="_images/sfvp_example_00.png" />
+<p class="caption">(<a class="reference external" href="./example_scripts/standard/sfvp_example_00.png">png</a>, <a class="reference external" href="./example_scripts/standard/sfvp_example_00.hires.png">hires.png</a>, <a class="reference external" href="./example_scripts/standard/sfvp_example_00.pdf">pdf</a>)</p>
+</div>
+<div class="figure">
+<img alt="_images/sfvp_example_01.png" src="_images/sfvp_example_01.png" />
+<p class="caption">(<a class="reference external" href="./example_scripts/standard/sfvp_example_01.png">png</a>, <a class="reference external" href="./example_scripts/standard/sfvp_example_01.hires.png">hires.png</a>, <a class="reference external" href="./example_scripts/standard/sfvp_example_01.pdf">pdf</a>)</p>
+</div>
+</div>
+<div class="section" id="streamfunction-and-velocity-potential-metadata-interface">
+<span id="ex-sfvp-metadata"></span><h2>Streamfunction and velocity potential [<cite>metadata</cite> interface]<a class="headerlink" href="#streamfunction-and-velocity-potential-metadata-interface" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Compute streamfunction and velocity potential from the long-term-mean</span>
+<span class="sd">flow.</span>
+
+<span class="sd">This example uses the metadata interface.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mpl</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;mathtext.default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;regular&#39;</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span>
+<span class="kn">import</span> <span class="nn">cdms2</span>
+
+<span class="kn">from</span> <span class="nn">windspharm.metadata</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+
+
+<span class="c"># Read zonal and meridional wind components from file using the cdms2 module</span>
+<span class="c"># from CDAT. The components are defined on pressure levels and are in separate</span>
+<span class="c"># files.</span>
+<span class="n">ncu</span> <span class="o">=</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;../../example_data/uwnd_mean.nc&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">uwnd</span> <span class="o">=</span> <span class="n">ncu</span><span class="p">(</span><span class="s">&#39;uwnd&#39;</span><span class="p">)</span>
+<span class="n">ncu</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">ncv</span> <span class="o">=</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;../../example_data/vwnd_mean.nc&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">vwnd</span> <span class="o">=</span> <span class="n">ncv</span><span class="p">(</span><span class="s">&#39;vwnd&#39;</span><span class="p">)</span>
+<span class="n">ncv</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c"># Create a VectorWind instance to handle the computation of streamfunction and</span>
+<span class="c"># velocity potential.</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span><span class="p">)</span>
+
+<span class="c"># Compute the streamfunction and velocity potential.</span>
+<span class="n">sf</span><span class="p">,</span> <span class="n">vp</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sfvp</span><span class="p">()</span>
+
+<span class="c"># Pick out the field for December at 200 hPa and add a cyclic point (the</span>
+<span class="c"># cyclic point is for plotting purposes).</span>
+<span class="n">sf_200</span> <span class="o">=</span> <span class="n">sf</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">),</span> <span class="n">squeeze</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">vp_200</span> <span class="o">=</span> <span class="n">vp</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">),</span> <span class="n">squeeze</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c"># Plot streamfunction.</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">&#39;cyl&#39;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="n">llcrnrlon</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">llcrnrlat</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span>
+        <span class="n">urcrnrlon</span><span class="o">=</span><span class="mf">360.01</span><span class="p">,</span> <span class="n">urcrnrlat</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">lons</span><span class="p">,</span> <span class="n">lats</span> <span class="o">=</span> <span class="n">sf_200</span><span class="o">.</span><span class="n">getLongitude</span><span class="p">()[:],</span> <span class="n">sf_200</span><span class="o">.</span><span class="n">getLatitude</span><span class="p">()[:]</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">))</span>
+<span class="n">clevs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">120</span><span class="p">]</span>
+<span class="n">m</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sf_200</span><span class="o">.</span><span class="n">asma</span><span class="p">()</span><span class="o">*</span><span class="mf">1e-06</span><span class="p">,</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span>
+        <span class="n">extend</span><span class="o">=</span><span class="s">&#39;both&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawparallels</span><span class="p">((</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawmeridians</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">360</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Streamfunction ($10^6$m$^2$s$^{-1}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c"># Plot velocity potential.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">clevs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="n">m</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vp_200</span><span class="o">.</span><span class="n">asma</span><span class="p">()</span><span class="o">*</span><span class="mf">1e-06</span><span class="p">,</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span>
+        <span class="n">extend</span><span class="o">=</span><span class="s">&#39;both&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawparallels</span><span class="p">((</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawmeridians</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">360</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Velocity Potential ($10^6$m$^2$s$^{-1}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./example_scripts/metadata/sfvp_example.py">Source code</a>)</p>
+<div class="figure">
+<img alt="_images/sfvp_example_001.png" src="_images/sfvp_example_001.png" />
+<p class="caption">(<a class="reference external" href="./example_scripts/metadata/sfvp_example_00.png">png</a>, <a class="reference external" href="./example_scripts/metadata/sfvp_example_00.hires.png">hires.png</a>, <a class="reference external" href="./example_scripts/metadata/sfvp_example_00.pdf">pdf</a>)</p>
+</div>
+<div class="figure">
+<img alt="_images/sfvp_example_011.png" src="_images/sfvp_example_011.png" />
+<p class="caption">(<a class="reference external" href="./example_scripts/metadata/sfvp_example_01.png">png</a>, <a class="reference external" href="./example_scripts/metadata/sfvp_example_01.hires.png">hires.png</a>, <a class="reference external" href="./example_scripts/metadata/sfvp_example_01.pdf">pdf</a>)</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3>Table Of Contents</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#streamfunction-and-velocity-potential-standard-interface">Streamfunction and velocity potential [<cite>standard</cite> interface]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#streamfunction-and-velocity-potential-metadata-interface">Streamfunction and velocity potential [<cite>metadata</cite> interface]</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">API References</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="references.html"
+                        title="next chapter">API References</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/examples.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="API References"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">windspharm 1.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Andrew Dawson.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

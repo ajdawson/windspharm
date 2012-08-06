@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="windspharm 1.0.1 documentation" href="index.html" />
-    <link rel="next" title="Standard Interface Example" href="exstd.html" />
+    <link rel="next" title="Examples" href="examples.html" />
     <link rel="prev" title="windspharm’s Documentation Contents" href="index.html" /> 
   </head>
   <body>
@@ -40,7 +40,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="exstd.html" title="Standard Interface Example"
+          <a href="examples.html" title="Examples"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="windspharm’s Documentation Contents"
@@ -74,13 +74,14 @@
 <span class="nv">$ </span>sudo python setup.py install
 </pre></div>
 </div>
+<p>or download a zip file from the <a class="reference external" href="http://github.com/ajdawson/windspharm">project&#8217;s code page</a>.</p>
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <p>The <tt class="xref py py-mod docutils literal"><span class="pre">windspharm</span></tt> package provides two interfaces for performing computations.
 The <cite>standard</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt> arrays; the <cite>metadata</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">cdms2</span></tt> variables.
 The two interfaces support exactly the same sets of operations, the only difference is the <cite>metadata</cite> interface uses the meta-data stored in <tt class="xref py py-mod docutils literal"><span class="pre">cdms2</span></tt> variables.</p>
-<p>Regardless of which interface you use, the basic usage is the same. All computation is handled by the <a class="reference internal" href="refstd.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> or <a class="reference internal" href="refmeta.html#windspharm.metadata.VectorWind" title="windspharm.metadata.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.metadata.VectorWind</span></tt></a> classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
+<p>Regardless of which interface you use, the basic usage is the same. All computation is handled by the <a class="reference internal" href="references.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> or <a class="reference internal" href="references.html#windspharm.metadata.VectorWind" title="windspharm.metadata.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.metadata.VectorWind</span></tt></a> classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
 <p>The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the <cite>metadata</cite> interface:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cdms2</span>
 <span class="kn">from</span> <span class="nn">windspharm.metadata</span> <span class="kn">import</span> <span class="n">VectorWind</span>
@@ -134,19 +135,16 @@ The two interfaces support exactly the same sets of operations, the only differe
 <li class="toctree-l2"><a class="reference internal" href="#developing-and-contributing">Developing and Contributing</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="exstd.html">Standard Interface Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="exmeta.html">Metadata Interface Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="refstd.html">Standard Interface Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="refmeta.html">Metadata Interface Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reftools.html">Tools Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">API References</a></li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">windspharm&#8217;s Documentation Contents</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="exstd.html"
-                        title="next chapter">Standard Interface Example</a></p>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">Examples</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/intro.txt"
@@ -179,7 +177,7 @@ The two interfaces support exactly the same sets of operations, the only differe
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="exstd.html" title="Standard Interface Example"
+          <a href="examples.html" title="Examples"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="windspharm’s Documentation Contents"

@@ -18,7 +18,6 @@ Introduction
 * magnitude (wind speed)
 
 
-
 Download & Installation
 -----------------------
 
@@ -29,6 +28,8 @@ The package can be downloaded from `github <http://github.com/ajdawson/windsphar
    $ git clone git://github.com/ajdawson/windspharm.git
    $ cd windspharm
    $ sudo python setup.py install
+
+or download a zip file from the `project's code page <http://github.com/ajdawson/windspharm>`_.
 
 
 Getting Started
