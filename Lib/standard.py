@@ -221,11 +221,10 @@ class VectorWind(object):
             omega = 7.292e-05
         nlat = self.s.nlat
         if nlat % 2:
-            # Poles included.
-            lat = np.linspace(-90, 90, nlat)
+            lat = np.linspace(90, -90, nlat)
         else:
             dlat = 180. / nlat
-            lat = np.linspace(-90+dlat, 90, dlat)
+            lat = np.arange(90-dlat/2., -90, dlat)
         try:
             cp = 2. * omega * np.sin(np.deg2rad(lat))
         except TypeError, ValueError:
@@ -429,7 +428,6 @@ w.helmholtz(truncation=13)
         psigrid, chigrid = self.s.getpsichi(self.u, self.v, ntrunc=truncation)
         psispec = self.s.grdtospec(psigrid)
         vpsi, upsi = self.s.getgrad(psispec)
-#>>>>>>># Is there a step missing here that inverts the sign?
         return -upsi, vpsi
 
     def gradient(self, chi, truncation=None):
