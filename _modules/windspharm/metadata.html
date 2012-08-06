@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.metadata &mdash; windspharm 1.0.1 documentation</title>
+    <title>windspharm.metadata &mdash; windspharm 1.0.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.1',
+        VERSION:     '1.0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.0.1 documentation" href="../../index.html" />
+    <link rel="top" title="windspharm 1.0.2 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body>
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">windspharm 1.0.1 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">windspharm 1.0.2 documentation</a> &raquo;</li>
           <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -598,6 +598,8 @@
         <span class="n">chi</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">chi</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">chi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),))</span>
         <span class="c"># Compute the gradient function.</span>
         <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">chi</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">uchi</span> <span class="o">=</span> <span class="n">uchi</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ishape</span><span class="p">)</span>
+        <span class="n">vchi</span> <span class="o">=</span> <span class="n">vchi</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ishape</span><span class="p">)</span>
         <span class="c"># Add meta-data and ensure the shape and order of dimensions</span>
         <span class="c"># is the same as input.</span>
         <span class="n">uchi</span> <span class="o">=</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">uchi</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
@@ -653,7 +655,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">windspharm 1.0.1 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">windspharm 1.0.2 documentation</a> &raquo;</li>
           <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

@@ -5,6 +5,26 @@ The following examples illustrate practical uses of :py:mod:`windspharm`. There 
 
 * Streamfunction and velocity potential [:ref:`standard <ex-sfvp-standard>`, :ref:`metadata <ex-sfvp-metadata>`]
 
+* Rossby wave source [:ref:`standard <ex-rws-standard>`, :ref:`metadata <ex-rws-metadata>`]
+
+
+.. _ex-sfvp-metadata:
+
+Streamfunction and velocity potential [`metadata` interface]
+------------------------------------------------------------
+
+.. plot:: example_scripts/metadata/sfvp_example.py
+   :include-source:
+
+
+.. _ex-rws-metadata:
+
+Rossby wave source [`metadata` interface]
+-----------------------------------------
+
+.. plot:: example_scripts/metadata/rws_example.py
+   :include-source:
+
 
 .. _ex-sfvp-standard:
 
@@ -15,11 +35,11 @@ Streamfunction and velocity potential [`standard` interface]
    :include-source:
 
 
-.. _ex-sfvp-metadata:
+.. _ex-rws-standard:
 
-Streamfunction and velocity potential [`metadata` interface]
-------------------------------------------------------------
+Rossby wave source [`standard` interface]
+-----------------------------------------
 
-.. plot:: example_scripts/metadata/sfvp_example.py
+.. plot:: example_scripts/standard/rws_example.py
    :include-source:
 
