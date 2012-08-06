@@ -547,6 +547,8 @@ w.gradient(avrt, truncation=13)
         chi = chi.reshape(chi.shape[:2] + (np.prod(chi.shape[2:]),))
         # Compute the gradient function.
         uchi, vchi = self.api.gradient(chi, truncation=truncation)
+        uchi = uchi.reshape(ishape)
+        vchi = vchi.reshape(ishape)
         # Add meta-data and ensure the shape and order of dimensions
         # is the same as input.
         uchi = cdms2.createVariable(uchi, axes=axes)
