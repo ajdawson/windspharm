@@ -19,7 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 import numpy as np
-from spharm import Spharmt
+from spharm import Spharmt, gaussian_lats_wts
 
 
 class VectorWind(object):
@@ -96,9 +96,10 @@ class VectorWind(object):
             raise ValueError('nlon must be >= 4 and nlat must be >= 3')
         try:
             # Create a Spharmt object to do the computations.
-            self.s = Spharmt(nlon, nlat, gridtype=gridtype.lower())
+            self.gridtype = gridtype.lower()
+            self.s = Spharmt(nlon, nlat, gridtype=self.gridtype)
         except ValueError:
-            if gridtype.lower() not in ('regular', 'gaussian'):
+            if self.gridtype not in ('regular', 'gaussian'):
                 err = 'invalid grid type: {0:s}'.format(repr(gridtype))
             else:
                 err = 'invalid input dimensions'
@@ -220,11 +221,14 @@ class VectorWind(object):
             # Define the Earth's angular velocity.
             omega = 7.292e-05
         nlat = self.s.nlat
-        if nlat % 2:
-            lat = np.linspace(90, -90, nlat)
+        if self.gridtype == 'gaussian':
+            lat, wts = gaussian_lats_wts(nlat)
         else:
-            dlat = 180. / nlat
-            lat = np.arange(90-dlat/2., -90, dlat)
+            if nlat % 2:
+                lat = np.linspace(90, -90, nlat)
+            else:
+                dlat = 180. / nlat
+                lat = np.arange(90-dlat/2., -90, -dlat)
         try:
             cp = 2. * omega * np.sin(np.deg2rad(lat))
         except TypeError, ValueError:
