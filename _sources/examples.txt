@@ -13,7 +13,7 @@ The following examples illustrate practical uses of :py:mod:`windspharm`. There 
 Streamfunction and velocity potential [`metadata` interface]
 ------------------------------------------------------------
 
-.. plot:: example_scripts/metadata/sfvp_example.py
+.. plot:: examples/metadata/sfvp_example.py
    :include-source:
 
 
@@ -22,7 +22,7 @@ Streamfunction and velocity potential [`metadata` interface]
 Rossby wave source [`metadata` interface]
 -----------------------------------------
 
-.. plot:: example_scripts/metadata/rws_example.py
+.. plot:: examples/metadata/rws_example.py
    :include-source:
 
 
@@ -31,7 +31,7 @@ Rossby wave source [`metadata` interface]
 Streamfunction and velocity potential [`standard` interface]
 ------------------------------------------------------------
 
-.. plot:: example_scripts/standard/sfvp_example.py
+.. plot:: examples/standard/sfvp_example.py
    :include-source:
 
 
@@ -40,6 +40,6 @@ Streamfunction and velocity potential [`standard` interface]
 Rossby wave source [`standard` interface]
 -----------------------------------------
 
-.. plot:: example_scripts/standard/rws_example.py
+.. plot:: examples/standard/rws_example.py
    :include-source:
 

@@ -70,7 +70,7 @@
 <span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
 <span class="c"># THE SOFTWARE.</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">spharm</span> <span class="kn">import</span> <span class="n">Spharmt</span>
+<span class="kn">from</span> <span class="nn">spharm</span> <span class="kn">import</span> <span class="n">Spharmt</span><span class="p">,</span> <span class="n">gaussian_lats_wts</span>
 
 
 <div class="viewcode-block" id="VectorWind"><a class="viewcode-back" href="../../references.html#windspharm.standard.VectorWind">[docs]</a><span class="k">class</span> <span class="nc">VectorWind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -147,9 +147,10 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;nlon must be &gt;= 4 and nlat must be &gt;= 3&#39;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c"># Create a Spharmt object to do the computations.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">Spharmt</span><span class="p">(</span><span class="n">nlon</span><span class="p">,</span> <span class="n">nlat</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="n">gridtype</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridtype</span> <span class="o">=</span> <span class="n">gridtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">Spharmt</span><span class="p">(</span><span class="n">nlon</span><span class="p">,</span> <span class="n">nlat</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gridtype</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">gridtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;regular&#39;</span><span class="p">,</span> <span class="s">&#39;gaussian&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;regular&#39;</span><span class="p">,</span> <span class="s">&#39;gaussian&#39;</span><span class="p">):</span>
                 <span class="n">err</span> <span class="o">=</span> <span class="s">&#39;invalid grid type: {0:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">gridtype</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">err</span> <span class="o">=</span> <span class="s">&#39;invalid input dimensions&#39;</span>
@@ -271,11 +272,14 @@
             <span class="c"># Define the Earth&#39;s angular velocity.</span>
             <span class="n">omega</span> <span class="o">=</span> <span class="mf">7.292e-05</span>
         <span class="n">nlat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">nlat</span>
-        <span class="k">if</span> <span class="n">nlat</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="n">nlat</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridtype</span> <span class="o">==</span> <span class="s">&#39;gaussian&#39;</span><span class="p">:</span>
+            <span class="n">lat</span><span class="p">,</span> <span class="n">wts</span> <span class="o">=</span> <span class="n">gaussian_lats_wts</span><span class="p">(</span><span class="n">nlat</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">dlat</span> <span class="o">=</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">nlat</span>
-            <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">90</span><span class="o">-</span><span class="n">dlat</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="n">dlat</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">nlat</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="n">nlat</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dlat</span> <span class="o">=</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">nlat</span>
+                <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">90</span><span class="o">-</span><span class="n">dlat</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="n">dlat</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">cp</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">:</span>
