@@ -103,6 +103,6 @@ if __name__ == '__main__':
         cd(startdir)
 
     print
-    print 'Done. Pleave verify the build in: {}'.format(pages_dir)
+    print 'Done. Please verify the build in: {}'.format(pages_dir)
     print 'If everything looks good, "git push origin gh-pages"'
 
