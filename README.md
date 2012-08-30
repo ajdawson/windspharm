@@ -38,7 +38,7 @@ Frequently asked questions
 * **Is ``windspharm`` a drop in replacement for ``windfield``?**
   No. Because ``windspharm`` was written from scratch the naming conventions for methods
   are different. Some new methods have been added compared to ``windfield``, and some
-  methods from ``windfield`` do not exist in ``winspharm``.
+  methods from ``windfield`` do not exist in ``windspharm``.
 * **Do I need CDAT/``cdms2`` to use ``windspharm``?**
   No. All the computation code uses ``numpy`` only. The ``cdms2`` module is only required
   for the meta-data preserving interfaces.
