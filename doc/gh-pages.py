@@ -1,7 +1,13 @@
-""""""
+"""Documentation generation script.
+
+Copies the built html documentation into the gh-pages branch of the
+appropriate repository and makes a commit.
+
+The commit needs to be pushed manually after it has been verified.
+
+"""
 import os
 import re
-import shutil
 import sys
 from os import chdir as cd
 from os.path import join as pjoin
@@ -14,7 +20,6 @@ from subprocess import Popen, PIPE, CalledProcessError, check_call
 #
 pages_dir = 'gh-pages'
 html_dir = '_build/html'
-pdf_dir = '_build/latex'
 pages_repo = 'git@github.com:ajdawson/windspharm.git'
 
 
@@ -77,10 +82,9 @@ if __name__ == '__main__':
     # Copy the built documentation to the gh-pages directory.
     sh('rm -rf {}/*'.format(pages_dir))
     sh('cp -r {}/* {}/'.format(html_dir, pages_dir))
-#    shutil.rmtree(pjoin(pages_dir, '*'), ignore_errors=True)
-#    shutil.copytree(html_dir, pjoin(pages_dir, 'dev'))
 
     try:
+
         # Check the correct branch is being used.
         cd(pages_dir)
         status = sh2('git status | head -n 1')
@@ -99,10 +103,13 @@ if __name__ == '__main__':
         print 'Most recent 3 commits to "gh-pages":'
         sys.stdout.flush()
         sh('git --no-pager log --oneline HEAD~3..')
+
     finally:
+
+        # Change back to the starting directory.
         cd(startdir)
 
+    # Print a summary message.
     print
     print 'Done. Please verify the build in: {}'.format(pages_dir)
     print 'If everything looks good, "git push origin gh-pages"'
-
