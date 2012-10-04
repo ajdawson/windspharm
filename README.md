@@ -18,7 +18,7 @@ which is now deprecated). ``windspharm`` is a completely new package based on th
 Requirements
 ------------
 
-``windspharm`` only requires ``numpy``, but for full functionality (meta-data interface)
+``windspharm`` only requires ``numpy`` and ``pyspharm``, but for full functionality (meta-data interface)
 the ``cdms2`` module is required. ``cdms2`` is part of the Climate Data Analysis Tools
 ([CDAT](http://www2-pcmdi.llnl.gov/cdat)) or can be obtained separately in the
 [cdat_lite](http://proj.badc.rl.ac.uk/ndg/wiki/CdatLite) package.
