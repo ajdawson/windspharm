@@ -123,7 +123,7 @@ class VectorWind(object):
         if 'id' not in attributes.keys():
             raise ValueError('meta-data construction requires id')
         var = cdms2.createVariable(var.reshape(self.ishape), axes=self.axes)
-        var.reorder(self.order)
+        var = var.reorder(self.order)
         for attribute, value in attributes.items():
             setattr(var, attribute, value)
         return var
