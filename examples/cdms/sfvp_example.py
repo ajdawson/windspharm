@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 import cdms2
 
-from windspharm.metadata import VectorWind
+from windspharm.cdms import VectorWind
 
 
 # Read zonal and meridional wind components from file using the cdms2 module

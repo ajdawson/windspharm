@@ -1,7 +1,8 @@
 """
 Test cases for vector wind computational interfaces
-:py:class:`windspharm.standard.VectorWind` and
-:py:class:`windspharm.metadata.VectorWind`.
+:py:class:`windspharm.standard.VectorWind`,
+:py:class:`windspharm.iris.VectorWind` and
+:py:class:`windspharm.cdms.VectorWind`.
 
 """
 import unittest
@@ -10,6 +11,10 @@ from unittest import TestCase
 import numpy as np
 try:
     import cdms2
+except ImportError:
+    pass
+try:
+    import iris
 except ImportError:
     pass
 
@@ -130,8 +135,8 @@ class VectorWindTestCase(TestCase):
         self.assertAlmostEqual(errv, 0., places=5)
 
 
-@unittest.skipIf('metadata' not in dir(windspharm) or 'cdms2' not in dir(),
-        'library component not available')
+@unittest.skipIf('cdms' not in dir(windspharm) or 'cdms2' not in dir(),
+                 'library component (cdms2) not available')
 class VectorWindMetaDataTestCase(VectorWindTestCase):
     """
     Functionality of the meta-data enabled :py:mod:`cdms2` interface.
@@ -139,12 +144,29 @@ class VectorWindMetaDataTestCase(VectorWindTestCase):
     """
 
     def __str__(self):
-        return 'validating against reference solution (meta-data interface)'
+        return 'validating against reference solution (cdms interface)'
 
     def setUp(self):
-        self.ref = generate_test_data('metadata')
-        self.vw = windspharm.metadata.VectorWind(self.ref['uwnd'],
+        self.ref = generate_test_data('cdms')
+        self.vw = windspharm.cdms.VectorWind(self.ref['uwnd'],
                 self.ref['vwnd'])
+
+
+@unittest.skipIf('iris' not in dir(windspharm) or 'iris' not in dir(),
+                 'library component (iris) not available')
+class VectorWindIrisTestCase(VectorWindTestCase):
+    """
+    Functionality of the meta-data enabled :py:mod:`iris` interface.
+
+    """
+
+    def __str__(self):
+        return 'validating against reference solution (iris interface)'
+
+    def setUp(self):
+        self.ref = generate_test_data('iris')
+        self.vw = windspharm.iris.VectorWind(
+                self.ref['uwnd'], self.ref['vwnd'])
 
 
 class MultipleFieldsTest(TestCase):

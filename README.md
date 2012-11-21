@@ -9,16 +9,18 @@ Overview
 fields using spherical harmonics, licensed under the MIT license.
 
 ``windspharm`` provides a user-friendly interface for vector wind computations on the
-sphere (e.g., divergence, streamfunction etc.). The package is a replacement for
- the ``windfield`` package from CDAT (``windfield`` was based on the ``sphere`` module,
-which is now deprecated). ``windspharm`` is a completely new package based on the more
- up-to-date [``pyspharm``](http://code.google.com/p/pyspharm/) module.
+sphere (e.g., divergence, streamfunction etc.). ``windspharm`` is based on the
+[``pyspharm``](http://code.google.com/p/pyspharm/) module.
+
+``windspharm`` provides a replacement for the ``windfield`` package from CDAT (``windfield``
+was based on the ``sphere`` module, which is now deprecated).
 
 
 Requirements
 ------------
 
-``windspharm`` only requires ``numpy`` and ``pyspharm``, but for full functionality (meta-data interface)
+``windspharm`` only requires ``numpy`` and ``pyspharm``, but for full functionality
+(meta-data interfaces) either the [``iris``](http://scitools.org.uk/iris/) module or
 the ``cdms2`` module is required. ``cdms2`` is part of the Climate Data Analysis Tools
 ([CDAT](http://www2-pcmdi.llnl.gov/cdat)) or can be obtained separately in the
 [cdat_lite](http://proj.badc.rl.ac.uk/ndg/wiki/CdatLite) package.
@@ -35,13 +37,13 @@ interactively.
 Frequently asked questions
 --------------------------
 
+* **Do I need CDAT/``cdms2`` or ``iris`` to use ``windspharm``?**
+  No. All the computation code uses ``numpy`` only. The ``iris`` or ``cdms2`` modules
+  are only required for the meta-data preserving interfaces.
 * **Is ``windspharm`` a drop in replacement for ``windfield``?**
   No. Because ``windspharm`` was written from scratch the naming conventions for methods
   are different. Some new methods have been added compared to ``windfield``, and some
   methods from ``windfield`` do not exist in ``windspharm``.
-* **Do I need CDAT/``cdms2`` to use ``windspharm``?**
-  No. All the computation code uses ``numpy`` only. The ``cdms2`` module is only required
-  for the meta-data preserving interfaces.
 
 
 Installation
@@ -49,7 +51,7 @@ Installation
 
     sudo python setup.py install
 
-to install system-wide, or to install in a specified location:
+to install system-wide, or to install in your home directory:
 
-    python setup.py install --install-lib=/PATH/TO/INSTALL/DIR
+    python setup.py install --user
 
