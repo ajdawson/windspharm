@@ -28,7 +28,7 @@ from __future__ import absolute_import
 import numpy as np
 
 
-def _order_dims(d, inorder):
+def __order_dims(d, inorder):
     if 'x' not in inorder or 'y' not in inorder:
         raise ValueError('a latitude-longitude grid is required')
     lonpos = inorder.lower().find('x')
@@ -43,7 +43,7 @@ def _order_dims(d, inorder):
     return d, outorder
 
 
-def _reshape(d):
+def __reshape(d):
     out = d.reshape(d.shape[:2] + (np.prod(d.shape[2:]),))
     return out, d.shape
 
@@ -54,7 +54,8 @@ def prep_data(data, dimorder):
     (or to :py:class:`spharm.Spharmt` method calls).
 
     Returns a dictionary of intermediate information that can be passed
-    to :py:func:`windspharm.tools.recover_data` to recover the original
+    to :py:func:`~windspharm.tools.recover_data` or
+    :py:func:`~windspharm.tools.get_recovery` to recover the original
     shape and order of the data.
 
     **Arguments:**
@@ -82,10 +83,9 @@ def prep_data(data, dimorder):
     >>> pdata, info = prep_data(data, 'xayb')
 
     """
-
     # Returns the prepared data and some data info to help data recovery.
-    pdata, intorder = _order_dims(data, dimorder)
-    pdata, intshape = _reshape(pdata)
+    pdata, intorder = __order_dims(data, dimorder)
+    pdata, intshape = __reshape(pdata)
     info = dict(intermediate_shape=intshape, intermediate_order=intorder,
             original_order=dimorder)
     return pdata, info
@@ -93,12 +93,15 @@ def prep_data(data, dimorder):
 
 def recover_data(pdata, info):
     """
-    Recover the shape and dimension order of arrays output from
+    Recover the shape and dimension order of an array output from
     :py:class:`windspharm.standard.VectorWind` methods (or from
     :py:class:`spharm.Spharmt` methods).
 
     This function performs the opposite of
-    :py:func:`windspharm.tools.prep_data`
+    :py:func:`~windspharm.tools.prep_data`.
+
+    For recovering the shape of multiple variables, see
+    :py:func:`~windspharm.tools.get_recovery`.
 
     **Arguments:**
 
@@ -113,8 +116,8 @@ def recover_data(pdata, info):
     **Example:**
 
     Recover the original input shape and dimension order of an array
-    processed with :py:func:`windspharm.tools.prep_data` or (more
-    likely) an output of :py:class:`windspharm.standard.VectorWind` 
+    processed with :py:func:`~windspharm.tools.prep_data` or an output
+    of :py:class:`windspharm.standard.VectorWind` or
     :py:class:`sparm.Spharmt` method calls on such data:
 
     >>> data = recover_data(pdata, info)
@@ -131,6 +134,55 @@ def recover_data(pdata, info):
         rolldims = np.where(rolldims < rolldims[i], rolldims+1, rolldims)
     return data
     
+
+__recover_docstring_template = """Shape/dimension recovery.
+
+Recovers variable shape/dimension according to:
+
+{!s}
+
+"""
+
+
+def get_recovery(info):
+    """
+    Return a function that can be used to recover the shape and
+    dimension order of multiple arrays output from
+    :py:class:`windspharm.standard.VectorWind` methods (or from
+    :py:class:`spharm.Spharmt` methods) according to a single
+    dictionary of intermediate information.
+
+    **Argument:**
+
+    *info*
+        Intermediate information output from
+        :py:func:`~windspharm.tools.prep_data`.
+
+    **Example:**
+
+    Generate a function to recover the original input shape and
+    dimension order of arrays processed with
+    :py:func:`~windspharm.tools.prep_data` and outputs of
+    :py:class:`windspharm.standard.VectorWind` method calls on this
+    data:
+
+    >>> u, info = prep_data(u, 'tzyx')
+    >>> v, info = prep_data(v, 'tzyx')
+    >>> w = VectorWind(u, v)
+    >>> sf, vp = w.sfvp()
+    >>> recover = get_recovery(info)
+    >>> u, v, sf, vp = recover(u, v, sf, vp)
+
+    """
+    def __recover(*args):
+        return [recover_data(arg, info) for arg in args]
+    info_nice = ["'{!s}': {!s}".format(key, value) for \
+            key, value in info.items()]
+    __recover.__name__ = 'recover'
+    __recover.__doc__ = __recover_docstring_template.format(
+            '\n'.join(info_nice))
+    return _recover
+
 
 def reverse_latdim(u, v, axis=0):
     """
