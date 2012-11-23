@@ -1,28 +1,46 @@
 Examples
 ========
 
-The following examples illustrate practical uses of :py:mod:`windspharm`. There are examples for both the `standard` and `metadata` interfaces.
+The following examples illustrate practical uses of :py:mod:`windspharm`. There are examples for the `standard`, `iris` and `cdms` interfaces.
 
-* Streamfunction and velocity potential [:ref:`standard <ex-sfvp-standard>`, :ref:`metadata <ex-sfvp-metadata>`]
+* Streamfunction and velocity potential [:ref:`standard <ex-sfvp-standard>`, :ref:`iris <ex-sfvp-iris>`, :ref:`cdms <ex-sfvp-cdms>`]
 
-* Rossby wave source [:ref:`standard <ex-rws-standard>`, :ref:`metadata <ex-rws-metadata>`]
+* Rossby wave source [:ref:`standard <ex-rws-standard>`, :ref:`iris <ex-rws-iris>`, :ref:`cdms <ex-rws-cdms>`]
 
 
-.. _ex-sfvp-metadata:
+.. _ex-sfvp-iris:
 
-Streamfunction and velocity potential [`metadata` interface]
+Streamfunction and velocity potential [`iris` interface]
 ------------------------------------------------------------
 
-.. plot:: examples/metadata/sfvp_example.py
+.. plot:: examples/iris/sfvp_example.py
    :include-source:
 
 
-.. _ex-rws-metadata:
+.. _ex-rws-iris:
 
-Rossby wave source [`metadata` interface]
+Rossby wave source [`iris` interface]
 -----------------------------------------
 
-.. plot:: examples/metadata/rws_example.py
+.. plot:: examples/iris/rws_example.py
+   :include-source:
+
+
+.. _ex-sfvp-cdms:
+
+Streamfunction and velocity potential [`cdms` interface]
+------------------------------------------------------------
+
+.. plot:: examples/cdms/sfvp_example.py
+   :include-source:
+
+
+.. _ex-rws-cdms:
+
+Rossby wave source [`cdms` interface]
+-----------------------------------------
+
+.. plot:: examples/cdms/rws_example.py
    :include-source:
 
 

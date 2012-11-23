@@ -1,7 +1,8 @@
 """
 Test cases for error handling in the
-:py:class:`windspharm.standard.VectorWind` and
-:py:class:`windspharm.metadata.VectorWind` interfaces.
+:py:class:`windspharm.standard.VectorWind`,
+:py:class:`windspharm.iris.VectorWind` and
+:py:class:`windspharm.cdms.VectorWind` interfaces.
 
 """
 import unittest
@@ -11,6 +12,10 @@ import numpy as np
 import numpy.ma as ma
 try:
     import cdms2
+except ImportError:
+    pass
+try:
+    import iris
 except ImportError:
     pass
 
@@ -81,8 +86,8 @@ class VectorWindInvalidTestCase(TestCase):
                 u, v, gridtype='regular')
 
 
-@unittest.skipIf('metadata' not in dir(windspharm) or 'cdms2' not in dir(),
-        'library component not available')
+@unittest.skipIf('cdms' not in dir(windspharm) or 'cdms2' not in dir(),
+                 'library component (cdms2) not available')
 class VectorWindMetaDataInvalidTestCase(TestCase):
     """
     Error catching in the meta-data enabled :py:mod:`cdms2` interface.
@@ -100,26 +105,57 @@ class VectorWindMetaDataInvalidTestCase(TestCase):
         ref = generate_test_data('standard')
         u = ref['uwnd']
         v = ref['vwnd']
-        self.assertRaises(ValueError, windspharm.metadata.VectorWind, u, v)
+        self.assertRaises(TypeError, windspharm.cdms.VectorWind, u, v)
 
     def test_order(self):
         identify('dimension order')
-        ref = generate_test_data('metadata')
+        ref = generate_test_data('cdms')
         u = ref['uwnd']
         v = ref['vwnd']
         v = v.reorder('xy')
-        self.assertRaises(ValueError, windspharm.metadata.VectorWind, u, v)
+        self.assertRaises(ValueError, windspharm.cdms.VectorWind, u, v)
 
     def test_latlongrid(self):
         identify('latitude-longitude grid')
-        ref = generate_test_data('metadata')
+        ref = generate_test_data('cdms')
         u = ref['uwnd']
         v = ref['vwnd']
         axes = u.getAxisList()
         latitude = cdms2.createAxis(axes[0][:], id='mylat')
         axes[0] = latitude
         u.setAxisList(axes)
-        self.assertRaises(ValueError, windspharm.metadata.VectorWind, u, v)
+        self.assertRaises(ValueError, windspharm.cdms.VectorWind, u, v)
+
+
+@unittest.skipIf('iris' not in dir(windspharm) or 'iris' not in dir(),
+                 'library component (cdms2) not available')
+class VectorWindMetaDataInvalidTestCase(TestCase):
+    """
+    Error catching in the meta-data enabled :py:mod:`cdms2` interface.
+
+    """
+
+    def __str__(self):
+        return 'verifying error handling (meta-data interface)'
+
+    def setUp(self):
+        pass
+
+    def test_iriscubes(self):
+        identify('variable type')
+        ref = generate_test_data('standard')
+        u = ref['uwnd']
+        v = ref['vwnd']
+        self.assertRaises(TypeError, windspharm.iris.VectorWind, u, v)
+
+    def test_order(self):
+        identify('dimension order')
+        ref = generate_test_data('iris')
+        u = ref['uwnd']
+        v = ref['vwnd']
+        v = v.copy()
+        v.transpose([1, 0])
+        self.assertRaises(ValueError, windspharm.iris.VectorWind, u, v)
 
 
 if __name__ == '__main__':

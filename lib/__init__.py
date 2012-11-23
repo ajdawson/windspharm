@@ -18,6 +18,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+from __future__ import absolute_import
+
+from . import standard
+from . import tools
 
 
 # List to define the behaviour of imports of the form:
@@ -25,24 +29,18 @@
 __all__ = []
 
 # Package version number.
-__version__ = '1.0.2'
+__version__ = '1.1.0'
 
 try:
-    # Import the meta-data interface.
-    import metadata
-    __all__.append('metadata')
+    from . import cdms
+    __all__.append('cdms')
+    metadata = cdms
 except ImportError:
-    # If it fails then only the numpy interface will be available.
     pass
 
-
 try:
-    # Try to import the numpy interface.
-    import standard
-    __all__.append('standard')
-    import tools
-    __all__.append('tools')
+    from . import iris
+    __all__.append('iris')
 except ImportError:
-    # Failure here indicates a missing requirement (pyspharm).
-    raise ImportError('windspharm requires spharm (pyspharm)')
+    pass
 
