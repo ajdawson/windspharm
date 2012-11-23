@@ -181,7 +181,7 @@ def get_recovery(info):
     __recover.__name__ = 'recover'
     __recover.__doc__ = __recover_docstring_template.format(
             '\n'.join(info_nice))
-    return _recover
+    return __recover
 
 
 def reverse_latdim(u, v, axis=0):
