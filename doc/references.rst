@@ -1,21 +1,32 @@
 API References
 ==============
 
-Reference documentation for :py:mod:`windspharm` is available for both interfaces:
+Reference documentation for :py:mod:`windspharm` is available for all interfaces:
 
-* :ref:`metadata-api-ref`
+* :ref:`iris-api-ref`
+
+* :ref:`cdms-api-ref`
 
 * :ref:`standard-api-ref`
 
 * :ref:`standard-tools-api-ref`
 
 
-.. _metadata-api-ref:
+.. _iris-api-ref:
 
-Reference for the `metadata` interface
+Reference for the `iris` interface
 --------------------------------------
 
-.. automodule:: windspharm.metadata
+.. automodule:: windspharm.iris
+   :members:
+
+
+.. _cdms-api-ref:
+
+Reference for the `cdms` interface
+--------------------------------------
+
+.. automodule:: windspharm.cdms
    :members:
 
 

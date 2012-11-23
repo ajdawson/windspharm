@@ -29,24 +29,30 @@ The package can be downloaded from `github <http://github.com/ajdawson/windsphar
    $ cd windspharm
    $ sudo python setup.py install
 
-or download a zip file from the `project's code page <http://github.com/ajdawson/windspharm>`_.
+If you want to install in your home directory replace the last line with:
+
+.. code-block:: bash
+
+   $ python setup.py install --user
+
+If you don't have ``git`` installed then you can download a zip file from the `project's code page <http://github.com/ajdawson/windspharm>`_.
 
 
 Getting Started
 ---------------
 
-The :py:mod:`windspharm` package provides two interfaces for performing computations.
-The `standard` interface is designed to work with :py:mod:`numpy` arrays; the `metadata` interface is designed to work with :py:mod:`cdms2` variables.
-The two interfaces support exactly the same sets of operations, the only difference is the `metadata` interface uses the meta-data stored in :py:mod:`cdms2` variables.
+The :py:mod:`windspharm` package currently provides three interfaces for performing computations.
+The `standard` interface is designed to work with :py:mod:`numpy` arrays; the `iris` interface is designed to work with :py:mod:`iris` cubes; and the `cdms` interface is designed to work with :py:mod:`cdms2` variables.
+Each interface supports exactly the same sets of operations, the only differences are that the `iris` and `cdms` interfaces also use the meta-data stored in input variables to construct outputs with meta-data.
 
-Regardless of which interface you use, the basic usage is the same. All computation is handled by the :py:class:`windspharm.standard.VectorWind` or :py:class:`windspharm.metadata.VectorWind` classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.
+Regardless of which interface you use, the basic usage is the same. All computation is handled by the :py:class:`windspharm.standard.VectorWind`, :py:class:`windspharm.iris.VectorWind` or :py:class:`windspharm.cdms.VectorWind` classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.
 
-The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the `metadata` interface:
+The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the `cdms` interface:
 
 .. code-block:: python
 
    import cdms2
-   from windspharm.metadata import VectorWind
+   from windspharm.cdms import VectorWind
 
 
    # Read u and v wind components from file.
@@ -66,7 +72,7 @@ The following is a very simple illustrative example which computes the streamfun
 Requirements
 ------------
 
-This package requires as a minimum that you have `numpy <http://http://numpy.scipy.org/>`_ and `pyspharm <http://code.google.com/p/pyspharm/>`_ available. The `metadata` interface can only be used if the :py:mod:`cdms2` module is also available. This module is distributed as part of the `UV-CDAT <http://uv-cdat.llnl.gov>`_ project. It is also distributed as part of the `cdat_lite <http://proj.badc.rl.ac.uk/cedaservices/wiki/CdatLite>`_ package.
+This package requires as a minimum that you have `numpy <http://http://numpy.scipy.org/>`_ and `pyspharm <http://code.google.com/p/pyspharm/>`_ available. The `iris` interface can only be used if the :py:mod:`iris` module is available (see the `iris documentation <http://scitools.org.uk/iris/>`_). The `cdms` interface can only be used if the :py:mod:`cdms` module is available. This module is distributed as part of the `UV-CDAT <http://uv-cdat.llnl.gov>`_ project. It is also distributed as part of the `cdat_lite <http://proj.badc.rl.ac.uk/cedaservices/wiki/CdatLite>`_ package.
 
 .. warning:: It is recommended to use pyspharm 1.0.7 or later. There is a bug in previous versions that causes incorrect fields to be returned when there is more than one input field.
 

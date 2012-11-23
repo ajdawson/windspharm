@@ -18,10 +18,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+from __future__ import absolute_import
+
 import numpy as np
 import cdms2
 
-import standard
+from . import standard
 
 
 class VectorWind(object):
@@ -53,7 +55,7 @@ class VectorWind(object):
         """
         # Ensure the input are cdms2 variables.
         if not (cdms2.isVariable(u) and cdms2.isVariable(v)):
-            raise ValueError('u and v must be cdms2 variables')
+            raise TypeError('u and v must be cdms2 variables')
         # Check that both u and v have dimensions in the same order and that
         # there are latitude and longitude dimensions present.
         uorder = u.getOrder()
