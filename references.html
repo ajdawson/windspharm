@@ -1110,7 +1110,8 @@ spectral truncation at triangular T13:</p>
 <dd><p>Prepare data for input to <a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a>
 (or to <tt class="xref py py-class docutils literal"><span class="pre">spharm.Spharmt</span></tt> method calls).</p>
 <p>Returns a dictionary of intermediate information that can be passed
-to <a class="reference internal" href="#windspharm.tools.recover_data" title="windspharm.tools.recover_data"><tt class="xref py py-func docutils literal"><span class="pre">windspharm.tools.recover_data()</span></tt></a> to recover the original
+to <a class="reference internal" href="#windspharm.tools.recover_data" title="windspharm.tools.recover_data"><tt class="xref py py-func docutils literal"><span class="pre">recover_data()</span></tt></a> or
+<a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><tt class="xref py py-func docutils literal"><span class="pre">get_recovery()</span></tt></a> to recover the original
 shape and order of the data.</p>
 <p><strong>Arguments:</strong></p>
 <dl class="docutils">
@@ -1139,11 +1140,13 @@ characters used to represent the other dimensions are arbitrary:</p>
 <dl class="function">
 <dt id="windspharm.tools.recover_data">
 <tt class="descclassname">windspharm.tools.</tt><tt class="descname">recover_data</tt><big>(</big><em>pdata</em>, <em>info</em><big>)</big><a class="reference internal" href="_modules/windspharm/tools.html#recover_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.recover_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recover the shape and dimension order of arrays output from
+<dd><p>Recover the shape and dimension order of an array output from
 <a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> methods (or from
 <tt class="xref py py-class docutils literal"><span class="pre">spharm.Spharmt</span></tt> methods).</p>
 <p>This function performs the opposite of
-<a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-func docutils literal"><span class="pre">windspharm.tools.prep_data()</span></tt></a></p>
+<a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-func docutils literal"><span class="pre">prep_data()</span></tt></a>.</p>
+<p>For recovering the shape of multiple variables, see
+<a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><tt class="xref py py-func docutils literal"><span class="pre">get_recovery()</span></tt></a>.</p>
 <p><strong>Arguments:</strong></p>
 <dl class="docutils">
 <dt><em>pdata</em></dt>
@@ -1155,10 +1158,40 @@ dimensions are latitude and longitude respectively.</dd>
 </dl>
 <p><strong>Example:</strong></p>
 <p>Recover the original input shape and dimension order of an array
-processed with <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-func docutils literal"><span class="pre">windspharm.tools.prep_data()</span></tt></a> or (more
-likely) an output of <a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> 
+processed with <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-func docutils literal"><span class="pre">prep_data()</span></tt></a> or an output
+of <a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> or
 <tt class="xref py py-class docutils literal"><span class="pre">sparm.Spharmt</span></tt> method calls on such data:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">recover_data</span><span class="p">(</span><span class="n">pdata</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="windspharm.tools.get_recovery">
+<tt class="descclassname">windspharm.tools.</tt><tt class="descname">get_recovery</tt><big>(</big><em>info</em><big>)</big><a class="reference internal" href="_modules/windspharm/tools.html#get_recovery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.get_recovery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a function that can be used to recover the shape and
+dimension order of multiple arrays output from
+<a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> methods (or from
+<tt class="xref py py-class docutils literal"><span class="pre">spharm.Spharmt</span></tt> methods) according to a single
+dictionary of intermediate information.</p>
+<p><strong>Argument:</strong></p>
+<dl class="docutils">
+<dt><em>info</em></dt>
+<dd>Intermediate information output from
+<a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-func docutils literal"><span class="pre">prep_data()</span></tt></a>.</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<p>Generate a function to recover the original input shape and
+dimension order of arrays processed with
+<a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-func docutils literal"><span class="pre">prep_data()</span></tt></a> and outputs of
+<a class="reference internal" href="#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> method calls on this
+data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">prep_data</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s">&#39;tzyx&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">prep_data</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;tzyx&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span><span class="p">,</span> <span class="n">vp</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sfvp</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">recover</span> <span class="o">=</span> <span class="n">get_recovery</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">sf</span><span class="p">,</span> <span class="n">vp</span> <span class="o">=</span> <span class="n">recover</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">sf</span><span class="p">,</span> <span class="n">vp</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

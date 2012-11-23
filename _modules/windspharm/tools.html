@@ -79,7 +79,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 
-<span class="k">def</span> <span class="nf">_order_dims</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">inorder</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">__order_dims</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">inorder</span><span class="p">):</span>
     <span class="k">if</span> <span class="s">&#39;x&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inorder</span> <span class="ow">or</span> <span class="s">&#39;y&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inorder</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;a latitude-longitude grid is required&#39;</span><span class="p">)</span>
     <span class="n">lonpos</span> <span class="o">=</span> <span class="n">inorder</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
@@ -94,7 +94,7 @@
     <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">outorder</span>
 
 
-<span class="k">def</span> <span class="nf">_reshape</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">__reshape</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),))</span>
     <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">shape</span>
 
@@ -105,7 +105,8 @@
 <span class="sd">    (or to :py:class:`spharm.Spharmt` method calls).</span>
 
 <span class="sd">    Returns a dictionary of intermediate information that can be passed</span>
-<span class="sd">    to :py:func:`windspharm.tools.recover_data` to recover the original</span>
+<span class="sd">    to :py:func:`~windspharm.tools.recover_data` or</span>
+<span class="sd">    :py:func:`~windspharm.tools.get_recovery` to recover the original</span>
 <span class="sd">    shape and order of the data.</span>
 
 <span class="sd">    **Arguments:**</span>
@@ -133,10 +134,9 @@
 <span class="sd">    &gt;&gt;&gt; pdata, info = prep_data(data, &#39;xayb&#39;)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="c"># Returns the prepared data and some data info to help data recovery.</span>
-    <span class="n">pdata</span><span class="p">,</span> <span class="n">intorder</span> <span class="o">=</span> <span class="n">_order_dims</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dimorder</span><span class="p">)</span>
-    <span class="n">pdata</span><span class="p">,</span> <span class="n">intshape</span> <span class="o">=</span> <span class="n">_reshape</span><span class="p">(</span><span class="n">pdata</span><span class="p">)</span>
+    <span class="n">pdata</span><span class="p">,</span> <span class="n">intorder</span> <span class="o">=</span> <span class="n">__order_dims</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dimorder</span><span class="p">)</span>
+    <span class="n">pdata</span><span class="p">,</span> <span class="n">intshape</span> <span class="o">=</span> <span class="n">__reshape</span><span class="p">(</span><span class="n">pdata</span><span class="p">)</span>
     <span class="n">info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">intermediate_shape</span><span class="o">=</span><span class="n">intshape</span><span class="p">,</span> <span class="n">intermediate_order</span><span class="o">=</span><span class="n">intorder</span><span class="p">,</span>
             <span class="n">original_order</span><span class="o">=</span><span class="n">dimorder</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pdata</span><span class="p">,</span> <span class="n">info</span>
@@ -144,12 +144,15 @@
 </div>
 <div class="viewcode-block" id="recover_data"><a class="viewcode-back" href="../../references.html#windspharm.tools.recover_data">[docs]</a><span class="k">def</span> <span class="nf">recover_data</span><span class="p">(</span><span class="n">pdata</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Recover the shape and dimension order of arrays output from</span>
+<span class="sd">    Recover the shape and dimension order of an array output from</span>
 <span class="sd">    :py:class:`windspharm.standard.VectorWind` methods (or from</span>
 <span class="sd">    :py:class:`spharm.Spharmt` methods).</span>
 
 <span class="sd">    This function performs the opposite of</span>
-<span class="sd">    :py:func:`windspharm.tools.prep_data`</span>
+<span class="sd">    :py:func:`~windspharm.tools.prep_data`.</span>
+
+<span class="sd">    For recovering the shape of multiple variables, see</span>
+<span class="sd">    :py:func:`~windspharm.tools.get_recovery`.</span>
 
 <span class="sd">    **Arguments:**</span>
 
@@ -164,8 +167,8 @@
 <span class="sd">    **Example:**</span>
 
 <span class="sd">    Recover the original input shape and dimension order of an array</span>
-<span class="sd">    processed with :py:func:`windspharm.tools.prep_data` or (more</span>
-<span class="sd">    likely) an output of :py:class:`windspharm.standard.VectorWind` </span>
+<span class="sd">    processed with :py:func:`~windspharm.tools.prep_data` or an output</span>
+<span class="sd">    of :py:class:`windspharm.standard.VectorWind` or</span>
 <span class="sd">    :py:class:`sparm.Spharmt` method calls on such data:</span>
 
 <span class="sd">    &gt;&gt;&gt; data = recover_data(pdata, info)</span>
@@ -182,6 +185,55 @@
         <span class="n">rolldims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">rolldims</span> <span class="o">&lt;</span> <span class="n">rolldims</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rolldims</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">rolldims</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span>
     
+</div>
+<span class="n">__recover_docstring_template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;Shape/dimension recovery.</span>
+
+<span class="s">Recovers variable shape/dimension according to:</span>
+
+<span class="s">{!s}</span>
+
+<span class="s">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="get_recovery"><a class="viewcode-back" href="../../references.html#windspharm.tools.get_recovery">[docs]</a><span class="k">def</span> <span class="nf">get_recovery</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a function that can be used to recover the shape and</span>
+<span class="sd">    dimension order of multiple arrays output from</span>
+<span class="sd">    :py:class:`windspharm.standard.VectorWind` methods (or from</span>
+<span class="sd">    :py:class:`spharm.Spharmt` methods) according to a single</span>
+<span class="sd">    dictionary of intermediate information.</span>
+
+<span class="sd">    **Argument:**</span>
+
+<span class="sd">    *info*</span>
+<span class="sd">        Intermediate information output from</span>
+<span class="sd">        :py:func:`~windspharm.tools.prep_data`.</span>
+
+<span class="sd">    **Example:**</span>
+
+<span class="sd">    Generate a function to recover the original input shape and</span>
+<span class="sd">    dimension order of arrays processed with</span>
+<span class="sd">    :py:func:`~windspharm.tools.prep_data` and outputs of</span>
+<span class="sd">    :py:class:`windspharm.standard.VectorWind` method calls on this</span>
+<span class="sd">    data:</span>
+
+<span class="sd">    &gt;&gt;&gt; u, info = prep_data(u, &#39;tzyx&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; v, info = prep_data(v, &#39;tzyx&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; w = VectorWind(u, v)</span>
+<span class="sd">    &gt;&gt;&gt; sf, vp = w.sfvp()</span>
+<span class="sd">    &gt;&gt;&gt; recover = get_recovery(info)</span>
+<span class="sd">    &gt;&gt;&gt; u, v, sf, vp = recover(u, v, sf, vp)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__recover</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">recover_data</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+    <span class="n">info_nice</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&#39;{!s}&#39;: {!s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> \
+            <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+    <span class="n">__recover</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="s">&#39;recover&#39;</span>
+    <span class="n">__recover</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">__recover_docstring_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info_nice</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_recover</span>
+
 </div>
 <div class="viewcode-block" id="reverse_latdim"><a class="viewcode-back" href="../../references.html#windspharm.tools.reverse_latdim">[docs]</a><span class="k">def</span> <span class="nf">reverse_latdim</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
