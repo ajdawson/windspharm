@@ -1,0 +1,740 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>windspharm.iris &mdash; windspharm 1.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="windspharm 1.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">windspharm 1.1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for windspharm.iris</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Spherical harmonic vector wind computations (:py:mod:`iris` meta-data</span>
+<span class="sd">interface).</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c"># Copyright (c) 2012 Andrew Dawson</span>
+<span class="c"># </span>
+<span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c"># in the Software without restriction, including without limitation the rights</span>
+<span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c"># furnished to do so, subject to the following conditions:</span>
+<span class="c"># </span>
+<span class="c"># The above copyright notice and this permission notice shall be included in</span>
+<span class="c"># all copies or substantial portions of the Software.</span>
+<span class="c"># </span>
+<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="c"># THE SOFTWARE.</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">iris.cube</span> <span class="kn">import</span> <span class="n">Cube</span>
+<span class="kn">from</span> <span class="nn">iris.util</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">spharm</span> <span class="kn">import</span> <span class="n">gaussian_lats_wts</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">standard</span>
+
+
+<div class="viewcode-block" id="VectorWind"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind">[docs]</a><span class="k">class</span> <span class="nc">VectorWind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vector wind computations (meta-data enabled :py:mod:`iris`</span>
+<span class="sd">    interface).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a VectorWind instance.</span>
+
+<span class="sd">        **Arguments:**</span>
+
+<span class="sd">        *u*, *v*</span>
+<span class="sd">            Zonal and meridional components of the vector wind</span>
+<span class="sd">            respectively. Both components should be instances of</span>
+<span class="sd">            :py:class:`iris.cube.Cube`. The components must have the</span>
+<span class="sd">            same dimension coordinates and contain no missing values.</span>
+
+<span class="sd">        **Example:**</span>
+
+<span class="sd">        Initialize a :py:class:`~windspharm.iris.VectorWind` instance</span>
+<span class="sd">        with zonal and meridional components of the vector wind:</span>
+
+<span class="sd">        &gt;&gt;&gt; from windspharm.iris import VectorWind</span>
+<span class="sd">        &gt;&gt;&gt; w = VectorWind(u, v)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Make sure inputs are Iris cubes.</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Cube</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Cube</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;u and v must be iris cubes&#39;</span><span class="p">)</span>
+        <span class="c"># Get the coordinates of each component and make sure they are the</span>
+        <span class="c"># same.</span>
+        <span class="n">ucoords</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">dim_coords</span>
+        <span class="n">vcoords</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">dim_coords</span>
+        <span class="k">if</span> <span class="n">ucoords</span> <span class="o">!=</span> <span class="n">vcoords</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;u and v must have the same dimensions&#39;</span><span class="p">)</span>
+        <span class="c"># Extract the latitude and longitude dimension coordinates.</span>
+        <span class="n">lat</span><span class="p">,</span> <span class="n">lat_dim</span> <span class="o">=</span> <span class="n">_dim_coord_and_dim</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s">&#39;latitude&#39;</span><span class="p">)</span>
+        <span class="n">lon</span><span class="p">,</span> <span class="n">lon_dim</span> <span class="o">=</span> <span class="n">_dim_coord_and_dim</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;longitude&#39;</span><span class="p">)</span>
+        <span class="c"># Determine the ordering list (input to transpose) which will put the</span>
+        <span class="c"># latitude and longitude dimensions at the front of the cube&#39;s</span>
+        <span class="c"># dimensions, and the ordering list which will reverse this process.</span>
+        <span class="n">apiorder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reorder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_apiorder_reorder</span><span class="p">(</span>
+                <span class="n">u</span><span class="p">,</span> <span class="n">lat_dim</span><span class="p">,</span> <span class="n">lon_dim</span><span class="p">)</span>
+        <span class="c"># Re-order the inputs (in-place, so we take a copy first) so latiutude</span>
+        <span class="c"># and longitude are at the front.</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">u</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">apiorder</span><span class="p">)</span>
+        <span class="n">v</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">apiorder</span><span class="p">)</span>
+        <span class="c"># Reverse the latitude dimension if necessary.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lat</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="c"># need to reverse latitude dimension</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">lat_dim</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">lat_dim</span><span class="p">)</span>
+        <span class="c"># Determine the grid type of the input.</span>
+        <span class="n">gridtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gridtype</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+        <span class="c"># Records the current shape and dimension coordinates of the inputs.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ishape</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">dim_coords</span>
+        <span class="c"># Reshape the inputs so they are compatible with pyspharm.</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),))</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),))</span>
+        <span class="c"># Create a base VectorWind instance to do the computations.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">standard</span><span class="o">.</span><span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="n">gridtype</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_gridtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine the type of a latitude dimension.&quot;&quot;&quot;</span>
+        <span class="c"># Define a tolerance value for differences, this value must be much</span>
+        <span class="c"># smaller than expected grid spacings.</span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">0.001</span>
+        <span class="c"># Get the number of latitude points in the dimension.</span>
+        <span class="n">nlat</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">latitudes</span><span class="p">)</span>
+        <span class="n">diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">latitudes</span><span class="p">))</span>
+        <span class="n">equally_spaced</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diffs</span> <span class="o">-</span> <span class="n">diffs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tolerance</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">equally_spaced</span><span class="p">:</span>
+            <span class="c"># The latitudes are not equally-spaced, which suggests they might</span>
+            <span class="c"># be gaussian. Construct sample gaussian latitudes and check if</span>
+            <span class="c"># the two match.</span>
+            <span class="n">gauss_reference</span><span class="p">,</span> <span class="n">wts</span> <span class="o">=</span> <span class="n">gaussian_lats_wts</span><span class="p">(</span><span class="n">nlat</span><span class="p">)</span>
+            <span class="n">difference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">latitudes</span> <span class="o">-</span> <span class="n">gaussian_reference</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;latitudes are unequally-spaced &#39;</span>
+                                 <span class="s">&#39;but are not gaussian&#39;</span><span class="p">)</span>
+            <span class="n">gridtype</span> <span class="o">=</span> <span class="s">&#39;gaussian&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># The latitudes are equally-spaced. Construct reference global</span>
+            <span class="c"># equally spaced latitudes and check that the two match.</span>
+            <span class="k">if</span> <span class="n">nlat</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="c"># Odd number of latitudes includes the poles.</span>
+                <span class="n">equal_reference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="n">nlat</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># Even number of latitudes doesn&#39;t include the poles.</span>
+                <span class="n">delta_latitude</span> <span class="o">=</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">nlat</span>
+                <span class="n">equal_reference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">90</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">delta_latitude</span><span class="p">,</span>
+                                              <span class="o">-</span><span class="mi">90</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">delta_latitude</span><span class="p">,</span>
+                                              <span class="n">nlat</span><span class="p">)</span>
+            <span class="n">difference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">latitudes</span> <span class="o">-</span> <span class="n">equal_reference</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">difference</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;equally-spaced latitudes are &#39;</span>
+                                 <span class="s">&#39;invalid (non-global?)&#39;</span><span class="p">)</span>
+            <span class="n">gridtype</span> <span class="o">=</span> <span class="s">&#39;regular&#39;</span>
+        <span class="k">return</span> <span class="n">gridtype</span>
+
+    <span class="k">def</span> <span class="nf">_get_apiorder_reorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cube</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create an ordering list to move latitude and longitude to the</span>
+<span class="sd">        front of a cube&#39;s dimensions. Also compute the ordering list</span>
+<span class="sd">        required to reverse this action.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Remove the latitude and longitude dimensions from an initial list.</span>
+        <span class="n">apiorder</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+        <span class="n">apiorder</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span>
+        <span class="n">apiorder</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span>
+        <span class="c"># Insert latitude and longitude at the front.</span>
+        <span class="n">apiorder</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+        <span class="n">apiorder</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">longitude</span><span class="p">)</span>
+        <span class="n">reorder</span> <span class="o">=</span> <span class="p">[</span><span class="n">apiorder</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">ndim</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">apiorder</span><span class="p">,</span> <span class="n">reorder</span>
+
+    <span class="k">def</span> <span class="nf">_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="o">**</span><span class="n">attributes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Re-shape outputs and add meta-data.&quot;&quot;&quot;</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ishape</span><span class="p">)</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">Cube</span><span class="p">(</span><span class="n">var</span><span class="p">,</span>
+                   <span class="n">dim_coords_and_dims</span><span class="o">=</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">ndim</span><span class="p">)))</span>
+        <span class="n">var</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reorder</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">var</span>
+
+<div class="viewcode-block" id="VectorWind.u"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.u">[docs]</a>    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Zonal component of vector wind.</span>
+
+<span class="sd">        **Example:**</span>
+
+<span class="sd">        &gt;&gt;&gt; u = w.u()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">u</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">u</span><span class="p">,</span>
+                           <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;eastward_wind&#39;</span><span class="p">,</span>
+                           <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                           <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;eastward component of wind&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">u</span>
+</div>
+<div class="viewcode-block" id="VectorWind.v"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.v">[docs]</a>    <span class="k">def</span> <span class="nf">v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Meridional component of vector wind.</span>
+
+<span class="sd">        **Example:**</span>
+
+<span class="sd">        &gt;&gt;&gt; v = w.v()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">v</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">v</span><span class="p">,</span>
+                           <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;northward_wind&#39;</span><span class="p">,</span>
+                           <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                           <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;northward component of wind&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+</div>
+<div class="viewcode-block" id="VectorWind.magnitude"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.magnitude">[docs]</a>    <span class="k">def</span> <span class="nf">magnitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wind speed (magnitude of vector wind).</span>
+
+<span class="sd">        **Example:**</span>
+
+<span class="sd">        &gt;&gt;&gt; spd = w.magnitude()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">magnitude</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">m</span><span class="p">,</span>
+                           <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;wind_speed&#39;</span><span class="p">,</span>
+                           <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                           <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;wind speed&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span>
+</div>
+<div class="viewcode-block" id="VectorWind.vrtdiv"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.vrtdiv">[docs]</a>    <span class="k">def</span> <span class="nf">vrtdiv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Relative vorticity and horizontal divergence.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the relative vorticity and divergence:</span>
+
+<span class="sd">        &gt;&gt;&gt; vrt, div = w.vrtdiv()</span>
+
+<span class="sd">        Compute the relative vorticity and divergence and apply spectral</span>
+<span class="sd">        truncation at triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; vrtT13, divT13 = w.vrtdiv(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vrt</span><span class="p">,</span> <span class="n">div</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">vrtdiv</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">vrt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">vrt</span><span class="p">,</span>
+                             <span class="n">units</span><span class="o">=</span><span class="s">&#39;s**-1&#39;</span><span class="p">,</span>
+                             <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;atmosphere_relative_vorticity&#39;</span><span class="p">,</span>
+                             <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;relative vorticity&#39;</span><span class="p">)</span>
+        <span class="n">div</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">div</span><span class="p">,</span>
+                             <span class="n">units</span><span class="o">=</span><span class="s">&#39;s**-1&#39;</span><span class="p">,</span>
+                             <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;divergence_of_wind&#39;</span><span class="p">,</span>
+                             <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;horizontal divergence&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vrt</span><span class="p">,</span> <span class="n">div</span>
+</div>
+<div class="viewcode-block" id="VectorWind.vorticity"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.vorticity">[docs]</a>    <span class="k">def</span> <span class="nf">vorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Relative vorticity.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the relative vorticity:</span>
+
+<span class="sd">        &gt;&gt;&gt; vrt = w.vorticity()</span>
+
+<span class="sd">        Compute the relative vorticity and apply spectral truncation at</span>
+<span class="sd">        triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; vrtT13 = w.vorticity(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vrt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">vorticity</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">vrt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">vrt</span><span class="p">,</span> 
+                             <span class="n">units</span><span class="o">=</span><span class="s">&#39;s**-1&#39;</span><span class="p">,</span>
+                             <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;atmosphere_relative_vorticity&#39;</span><span class="p">,</span>
+                             <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;relative vorticity&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vrt</span>
+</div>
+<div class="viewcode-block" id="VectorWind.divergence"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.divergence">[docs]</a>    <span class="k">def</span> <span class="nf">divergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Horizontal divergence.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the divergence:</span>
+
+<span class="sd">        &gt;&gt;&gt; div = w.divergence()</span>
+
+<span class="sd">        Compute the divergence and apply spectral truncation at</span>
+<span class="sd">        triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; divT13 = w.divergence(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">div</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">divergence</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">div</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">div</span><span class="p">,</span>
+                             <span class="n">units</span><span class="o">=</span><span class="s">&#39;s**-1&#39;</span><span class="p">,</span>
+                             <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;divergence_of_wind&#39;</span><span class="p">,</span>
+                             <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;horizontal divergence&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">div</span>
+</div>
+<div class="viewcode-block" id="VectorWind.planetaryvorticity"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.planetaryvorticity">[docs]</a>    <span class="k">def</span> <span class="nf">planetaryvorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Planetary vorticity (Coriolis parameter).</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *omega*</span>
+<span class="sd">            Earth&#39;s angular velocity. The default value if not specified</span>
+<span class="sd">            is 7.292x10**-5 s**-1.</span>
+
+<span class="sd">        **Example:**</span>
+
+<span class="sd">        Compute planetary vorticity using default values:</span>
+
+<span class="sd">        &gt;&gt;&gt; pvrt = w.planetaryvorticity()</span>
+
+<span class="sd">        Override the default value for Earth&#39;s angular velocity:</span>
+
+<span class="sd">        &gt;&gt;&gt; pvrt = w.planetaryvorticity(omega=7.2921150)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">planetaryvorticity</span><span class="p">(</span><span class="n">omega</span><span class="o">=</span><span class="n">omega</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">f</span><span class="p">,</span>
+                           <span class="n">units</span><span class="o">=</span><span class="s">&#39;s**-1&#39;</span><span class="p">,</span>
+                           <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;coriolis_parameter&#39;</span><span class="p">,</span>
+                           <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;planetary vorticity (coriolis parameter)&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span>
+</div>
+<div class="viewcode-block" id="VectorWind.absolutevorticity"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.absolutevorticity">[docs]</a>    <span class="k">def</span> <span class="nf">absolutevorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Absolute vorticity (sum of relative and planetary vorticity).</span>
+
+<span class="sd">        **Optional arguments:**</span>
+
+<span class="sd">        *omega*</span>
+<span class="sd">            Earth&#39;s angular velocity. The default value if not specified</span>
+<span class="sd">            is 7.292x10**-5 s**-1.</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute absolute vorticity:</span>
+
+<span class="sd">        &gt;&gt;&gt; avrt = w.absolutevorticity()</span>
+
+<span class="sd">        Compute absolute vorticity and apply spectral truncation at</span>
+<span class="sd">        triangular T13, also override the default value for Earth&#39;s</span>
+<span class="sd">        angular velocity:</span>
+
+<span class="sd">        &gt;&gt;&gt; avrt = w.absolutevorticity(omega=7.2921150, truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">avrt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">absolutevorticity</span><span class="p">(</span><span class="n">omega</span><span class="o">=</span><span class="n">omega</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">avrt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">avrt</span><span class="p">,</span>
+                              <span class="n">units</span><span class="o">=</span><span class="s">&#39;s**-1&#39;</span><span class="p">,</span>
+                              <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;atmosphere_absolute_vorticity&#39;</span><span class="p">,</span>
+                              <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;absolute vorticity&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">avrt</span>
+</div>
+<div class="viewcode-block" id="VectorWind.sfvp"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.sfvp">[docs]</a>    <span class="k">def</span> <span class="nf">sfvp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Streamfunction and velocity potential.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute streamfunction and velocity potential:</span>
+
+<span class="sd">        &gt;&gt;&gt; sf, vp = w.sfvp()</span>
+
+<span class="sd">        Compute streamfunction and velocity potential and apply spectral</span>
+<span class="sd">        truncation at triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; sfT13, vpT13 = w.sfvp(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sf</span><span class="p">,</span> <span class="n">vp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">sfvp</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">sf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span>
+                            <span class="n">units</span><span class="o">=</span><span class="s">&#39;m**2 s**-1&#39;</span><span class="p">,</span>
+                            <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;atmosphere_horizontal_streamfunction&#39;</span><span class="p">,</span>
+                            <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;streamfunction&#39;</span><span class="p">)</span>
+        <span class="n">vp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">vp</span><span class="p">,</span>
+                            <span class="n">units</span><span class="o">=</span><span class="s">&#39;m**2 s**-1&#39;</span><span class="p">,</span>
+                            <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;atmosphere_horizontal_velocity_potential&#39;</span><span class="p">,</span>
+                            <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;velocity potential&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sf</span><span class="p">,</span> <span class="n">vp</span>
+</div>
+<div class="viewcode-block" id="VectorWind.streamfunction"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.streamfunction">[docs]</a>    <span class="k">def</span> <span class="nf">streamfunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Streamfunction.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute streamfunction:</span>
+
+<span class="sd">        &gt;&gt;&gt; sf = w.streamfunction()</span>
+
+<span class="sd">        Compute streamfunction and apply spectral truncation at</span>
+<span class="sd">        triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; sfT13 = w.streamfunction(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">streamfunction</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">sf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span>
+                            <span class="n">units</span><span class="o">=</span><span class="s">&#39;m**2 s**-1&#39;</span><span class="p">,</span>
+                            <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;atmosphere_horizontal_streamfunction&#39;</span><span class="p">,</span>
+                            <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;streamfunction&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sf</span>
+</div>
+<div class="viewcode-block" id="VectorWind.velocitypotential"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.velocitypotential">[docs]</a>    <span class="k">def</span> <span class="nf">velocitypotential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Velocity potential.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute velocity potential:</span>
+
+<span class="sd">        &gt;&gt;&gt; vp = w.velocity potential()</span>
+
+<span class="sd">        Compute velocity potential and apply spectral truncation at</span>
+<span class="sd">        triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; vpT13 = w.velocity potential(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">velocitypotential</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">vp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">vp</span><span class="p">,</span>
+                            <span class="n">units</span><span class="o">=</span><span class="s">&#39;m**2 s**-1&#39;</span><span class="p">,</span>
+                            <span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;atmosphere_horizontal_velocity_potential&#39;</span><span class="p">,</span>
+                            <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;velocity potential&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vp</span>
+</div>
+<div class="viewcode-block" id="VectorWind.helmholtz"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.helmholtz">[docs]</a>    <span class="k">def</span> <span class="nf">helmholtz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Irrotational and non-divergent components of the vector wind.</span>
+
+<span class="sd">        Returns a 4-tuple of the eastward and northward components of</span>
+<span class="sd">        the irrotational and non-divergent wind components respectively.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the irrotational and non-divergent components of the</span>
+<span class="sd">        vector wind:</span>
+
+<span class="sd">        &gt;&gt;&gt; uchi, vchi, upsi, vpsi = w.helmholtz()</span>
+
+<span class="sd">        Compute the irrotational and non-divergent components of the</span>
+<span class="sd">        vector wind and apply spectral truncation at triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; uchiT13, vchiT13, upsiT13, vpsiT13 = \</span>
+<span class="sd">w.helmholtz(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span><span class="p">,</span> <span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">helmholtz</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">uchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">uchi</span><span class="p">,</span>
+                             <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                             <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;irrotational_eastward_wind&#39;</span><span class="p">)</span>
+        <span class="n">vchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">vchi</span><span class="p">,</span>
+                              <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                              <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;irrotational_northward_wind&#39;</span><span class="p">)</span>
+        <span class="n">upsi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">upsi</span><span class="p">,</span>
+                              <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                              <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;non_divergent_eastward_wind&#39;</span><span class="p">)</span>
+        <span class="n">vpsi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">vpsi</span><span class="p">,</span>
+                              <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                              <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;non_divergent_northward_wind&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span><span class="p">,</span> <span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span>
+</div>
+<div class="viewcode-block" id="VectorWind.irrotationalcomponent"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.irrotationalcomponent">[docs]</a>    <span class="k">def</span> <span class="nf">irrotationalcomponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Irrotational (divergent) component of the vector wind.</span>
+
+<span class="sd">        Returns a 2-tuple of the eastward and northward components of</span>
+<span class="sd">        the irrotational wind. If both the irrotational and</span>
+<span class="sd">        non-divergent components are required use</span>
+<span class="sd">        :py:meth:`~windspharm.metadata.VectorWind.helmholtz` instead.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the irrotational component of the vector wind:</span>
+
+<span class="sd">        &gt;&gt;&gt; uchi, vchi = w.irrotationalcomponent()</span>
+
+<span class="sd">        Compute the irrotational component of the vector wind and apply</span>
+<span class="sd">        spectral truncation at triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; uchiT13, vchiT13 = w.irrotationalcomponent(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">irrotationalcomponent</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">uchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">uchi</span><span class="p">,</span>
+                              <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                              <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;irrotational_eastward_wind&#39;</span><span class="p">)</span>
+        <span class="n">vchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">vchi</span><span class="p">,</span>
+                              <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                              <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;irrotational_northward_wind&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span>
+</div>
+<div class="viewcode-block" id="VectorWind.nondivergentcomponent"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.nondivergentcomponent">[docs]</a>    <span class="k">def</span> <span class="nf">nondivergentcomponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Non-divergent (rotational) component of the vector wind.</span>
+
+<span class="sd">        Returns a 2-tuple of the eastward and northward components of</span>
+<span class="sd">        the non-divergent wind. If both the irrotational and</span>
+<span class="sd">        non-divergent components are required use</span>
+<span class="sd">        :py:meth:`~windspharm.metadata.VectorWind.helmholtz` instead.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the non-divergent component of the vector wind:</span>
+
+<span class="sd">        &gt;&gt;&gt; upsi, vpsi = w.nondivergentcomponent()</span>
+
+<span class="sd">        Compute the non-divergent component of the vector wind and apply</span>
+<span class="sd">        spectral truncation at triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; upsiT13, vpsiT13 = w.nondivergentcomponent(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">nondivergentcomponent</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">upsi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">upsi</span><span class="p">,</span>
+                              <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                              <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;non_divergent_eastward_wind&#39;</span><span class="p">)</span>
+        <span class="n">vpsi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">(</span><span class="n">vpsi</span><span class="p">,</span>
+                              <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span>
+                              <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;non_divergent_northward_wind&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span>
+</div>
+<div class="viewcode-block" id="VectorWind.gradient"><a class="viewcode-back" href="../../references.html#windspharm.iris.VectorWind.gradient">[docs]</a>    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the vector gradient of a scalar field on the sphere.</span>
+
+<span class="sd">        Returns a 2-tuple of the zonal and meridional components of the</span>
+<span class="sd">        vector gradient respectively.</span>
+
+<span class="sd">        **Argument:**</span>
+
+<span class="sd">        *chi*</span>
+<span class="sd">            A scalar field. It must be an :py:class:`iris.cube.Cube`</span>
+<span class="sd">            with the same latitude and longitude dimensions as the</span>
+<span class="sd">            vector wind components that initialized the </span>
+<span class="sd">            :py:class:`~windspharm.iris.VectorWind` instance.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the vector gradient of absolute vorticity:</span>
+
+<span class="sd">        &gt;&gt;&gt; avrt = w.absolutevorticity()</span>
+<span class="sd">        &gt;&gt;&gt; avrt_zonal, avrt_meridional = w.gradient(avrt)</span>
+
+<span class="sd">        Compute the vector gradient of absolute vorticity and apply</span>
+<span class="sd">        spectral truncation at triangular T13:</span>
+
+<span class="sd">        &gt;&gt;&gt; avrt = w.absolutevorticity()</span>
+<span class="sd">        &gt;&gt;&gt; avrt_zonalT13, avrt_meridionalT13 = \</span>
+<span class="sd">w.gradient(avrt, truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">chi</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Cube</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;scalar field must be an iris cube&#39;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+        <span class="n">lat</span><span class="p">,</span> <span class="n">lat_dim</span> <span class="o">=</span> <span class="n">_dim_coord_and_dim</span><span class="p">(</span><span class="n">chi</span><span class="p">,</span> <span class="s">&#39;latitude&#39;</span><span class="p">)</span>
+        <span class="n">lon</span><span class="p">,</span> <span class="n">lon_dim</span> <span class="o">=</span> <span class="n">_dim_coord_and_dim</span><span class="p">(</span><span class="n">chi</span><span class="p">,</span> <span class="s">&#39;longitude&#39;</span><span class="p">)</span>
+        <span class="n">apiorder</span><span class="p">,</span> <span class="n">reorder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_apiorder_reorder</span><span class="p">(</span><span class="n">chi</span><span class="p">,</span> <span class="n">lat_dim</span><span class="p">,</span> <span class="n">lon_dim</span><span class="p">)</span>
+        <span class="n">chi</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">chi</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">apiorder</span><span class="p">)</span>
+        <span class="n">ishape</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">dim_coords</span>
+        <span class="n">chi</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">chi</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">chi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),))</span>
+        <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">chi</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">uchi</span> <span class="o">=</span> <span class="n">uchi</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ishape</span><span class="p">)</span>
+        <span class="n">vchi</span> <span class="o">=</span> <span class="n">vchi</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ishape</span><span class="p">)</span>
+        <span class="n">uchi</span> <span class="o">=</span> <span class="n">Cube</span><span class="p">(</span><span class="n">uchi</span><span class="p">,</span>
+                    <span class="n">dim_coords_and_dims</span><span class="o">=</span><span class="nb">zip</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">uchi</span><span class="o">.</span><span class="n">ndim</span><span class="p">)))</span>
+        <span class="n">vchi</span> <span class="o">=</span> <span class="n">Cube</span><span class="p">(</span><span class="n">vchi</span><span class="p">,</span>
+                    <span class="n">dim_coords_and_dims</span><span class="o">=</span><span class="nb">zip</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">vchi</span><span class="o">.</span><span class="n">ndim</span><span class="p">)))</span>
+        <span class="n">uchi</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">reorder</span><span class="p">)</span>
+        <span class="n">vchi</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">reorder</span><span class="p">)</span>
+        <span class="n">uchi</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&#39;zonal_gradient_of_{!s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">vchi</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&#39;meridional_gradient_of_{!s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span>
+
+</div></div>
+<span class="k">def</span> <span class="nf">_dim_coord_and_dim</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">coord</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve a given dimension coordinate from an</span>
+<span class="sd">    ::py:class:`iris.cube.Cube` and the dimension number it corresponds</span>
+<span class="sd">    to.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">cube</span><span class="o">.</span><span class="n">dim_coords</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;multiple {!s} coordinates not &#39;</span>
+                         <span class="s">&#39;allowed: {!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">cube</span><span class="p">))</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">c_dim</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">coord_dims</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">c_dim</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;multiple dimensions with {!s} coordinate &#39;</span>
+                         <span class="s">&#39;not allowed: {!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">cube</span><span class="p">))</span>
+    <span class="n">c_dim</span> <span class="o">=</span> <span class="n">c_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_dim</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3>Table Of Contents</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">API References</a></li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">windspharm 1.1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Andrew Dawson.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

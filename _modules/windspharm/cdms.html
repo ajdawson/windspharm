@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.metadata &mdash; windspharm 1.0.2 documentation</title>
+    <title>windspharm.cdms &mdash; windspharm 1.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.2',
+        VERSION:     '1.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.0.2 documentation" href="../../index.html" />
+    <link rel="top" title="windspharm 1.1.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body>
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">windspharm 1.0.2 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">windspharm 1.1.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -48,7 +48,7 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <h1>Source code for windspharm.metadata</h1><div class="highlight"><pre>
+  <h1>Source code for windspharm.cdms</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Spherical harmonic vector wind computations (meta-data interface).&quot;&quot;&quot;</span>
 <span class="c"># Copyright (c) 2012 Andrew Dawson</span>
 <span class="c"># </span>
@@ -69,13 +69,15 @@
 <span class="c"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
 <span class="c"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
 <span class="c"># THE SOFTWARE.</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">cdms2</span>
 
-<span class="kn">import</span> <span class="nn">standard</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">standard</span>
 
 
-<div class="viewcode-block" id="VectorWind"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind">[docs]</a><span class="k">class</span> <span class="nc">VectorWind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind">[docs]</a><span class="k">class</span> <span class="nc">VectorWind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Vector wind computations (meta-data enabled :py:mod:`cdms2`</span>
 <span class="sd">    interface).</span>
@@ -104,7 +106,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># Ensure the input are cdms2 variables.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cdms2</span><span class="o">.</span><span class="n">isVariable</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="ow">and</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">isVariable</span><span class="p">(</span><span class="n">v</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;u and v must be cdms2 variables&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;u and v must be cdms2 variables&#39;</span><span class="p">)</span>
         <span class="c"># Check that both u and v have dimensions in the same order and that</span>
         <span class="c"># there are latitude and longitude dimensions present.</span>
         <span class="n">uorder</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">getOrder</span><span class="p">()</span>
@@ -179,7 +181,7 @@
             <span class="nb">setattr</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">var</span>
 
-<div class="viewcode-block" id="VectorWind.u"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.u">[docs]</a>    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.u"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.u">[docs]</a>    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Zonal component of vector wind.</span>
 
 <span class="sd">        **Example:**</span>
@@ -192,7 +194,7 @@
                 <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span> <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;eastward component of wind&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">u</span>
 </div>
-<div class="viewcode-block" id="VectorWind.v"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.v">[docs]</a>    <span class="k">def</span> <span class="nf">v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.v"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.v">[docs]</a>    <span class="k">def</span> <span class="nf">v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Meridional component of vector wind.</span>
 
 <span class="sd">        **Example:**</span>
@@ -205,7 +207,7 @@
                 <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span> <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;northward component of wind&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 </div>
-<div class="viewcode-block" id="VectorWind.magnitude"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.magnitude">[docs]</a>    <span class="k">def</span> <span class="nf">magnitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.magnitude"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.magnitude">[docs]</a>    <span class="k">def</span> <span class="nf">magnitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wind speed (magnitude of vector wind).</span>
 
 <span class="sd">        **Example:**</span>
@@ -218,7 +220,7 @@
                 <span class="n">units</span><span class="o">=</span><span class="s">&#39;m s**-1&#39;</span><span class="p">,</span> <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;wind speed&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">m</span>
 </div>
-<div class="viewcode-block" id="VectorWind.vrtdiv"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.vrtdiv">[docs]</a>    <span class="k">def</span> <span class="nf">vrtdiv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.vrtdiv"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.vrtdiv">[docs]</a>    <span class="k">def</span> <span class="nf">vrtdiv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Relative vorticity and horizontal divergence.</span>
 
 <span class="sd">        **Optional argument:**</span>
@@ -248,7 +250,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;horizontal divergence&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vrt</span><span class="p">,</span> <span class="n">div</span>
 </div>
-<div class="viewcode-block" id="VectorWind.vorticity"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.vorticity">[docs]</a>    <span class="k">def</span> <span class="nf">vorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.vorticity"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.vorticity">[docs]</a>    <span class="k">def</span> <span class="nf">vorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Relative vorticity.</span>
 
 <span class="sd">        **Optional argument:**</span>
@@ -275,7 +277,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;relative vorticity&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vrt</span>
 </div>
-<div class="viewcode-block" id="VectorWind.divergence"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.divergence">[docs]</a>    <span class="k">def</span> <span class="nf">divergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.divergence"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.divergence">[docs]</a>    <span class="k">def</span> <span class="nf">divergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Horizontal divergence.</span>
 
 <span class="sd">        **Optional argument:**</span>
@@ -302,7 +304,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;horizontal divergence&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">div</span>
 </div>
-<div class="viewcode-block" id="VectorWind.planetaryvorticity"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.planetaryvorticity">[docs]</a>    <span class="k">def</span> <span class="nf">planetaryvorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.planetaryvorticity"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.planetaryvorticity">[docs]</a>    <span class="k">def</span> <span class="nf">planetaryvorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Planetary vorticity (Coriolis parameter).</span>
 
 <span class="sd">        **Optional argument:**</span>
@@ -328,7 +330,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;planetary vorticity (coriolis parameter)&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span>
 </div>
-<div class="viewcode-block" id="VectorWind.absolutevorticity"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.absolutevorticity">[docs]</a>    <span class="k">def</span> <span class="nf">absolutevorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.absolutevorticity"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.absolutevorticity">[docs]</a>    <span class="k">def</span> <span class="nf">absolutevorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Absolute vorticity (sum of relative and planetary vorticity).</span>
 
 <span class="sd">        **Optional arguments:**</span>
@@ -360,7 +362,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;absolute vorticity&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">avrt</span>
 </div>
-<div class="viewcode-block" id="VectorWind.sfvp"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.sfvp">[docs]</a>    <span class="k">def</span> <span class="nf">sfvp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.sfvp"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.sfvp">[docs]</a>    <span class="k">def</span> <span class="nf">sfvp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Streamfunction and velocity potential.</span>
 
 <span class="sd">        **Optional argument:**</span>
@@ -390,7 +392,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;velocity potential&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sf</span><span class="p">,</span> <span class="n">vp</span>
 </div>
-<div class="viewcode-block" id="VectorWind.streamfunction"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.streamfunction">[docs]</a>    <span class="k">def</span> <span class="nf">streamfunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.streamfunction"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.streamfunction">[docs]</a>    <span class="k">def</span> <span class="nf">streamfunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Streamfunction.</span>
 
 <span class="sd">        **Optional argument:**</span>
@@ -417,7 +419,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;streamfunction&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sf</span>
 </div>
-<div class="viewcode-block" id="VectorWind.velocitypotential"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.velocitypotential">[docs]</a>    <span class="k">def</span> <span class="nf">velocitypotential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.velocitypotential"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.velocitypotential">[docs]</a>    <span class="k">def</span> <span class="nf">velocitypotential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Velocity potential.</span>
 
 <span class="sd">        **Optional argument:**</span>
@@ -444,7 +446,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;velocity potential&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vp</span>
 </div>
-<div class="viewcode-block" id="VectorWind.helmholtz"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.helmholtz">[docs]</a>    <span class="k">def</span> <span class="nf">helmholtz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.helmholtz"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.helmholtz">[docs]</a>    <span class="k">def</span> <span class="nf">helmholtz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Irrotational and non-divergent components of the vector wind.</span>
 
 <span class="sd">        Returns a 4-tuple of the eastward and northward components of</span>
@@ -481,7 +483,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;non_divergent_northward_wind&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span><span class="p">,</span> <span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span>
 </div>
-<div class="viewcode-block" id="VectorWind.irrotationalcomponent"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.irrotationalcomponent">[docs]</a>    <span class="k">def</span> <span class="nf">irrotationalcomponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.irrotationalcomponent"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.irrotationalcomponent">[docs]</a>    <span class="k">def</span> <span class="nf">irrotationalcomponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Irrotational (divergent) component of the vector wind.</span>
 
 <span class="sd">        Returns a 2-tuple of the eastward and northward components of</span>
@@ -514,7 +516,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;irrotational_northward_wind&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span>
 </div>
-<div class="viewcode-block" id="VectorWind.nondivergentcomponent"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.nondivergentcomponent">[docs]</a>    <span class="k">def</span> <span class="nf">nondivergentcomponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.nondivergentcomponent"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.nondivergentcomponent">[docs]</a>    <span class="k">def</span> <span class="nf">nondivergentcomponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Non-divergent (rotational) component of the vector wind.</span>
 
 <span class="sd">        Returns a 2-tuple of the eastward and northward components of</span>
@@ -547,7 +549,7 @@
                 <span class="n">long_name</span><span class="o">=</span><span class="s">&#39;non_divergent_northward_wind&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span>
 </div>
-<div class="viewcode-block" id="VectorWind.gradient"><a class="viewcode-back" href="../../references.html#windspharm.metadata.VectorWind.gradient">[docs]</a>    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VectorWind.gradient"><a class="viewcode-back" href="../../references.html#windspharm.cdms.VectorWind.gradient">[docs]</a>    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Computes the vector gradient of a scalar field on the sphere.</span>
 
 <span class="sd">        Returns a 2-tuple of the zonal and meridional components of the</span>
@@ -655,7 +657,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">windspharm 1.0.2 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">windspharm 1.1.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
