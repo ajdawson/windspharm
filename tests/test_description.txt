@@ -4,4 +4,3 @@ is very well tested and used.
 
 The reference solutions are stored in NumPy binary files in the subdirectory
 'data'. There is one file per reference field.
-
