@@ -626,7 +626,11 @@ def _dim_coord_and_dim(cube, coord):
     if len(coords) > 1:
         raise ValueError('multiple {!s} coordinates not '
                          'allowed: {!r}'.format(coord, cube))
-    c = coords[0]
+    try:
+        c = coords[0]
+    except IndexError:
+        raise ValueError('cannot get {!s} coordinate '
+                         'from cube {!r}'.format(cube))
     c_dim = cube.coord_dims(c)
     if len(c_dim) != 1:
         raise ValueError('multiple dimensions with {!s} coordinate '
