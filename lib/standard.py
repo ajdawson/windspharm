@@ -33,9 +33,9 @@ class VectorWind(object):
         *u*, *v*
             Zonal and meridional wind components respectively. Their
             types should be either :py:class:`numpy.ndarray` or 
-            :py:class:`numpy.ma.core.MaskedArray`. *u* and *v* must
-            have matching shapes and contain no missing values. *u* and
-            *v* may be 2 or 3-dimensional with shape (nlat, nlon) or
+            :py:class:`numpy.ma.MaskedArray`. *u* and *v* must have
+            matching shapes and contain no missing values. *u* and *v*
+            may be 2 or 3-dimensional with shape (nlat, nlon) or
             (nlat, nlon, nt), where nlat and nlon are the number of
             latitudes and longitudes respectively and nt is the number
             of fields. The latitude dimension must be oriented
