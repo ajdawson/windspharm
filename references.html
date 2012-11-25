@@ -9,7 +9,7 @@
     
     <title>API References &mdash; windspharm 1.1.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -26,9 +26,26 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="windspharm 1.1.0 documentation" href="index.html" />
-    <link rel="prev" title="Examples" href="examples.html" /> 
+    <link rel="prev" title="Examples" href="examples.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
+
+<!-- add the logo to the top of the page -->
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/logo.png" border="0" alt="sampledoc"/></a>
+</div>
+
+<!-- add the github ribbon to the corner -->
+<a href="https://github.com/ajdawson/windspharm"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -43,7 +60,9 @@
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">windspharm 1.1.0 documentation</a> &raquo;</li> 
       </ul>
-    </div>  
+    </div>
+
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -61,12 +80,12 @@
 </ul>
 <div class="section" id="module-windspharm.iris">
 <span id="reference-for-the-iris-interface"></span><span id="iris-api-ref"></span><h2>Reference for the <cite>iris</cite> interface<a class="headerlink" href="#module-windspharm.iris" title="Permalink to this headline">¶</a></h2>
-<p>Spherical harmonic vector wind computations (<tt class="xref py py-mod docutils literal"><span class="pre">iris</span></tt> meta-data
+<p>Spherical harmonic vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#iris" title="(in Iris v1.0)"><tt class="xref py py-mod docutils literal"><span class="pre">iris</span></tt></a> meta-data
 interface).</p>
 <dl class="class">
 <dt id="windspharm.iris.VectorWind">
 <em class="property">class </em><tt class="descclassname">windspharm.iris.</tt><tt class="descname">VectorWind</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="reference internal" href="_modules/windspharm/iris.html#VectorWind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vector wind computations (meta-data enabled <tt class="xref py py-mod docutils literal"><span class="pre">iris</span></tt>
+<dd><p>Vector wind computations (meta-data enabled <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#iris" title="(in Iris v1.0)"><tt class="xref py py-mod docutils literal"><span class="pre">iris</span></tt></a>
 interface).</p>
 <p>Initialize a VectorWind instance.</p>
 <p><strong>Arguments:</strong></p>
@@ -74,7 +93,7 @@ interface).</p>
 <dt><em>u</em>, <em>v</em></dt>
 <dd>Zonal and meridional components of the vector wind
 respectively. Both components should be instances of
-<tt class="xref py py-class docutils literal"><span class="pre">iris.cube.Cube</span></tt>. The components must have the
+<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.0)"><tt class="xref py py-class docutils literal"><span class="pre">iris.cube.Cube</span></tt></a>. The components must have the
 same dimension coordinates and contain no missing values.</dd>
 </dl>
 <p><strong>Example:</strong></p>
@@ -379,7 +398,7 @@ vector gradient respectively.</p>
 <p><strong>Argument:</strong></p>
 <dl class="docutils">
 <dt><em>chi</em></dt>
-<dd>A scalar field. It must be an <tt class="xref py py-class docutils literal"><span class="pre">iris.cube.Cube</span></tt>
+<dd>A scalar field. It must be an <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.0)"><tt class="xref py py-class docutils literal"><span class="pre">iris.cube.Cube</span></tt></a>
 with the same latitude and longitude dimensions as the
 vector wind components that initialized the 
 <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">VectorWind</span></tt></a> instance.</dd>
@@ -759,16 +778,16 @@ spectral truncation at triangular T13:</p>
 <dl class="class">
 <dt id="windspharm.standard.VectorWind">
 <em class="property">class </em><tt class="descclassname">windspharm.standard.</tt><tt class="descname">VectorWind</tt><big>(</big><em>u</em>, <em>v</em>, <em>gridtype='regular'</em><big>)</big><a class="reference internal" href="_modules/windspharm/standard.html#VectorWind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.standard.VectorWind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vector Wind computations (standard <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt> interface).</p>
+<dd><p>Vector Wind computations (standard <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/index.html#numpy" title="(in NumPy v1.6)"><tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt></a> interface).</p>
 <p>Initialize a VectorWind instance.</p>
 <p><strong>Arguments:</strong></p>
 <dl class="docutils">
 <dt><em>u</em>, <em>v</em></dt>
 <dd>Zonal and meridional wind components respectively. Their
-types should be either <tt class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></tt> or 
-<tt class="xref py py-class docutils literal"><span class="pre">numpy.ma.core.MaskedArray</span></tt>. <em>u</em> and <em>v</em> must
-have matching shapes and contain no missing values. <em>u</em> and
-<em>v</em> may be 2 or 3-dimensional with shape (nlat, nlon) or
+types should be either <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.6)"><tt class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></tt></a> or 
+<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/maskedarray.baseclass.html#numpy.ma.MaskedArray" title="(in NumPy v1.6)"><tt class="xref py py-class docutils literal"><span class="pre">numpy.ma.MaskedArray</span></tt></a>. <em>u</em> and <em>v</em> must have
+matching shapes and contain no missing values. <em>u</em> and <em>v</em>
+may be 2 or 3-dimensional with shape (nlat, nlon) or
 (nlat, nlon, nt), where nlat and nlon are the number of
 latitudes and longitudes respectively and nt is the number
 of fields. The latitude dimension must be oriented
@@ -1282,14 +1301,10 @@ the wind components:</p>
 </li>
 </ul>
 
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="examples.html"
                         title="previous chapter">Examples</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/references.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">

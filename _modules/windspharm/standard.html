@@ -9,7 +9,7 @@
     
     <title>windspharm.standard &mdash; windspharm 1.1.0 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -26,9 +26,26 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="windspharm 1.1.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" /> 
+    <link rel="up" title="Module code" href="../index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
+
+<!-- add the logo to the top of the page -->
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="../../index.html"><img src="../../_static/logo.png" border="0" alt="sampledoc"/></a>
+</div>
+
+<!-- add the github ribbon to the corner -->
+<a href="https://github.com/ajdawson/windspharm"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -41,7 +58,9 @@
         <li><a href="../../index.html">windspharm 1.1.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
-    </div>  
+    </div>
+
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -84,9 +103,9 @@
 <span class="sd">        *u*, *v*</span>
 <span class="sd">            Zonal and meridional wind components respectively. Their</span>
 <span class="sd">            types should be either :py:class:`numpy.ndarray` or </span>
-<span class="sd">            :py:class:`numpy.ma.core.MaskedArray`. *u* and *v* must</span>
-<span class="sd">            have matching shapes and contain no missing values. *u* and</span>
-<span class="sd">            *v* may be 2 or 3-dimensional with shape (nlat, nlon) or</span>
+<span class="sd">            :py:class:`numpy.ma.MaskedArray`. *u* and *v* must have</span>
+<span class="sd">            matching shapes and contain no missing values. *u* and *v*</span>
+<span class="sd">            may be 2 or 3-dimensional with shape (nlat, nlon) or</span>
 <span class="sd">            (nlat, nlon, nt), where nlat and nlon are the number of</span>
 <span class="sd">            latitudes and longitudes respectively and nt is the number</span>
 <span class="sd">            of fields. The latitude dimension must be oriented</span>
@@ -543,6 +562,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">API References</a></li>
 </ul>
+
 
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>

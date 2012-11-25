@@ -9,7 +9,7 @@
     
     <title>Introduction &mdash; windspharm 1.1.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -27,9 +27,26 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="windspharm 1.1.0 documentation" href="index.html" />
     <link rel="next" title="Examples" href="examples.html" />
-    <link rel="prev" title="windspharm’s Documentation Contents" href="index.html" /> 
+    <link rel="prev" title="windspharm’s Documentation Contents" href="index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
+
+<!-- add the logo to the top of the page -->
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/logo.png" border="0" alt="sampledoc"/></a>
+</div>
+
+<!-- add the github ribbon to the corner -->
+<a href="https://github.com/ajdawson/windspharm"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -47,7 +64,9 @@
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">windspharm 1.1.0 documentation</a> &raquo;</li> 
       </ul>
-    </div>  
+    </div>
+
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -83,7 +102,7 @@
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <p>The <tt class="xref py py-mod docutils literal"><span class="pre">windspharm</span></tt> package currently provides three interfaces for performing computations.
-The <cite>standard</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt> arrays; the <cite>iris</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">iris</span></tt> cubes; and the <cite>cdms</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">cdms2</span></tt> variables.
+The <cite>standard</cite> interface is designed to work with <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/index.html#numpy" title="(in NumPy v1.6)"><tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt></a> arrays; the <cite>iris</cite> interface is designed to work with <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#iris" title="(in Iris v1.0)"><tt class="xref py py-mod docutils literal"><span class="pre">iris</span></tt></a> cubes; and the <cite>cdms</cite> interface is designed to work with <tt class="xref py py-mod docutils literal"><span class="pre">cdms2</span></tt> variables.
 Each interface supports exactly the same sets of operations, the only differences are that the <cite>iris</cite> and <cite>cdms</cite> interfaces also use the meta-data stored in input variables to construct outputs with meta-data.</p>
 <p>Regardless of which interface you use, the basic usage is the same. All computation is handled by the <a class="reference internal" href="references.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a>, <a class="reference internal" href="references.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.iris.VectorWind</span></tt></a> or <a class="reference internal" href="references.html#windspharm.cdms.VectorWind" title="windspharm.cdms.VectorWind"><tt class="xref py py-class docutils literal"><span class="pre">windspharm.cdms.VectorWind</span></tt></a> classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
 <p>The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the <cite>cdms</cite> interface:</p>
@@ -108,7 +127,7 @@ Each interface supports exactly the same sets of operations, the only difference
 </div>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>This package requires as a minimum that you have <a class="reference external" href="http://http://numpy.scipy.org/">numpy</a> and <a class="reference external" href="http://code.google.com/p/pyspharm/">pyspharm</a> available. The <cite>iris</cite> interface can only be used if the <tt class="xref py py-mod docutils literal"><span class="pre">iris</span></tt> module is available (see the <a class="reference external" href="http://scitools.org.uk/iris/">iris documentation</a>). The <cite>cdms</cite> interface can only be used if the <tt class="xref py py-mod docutils literal"><span class="pre">cdms</span></tt> module is available. This module is distributed as part of the <a class="reference external" href="http://uv-cdat.llnl.gov">UV-CDAT</a> project. It is also distributed as part of the <a class="reference external" href="http://proj.badc.rl.ac.uk/cedaservices/wiki/CdatLite">cdat_lite</a> package.</p>
+<p>This package requires as a minimum that you have <a class="reference external" href="http://http://numpy.scipy.org/">numpy</a> and <a class="reference external" href="http://code.google.com/p/pyspharm/">pyspharm</a> available. The <cite>iris</cite> interface can only be used if the <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#iris" title="(in Iris v1.0)"><tt class="xref py py-mod docutils literal"><span class="pre">iris</span></tt></a> module is available (see the <a class="reference external" href="http://scitools.org.uk/iris/">iris documentation</a>). The <cite>cdms</cite> interface can only be used if the <tt class="xref py py-mod docutils literal"><span class="pre">cdms</span></tt> module is available. This module is distributed as part of the <a class="reference external" href="http://uv-cdat.llnl.gov">UV-CDAT</a> project. It is also distributed as part of the <a class="reference external" href="http://proj.badc.rl.ac.uk/cedaservices/wiki/CdatLite">cdat_lite</a> package.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">It is recommended to use pyspharm 1.0.7 or later. There is a bug in previous versions that causes incorrect fields to be returned when there is more than one input field.</p>
@@ -143,17 +162,13 @@ Each interface supports exactly the same sets of operations, the only difference
 <li class="toctree-l1"><a class="reference internal" href="references.html">API References</a></li>
 </ul>
 
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">windspharm&#8217;s Documentation Contents</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="examples.html"
                         title="next chapter">Examples</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/intro.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
