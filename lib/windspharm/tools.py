@@ -5,17 +5,17 @@ Tools for preparing data for use with
 
 """
 # Copyright (c) 2012 Andrew Dawson
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -74,20 +74,21 @@ def prep_data(data, dimorder):
     Prepare an array with dimensions (12, 17, 73, 144) where the
     dimensions are (time, level, latitude, longitude):
 
-    >>> pdata, info = prep_data(data, 'tzyx')
+        pdata, info = prep_data(data, 'tzyx')
 
     Prepare an array with dimensions (144, 16, 73, 21) where the first
     dimension is longitude and the third dimension is latitude. The
     characters used to represent the other dimensions are arbitrary:
 
-    >>> pdata, info = prep_data(data, 'xayb')
+        pdata, info = prep_data(data, 'xayb')
 
     """
     # Returns the prepared data and some data info to help data recovery.
     pdata, intorder = __order_dims(data, dimorder)
     pdata, intshape = __reshape(pdata)
-    info = dict(intermediate_shape=intshape, intermediate_order=intorder,
-            original_order=dimorder)
+    info = dict(intermediate_shape=intshape,
+                intermediate_order=intorder,
+                original_order=dimorder)
     return pdata, info
 
 
@@ -120,20 +121,20 @@ def recover_data(pdata, info):
     of :py:class:`windspharm.standard.VectorWind` or
     :py:class:`sparm.Spharmt` method calls on such data:
 
-    >>> data = recover_data(pdata, info)
+        data = recover_data(pdata, info)
 
     """
     # Convert to intermediate shape (full dimensionality, windspharm order).
     data = pdata.reshape(info['intermediate_shape'])
     # Re-order dimensions correctly.
-    rolldims = np.array([info['intermediate_order'].index(dim) for \
-            dim in info['original_order'][::-1]])
+    rolldims = np.array([info['intermediate_order'].index(dim)
+                         for dim in info['original_order'][::-1]])
     for i in xrange(len(rolldims)):
         # Roll the axis to the front.
         data = np.rollaxis(data, rolldims[i])
-        rolldims = np.where(rolldims < rolldims[i], rolldims+1, rolldims)
+        rolldims = np.where(rolldims < rolldims[i], rolldims + 1, rolldims)
     return data
-    
+
 
 __recover_docstring_template = """Shape/dimension recovery.
 
@@ -166,21 +167,21 @@ def get_recovery(info):
     :py:class:`windspharm.standard.VectorWind` method calls on this
     data:
 
-    >>> u, info = prep_data(u, 'tzyx')
-    >>> v, info = prep_data(v, 'tzyx')
-    >>> w = VectorWind(u, v)
-    >>> sf, vp = w.sfvp()
-    >>> recover = get_recovery(info)
-    >>> u, v, sf, vp = recover(u, v, sf, vp)
+        u, info = prep_data(u, 'tzyx')
+        v, info = prep_data(v, 'tzyx')
+        w = VectorWind(u, v)
+        sf, vp = w.sfvp()
+        recover = get_recovery(info)
+        u, v, sf, vp = recover(u, v, sf, vp)
 
     """
     def __recover(*args):
         return [recover_data(arg, info) for arg in args]
-    info_nice = ["'{!s}': {!s}".format(key, value) for \
-            key, value in info.items()]
+    info_nice = ["'{!s}': {!s}".format(key, value)
+                 for key, value in info.items()]
     __recover.__name__ = 'recover'
     __recover.__doc__ = __recover_docstring_template.format(
-            '\n'.join(info_nice))
+        '\n'.join(info_nice))
     return __recover
 
 
@@ -190,29 +191,29 @@ def reverse_latdim(u, v, axis=0):
     wind components.
 
     Returns copies of the inputs.
-    
+
     **Arguments:**
-    
+
     *u*, *v*
         Zonal and meridional wind components respectively.
-    
+
     **Optional argument:**
-    
+
     *axis*
         Index of the latitude dimension. This dimension will be reversed
         in the input arrays. Defaults to 0 (the first dimension).
-    
+
     **Examples:**
 
     Reverse the dimension corresponding to latitude when it is the first
     dimension of the inputs:
 
-    >>> u, v = reverse_latdim(u, v)
+        u, v = reverse_latdim(u, v)
 
     Reverse the dimension corresponding to latitude when it is the third
     dimension of the inputs:
 
-    >>> u, v = reverse_latdim(u, v, axis=2)
+        u, v = reverse_latdim(u, v, axis=2)
 
     """
     slicelist = [slice(0, None)] * u.ndim
@@ -249,12 +250,12 @@ def order_latdim(latdim, u, v, axis=0):
     Order the latitude dimension when latitude is the first dimension of
     the wind components:
 
-    >>> latdim, u, v = order_latdim(latdim, u, v)
+        latdim, u, v = order_latdim(latdim, u, v)
 
     Order the latitude dimension when latitude is the third dimension of
     the wind components:
 
-    >>> latdim, u, v = order_latdim(latdim, u, v, axis=2)
+        latdim, u, v = order_latdim(latdim, u, v, axis=2)
 
     """
     u, v, latdim = u.copy(), v.copy(), latdim.copy()
@@ -262,8 +263,3 @@ def order_latdim(latdim, u, v, axis=0):
         latdim = latdim[::-1]
         u, v = reverse_latdim(u, v, axis=axis)
     return latdim, u, v
-
-
-if __name__ == '__main__':
-    pass
-

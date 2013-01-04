@@ -1,20 +1,16 @@
-"""
-Spherical harmonic vector wind computations (:py:mod:`iris` meta-data
-interface).
-
-"""
+"""Spherical harmonic vector wind computations (meta-data interface)."""
 # Copyright (c) 2012 Andrew Dawson
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,16 +21,14 @@ interface).
 from __future__ import absolute_import
 
 import numpy as np
-from iris.cube import Cube
-from iris.util import reverse
-from spharm import gaussian_lats_wts
+import cdms2
 
 from . import standard
 
 
 class VectorWind(object):
     """
-    Vector wind computations (meta-data enabled :py:mod:`iris`
+    Vector wind computations (meta-data enabled :py:mod:`cdms2`
     interface).
 
     """
@@ -46,119 +40,93 @@ class VectorWind(object):
 
         *u*, *v*
             Zonal and meridional components of the vector wind
-            respectively. Both components should be instances of
-            :py:class:`iris.cube.Cube`. The components must have the
-            same dimension coordinates and contain no missing values.
+            respectively. Both components should be :py:mod:`cdms2`
+            variables. The components must have the same shape and
+            contain no missing values.
 
         **Example:**
 
-        Initialize a :py:class:`~windspharm.iris.VectorWind` instance
-        with zonal and meridional components of the vector wind:
+        Initialize a VectorWind instance with zonal and meridional
+        components of the vector wind:
 
-        >>> from windspharm.iris import VectorWind
-        >>> w = VectorWind(u, v)
+            from windspharm.metadata import VectorWind
+            w = VectorWind(u, v)
 
         """
-        # Make sure inputs are Iris cubes.
-        if type(u) is not Cube or type(v) is not Cube:
-            raise TypeError('u and v must be iris cubes')
-        # Get the coordinates of each component and make sure they are the
-        # same.
-        ucoords = u.dim_coords
-        vcoords = v.dim_coords
-        if ucoords != vcoords:
-            raise ValueError('u and v must have the same dimensions')
-        # Extract the latitude and longitude dimension coordinates.
-        lat, lat_dim = _dim_coord_and_dim(u, 'latitude')
-        lon, lon_dim = _dim_coord_and_dim(v, 'longitude')
-        # Determine the ordering list (input to transpose) which will put the
-        # latitude and longitude dimensions at the front of the cube's
-        # dimensions, and the ordering list which will reverse this process.
-        apiorder, self._reorder = self._get_apiorder_reorder(
-                u, lat_dim, lon_dim)
-        # Re-order the inputs (in-place, so we take a copy first) so latiutude
-        # and longitude are at the front.
-        u = u.copy()
-        v = v.copy()
-        u.transpose(apiorder)
-        v.transpose(apiorder)
-        # Reverse the latitude dimension if necessary.
-        if (lat.points[0] < lat.points[1]):
-            # need to reverse latitude dimension
-            u = reverse(u, lat_dim)
-            v = reverse(v, lat_dim)
-        # Determine the grid type of the input.
-        gridtype = self._gridtype(lat.points)
-        # Records the current shape and dimension coordinates of the inputs.
-        self._ishape = u.shape
-        self._coords = u.dim_coords
-        # Reshape the inputs so they are compatible with pyspharm.
-        u = u.data.reshape(u.shape[:2] + (np.prod(u.shape[2:]),))
-        v = v.data.reshape(v.shape[:2] + (np.prod(v.shape[2:]),))
-        # Create a base VectorWind instance to do the computations.
-        self._api = standard.VectorWind(u, v, gridtype=gridtype)
+        # Ensure the input are cdms2 variables.
+        if not (cdms2.isVariable(u) and cdms2.isVariable(v)):
+            raise TypeError('u and v must be cdms2 variables')
+        # Check that both u and v have dimensions in the same order and that
+        # there are latitude and longitude dimensions present.
+        uorder = u.getOrder()
+        vorder = v.getOrder()
+        if uorder != vorder:
+            raise ValueError('u and v must have the same dimension order')
+        for order in (uorder, vorder):
+            if 'x' not in order or 'y' not in order:
+                raise ValueError('a latitude-longitude grid is required')
+        self.order = uorder
+        # Assess how to re-order the inputs to be compatible with the
+        # computation API.
+        apiorder = 'yx' + ''.join([a for a in order if a not in 'xy'])
+        # Order the dimensions correctly.
+        u = u.reorder(apiorder)
+        v = v.reorder(apiorder)
+        # Do a region selection on the inputs to ensure the latitude dimension
+        # is north-to-south.
+        u = u(latitude=(90, -90))
+        v = v(latitude=(90, -90))
+        # Determine the grid type,
+        lon = u.getLongitude()
+        lat = u.getLatitude()
+        if lon is None or lat is None:
+            raise ValueError('a latitude-longitude grid is required')
+        gridtype = self._gridtype(lat)
+        # Store the shape and axes when data is in the API order.
+        self.ishape = u.shape
+        self.axes = u.getAxisList()
+        # Re-shape to 3-dimensional (compatible with API)
+        u = u.reshape(u.shape[:2] + (np.prod(u.shape[2:]),))
+        v = v.reshape(v.shape[:2] + (np.prod(v.shape[2:]),))
+        # Instantiate a VectorWind object to do the computations.
+        self.api = standard.VectorWind(u, v, gridtype=gridtype)
 
-    def _gridtype(self, latitudes):
-        """Determine the type of a latitude dimension."""
-        # Define a tolerance value for differences, this value must be much
-        # smaller than expected grid spacings.
-        tolerance = 0.001
-        # Get the number of latitude points in the dimension.
-        nlat = len(latitudes)
-        diffs = np.abs(np.diff(latitudes))
-        equally_spaced = (np.abs(diffs - diffs[0]) < tolerance).all()
-        if not equally_spaced:
-            # The latitudes are not equally-spaced, which suggests they might
-            # be gaussian. Construct sample gaussian latitudes and check if
-            # the two match.
-            gauss_reference, wts = gaussian_lats_wts(nlat)
-            difference = np.abs(latitudes - gaussian_reference)
-            if (d > tolerance).any():
-                raise ValueError('latitudes are unequally-spaced '
-                                 'but are not gaussian')
+    def _gridtype(self, lat):
+        """Determines the type of grid from the latitude dimension.
+
+        Performs basic checks to make sure the axis is valid for
+        spherical harmonic computations.
+
+        """
+        nlat = len(lat)
+        d = np.abs(np.diff(lat))
+        if (np.abs(d - d[0]) > 0.001).any():
+            # Might be a Gaussian axis, construct one and check.
+            gax = cdms2.createGaussianAxis(nlat)
+            d = np.abs(np.abs(lat) - np.abs(gax))
+            if (d > 0.001).any():
+                raise ValueError('non-evenly-spaced '
+                                 'latitudes are not Gaussian')
             gridtype = 'gaussian'
         else:
-            # The latitudes are equally-spaced. Construct reference global
-            # equally spaced latitudes and check that the two match.
+            # Grid is evenly spaced, does it match what we expect?
             if nlat % 2:
-                # Odd number of latitudes includes the poles.
-                equal_reference = np.linspace(90, -90, nlat)
+                eax = np.linspace(-90, 90, nlat)
             else:
-                # Even number of latitudes doesn't include the poles.
-                delta_latitude = 180. / nlat
-                equal_reference = np.linspace(90-0.5*delta_latitude,
-                                              -90+0.5*delta_latitude,
-                                              nlat)
-            difference = np.abs(latitudes - equal_reference)
-            if (difference > tolerance).any():
-                raise ValueError('equally-spaced latitudes are '
-                                 'invalid (non-global?)')
+                dlat = 180. / nlat
+                eax = np.linspace(-90 + 0.5 * dlat, 90 - 0.5 * dlat, nlat)
+            d = np.abs(np.abs(lat) - np.abs(eax))
+            if (d > 0.001).any():
+                raise ValueError('evenly-spaced grid is invalid')
             gridtype = 'regular'
         return gridtype
 
-    def _get_apiorder_reorder(self, cube, latitude, longitude):
-        """
-        Create an ordering list to move latitude and longitude to the
-        front of a cube's dimensions. Also compute the ordering list
-        required to reverse this action.
-
-        """
-        # Remove the latitude and longitude dimensions from an initial list.
-        apiorder = range(cube.ndim)
-        apiorder.remove(latitude)
-        apiorder.remove(longitude)
-        # Insert latitude and longitude at the front.
-        apiorder.insert(0, latitude)
-        apiorder.insert(1, longitude)
-        reorder = [apiorder.index(i) for i in range(cube.ndim)]
-        return apiorder, reorder
-
     def _metadata(self, var, **attributes):
-        """Re-shape outputs and add meta-data."""
-        var = var.reshape(self._ishape)
-        var = Cube(var,
-                   dim_coords_and_dims=zip(self._coords, range(var.ndim)))
-        var.transpose(self._reorder)
+        """Re-shape and re-order raw results, and add meta-data."""
+        if 'id' not in attributes.keys():
+            raise ValueError('meta-data construction requires id')
+        var = cdms2.createVariable(var.reshape(self.ishape), axes=self.axes)
+        var = var.reorder(self.order)
         for attribute, value in attributes.items():
             setattr(var, attribute, value)
         return var
@@ -168,11 +136,12 @@ class VectorWind(object):
 
         **Example:**
 
-        >>> u = w.u()
+            u = w.u()
 
         """
-        u = self._api.u
+        u = self.api.u
         u = self._metadata(u,
+                           id='u',
                            standard_name='eastward_wind',
                            units='m s**-1',
                            long_name='eastward component of wind')
@@ -183,11 +152,12 @@ class VectorWind(object):
 
         **Example:**
 
-        >>> v = w.v()
+            v = w.v()
 
         """
-        v = self._api.v
+        v = self.api.v
         v = self._metadata(v,
+                           id='v',
                            standard_name='northward_wind',
                            units='m s**-1',
                            long_name='northward component of wind')
@@ -198,11 +168,12 @@ class VectorWind(object):
 
         **Example:**
 
-        >>> spd = w.magnitude()
+            spd = w.magnitude()
 
         """
-        m = self._api.magnitude()
+        m = self.api.magnitude()
         m = self._metadata(m,
+                           id='mag',
                            standard_name='wind_speed',
                            units='m s**-1',
                            long_name='wind speed')
@@ -221,20 +192,22 @@ class VectorWind(object):
 
         Compute the relative vorticity and divergence:
 
-        >>> vrt, div = w.vrtdiv()
+            vrt, div = w.vrtdiv()
 
         Compute the relative vorticity and divergence and apply spectral
         truncation at triangular T13:
 
-        >>> vrtT13, divT13 = w.vrtdiv(truncation=13)
+            vrtT13, divT13 = w.vrtdiv(truncation=13)
 
         """
-        vrt, div = self._api.vrtdiv(truncation=truncation)
+        vrt, div = self.api.vrtdiv(truncation=truncation)
         vrt = self._metadata(vrt,
+                             id='vrt',
                              units='s**-1',
                              standard_name='atmosphere_relative_vorticity',
                              long_name='relative vorticity')
         div = self._metadata(div,
+                             id='div',
                              units='s**-1',
                              standard_name='divergence_of_wind',
                              long_name='horizontal divergence')
@@ -253,16 +226,17 @@ class VectorWind(object):
 
         Compute the relative vorticity:
 
-        >>> vrt = w.vorticity()
+            vrt = w.vorticity()
 
         Compute the relative vorticity and apply spectral truncation at
         triangular T13:
 
-        >>> vrtT13 = w.vorticity(truncation=13)
+            vrtT13 = w.vorticity(truncation=13)
 
         """
-        vrt = self._api.vorticity(truncation=truncation)
-        vrt = self._metadata(vrt, 
+        vrt = self.api.vorticity(truncation=truncation)
+        vrt = self._metadata(vrt,
+                             id='vrt',
                              units='s**-1',
                              standard_name='atmosphere_relative_vorticity',
                              long_name='relative vorticity')
@@ -281,16 +255,17 @@ class VectorWind(object):
 
         Compute the divergence:
 
-        >>> div = w.divergence()
+            div = w.divergence()
 
         Compute the divergence and apply spectral truncation at
         triangular T13:
 
-        >>> divT13 = w.divergence(truncation=13)
+            divT13 = w.divergence(truncation=13)
 
         """
-        div = self._api.divergence(truncation=truncation)
+        div = self.api.divergence(truncation=truncation)
         div = self._metadata(div,
+                             id='div',
                              units='s**-1',
                              standard_name='divergence_of_wind',
                              long_name='horizontal divergence')
@@ -309,18 +284,20 @@ class VectorWind(object):
 
         Compute planetary vorticity using default values:
 
-        >>> pvrt = w.planetaryvorticity()
+            pvrt = w.planetaryvorticity()
 
         Override the default value for Earth's angular velocity:
 
-        >>> pvrt = w.planetaryvorticity(omega=7.2921150)
+            pvrt = w.planetaryvorticity(omega=7.2921150)
 
         """
-        f = self._api.planetaryvorticity(omega=omega)
-        f = self._metadata(f,
-                           units='s**-1',
-                           standard_name='coriolis_parameter',
-                           long_name='planetary vorticity (coriolis parameter)')
+        f = self.api.planetaryvorticity(omega=omega)
+        f = self._metadata(
+            f,
+            id='f',
+            units='s**-1',
+            standard_name='coriolis_parameter',
+            long_name='planetary vorticity (coriolis parameter)')
         return f
 
     def absolutevorticity(self, omega=None, truncation=None):
@@ -340,17 +317,18 @@ class VectorWind(object):
 
         Compute absolute vorticity:
 
-        >>> avrt = w.absolutevorticity()
+            avrt = w.absolutevorticity()
 
         Compute absolute vorticity and apply spectral truncation at
         triangular T13, also override the default value for Earth's
         angular velocity:
 
-        >>> avrt = w.absolutevorticity(omega=7.2921150, truncation=13)
+            avrt = w.absolutevorticity(omega=7.2921150, truncation=13)
 
         """
-        avrt = self._api.absolutevorticity(omega=omega, truncation=truncation)
+        avrt = self.api.absolutevorticity(omega=omega, truncation=truncation)
         avrt = self._metadata(avrt,
+                              id='absvrt',
                               units='s**-1',
                               standard_name='atmosphere_absolute_vorticity',
                               long_name='absolute vorticity')
@@ -369,23 +347,27 @@ class VectorWind(object):
 
         Compute streamfunction and velocity potential:
 
-        >>> sf, vp = w.sfvp()
+            sf, vp = w.sfvp()
 
         Compute streamfunction and velocity potential and apply spectral
         truncation at triangular T13:
 
-        >>> sfT13, vpT13 = w.sfvp(truncation=13)
+            sfT13, vpT13 = w.sfvp(truncation=13)
 
         """
-        sf, vp = self._api.sfvp(truncation=truncation)
-        sf = self._metadata(sf,
-                            units='m**2 s**-1',
-                            standard_name='atmosphere_horizontal_streamfunction',
-                            long_name='streamfunction')
-        vp = self._metadata(vp,
-                            units='m**2 s**-1',
-                            standard_name='atmosphere_horizontal_velocity_potential',
-                            long_name='velocity potential')
+        sf, vp = self.api.sfvp(truncation=truncation)
+        sf = self._metadata(
+            sf,
+            id='psi',
+            units='m**2 s**-1',
+            standard_name='atmosphere_horizontal_streamfunction',
+            long_name='streamfunction')
+        vp = self._metadata(
+            vp,
+            id='chi',
+            units='m**2 s**-1',
+            standard_name='atmosphere_horizontal_velocity_potential',
+            long_name='velocity potential')
         return sf, vp
 
     def streamfunction(self, truncation=None):
@@ -401,19 +383,21 @@ class VectorWind(object):
 
         Compute streamfunction:
 
-        >>> sf = w.streamfunction()
+            sf = w.streamfunction()
 
         Compute streamfunction and apply spectral truncation at
         triangular T13:
 
-        >>> sfT13 = w.streamfunction(truncation=13)
+            sfT13 = w.streamfunction(truncation=13)
 
         """
-        sf = self._api.streamfunction(truncation=truncation)
-        sf = self._metadata(sf,
-                            units='m**2 s**-1',
-                            standard_name='atmosphere_horizontal_streamfunction',
-                            long_name='streamfunction')
+        sf = self.api.streamfunction(truncation=truncation)
+        sf = self._metadata(
+            sf,
+            id='psi',
+            units='m**2 s**-1',
+            standard_name='atmosphere_horizontal_streamfunction',
+            long_name='streamfunction')
         return sf
 
     def velocitypotential(self, truncation=None):
@@ -429,19 +413,21 @@ class VectorWind(object):
 
         Compute velocity potential:
 
-        >>> vp = w.velocity potential()
+            vp = w.velocity potential()
 
         Compute velocity potential and apply spectral truncation at
         triangular T13:
 
-        >>> vpT13 = w.velocity potential(truncation=13)
+            vpT13 = w.velocity potential(truncation=13)
 
         """
-        vp = self._api.velocitypotential(truncation=truncation)
-        vp = self._metadata(vp,
-                            units='m**2 s**-1',
-                            standard_name='atmosphere_horizontal_velocity_potential',
-                            long_name='velocity potential')
+        vp = self.api.velocitypotential(truncation=truncation)
+        vp = self._metadata(
+            vp,
+            id='chi',
+            units='m**2 s**-1',
+            standard_name='atmosphere_horizontal_velocity_potential',
+            long_name='velocity potential')
         return vp
 
     def helmholtz(self, truncation=None):
@@ -461,26 +447,29 @@ class VectorWind(object):
         Compute the irrotational and non-divergent components of the
         vector wind:
 
-        >>> uchi, vchi, upsi, vpsi = w.helmholtz()
+            uchi, vchi, upsi, vpsi = w.helmholtz()
 
         Compute the irrotational and non-divergent components of the
         vector wind and apply spectral truncation at triangular T13:
 
-        >>> uchiT13, vchiT13, upsiT13, vpsiT13 = \
-w.helmholtz(truncation=13)
+            uchiT13, vchiT13, upsiT13, vpsiT13 = w.helmholtz(truncation=13)
 
         """
-        uchi, vchi, upsi, vpsi = self._api.helmholtz(truncation=truncation)
+        uchi, vchi, upsi, vpsi = self.api.helmholtz(truncation=truncation)
         uchi = self._metadata(uchi,
-                             units='m s**-1',
-                             long_name='irrotational_eastward_wind')
+                              id='uchi',
+                              units='m s**-1',
+                              long_name='irrotational_eastward_wind')
         vchi = self._metadata(vchi,
+                              id='vchi',
                               units='m s**-1',
                               long_name='irrotational_northward_wind')
         upsi = self._metadata(upsi,
+                              id='upsi',
                               units='m s**-1',
                               long_name='non_divergent_eastward_wind')
         vpsi = self._metadata(vpsi,
+                              id='vpsi',
                               units='m s**-1',
                               long_name='non_divergent_northward_wind')
         return uchi, vchi, upsi, vpsi
@@ -503,19 +492,21 @@ w.helmholtz(truncation=13)
 
         Compute the irrotational component of the vector wind:
 
-        >>> uchi, vchi = w.irrotationalcomponent()
+            uchi, vchi = w.irrotationalcomponent()
 
         Compute the irrotational component of the vector wind and apply
         spectral truncation at triangular T13:
 
-        >>> uchiT13, vchiT13 = w.irrotationalcomponent(truncation=13)
+            uchiT13, vchiT13 = w.irrotationalcomponent(truncation=13)
 
         """
-        uchi, vchi = self._api.irrotationalcomponent(truncation=truncation)
+        uchi, vchi = self.api.irrotationalcomponent(truncation=truncation)
         uchi = self._metadata(uchi,
+                              id='uchi',
                               units='m s**-1',
                               long_name='irrotational_eastward_wind')
         vchi = self._metadata(vchi,
+                              id='vchi',
                               units='m s**-1',
                               long_name='irrotational_northward_wind')
         return uchi, vchi
@@ -538,19 +529,21 @@ w.helmholtz(truncation=13)
 
         Compute the non-divergent component of the vector wind:
 
-        >>> upsi, vpsi = w.nondivergentcomponent()
+            upsi, vpsi = w.nondivergentcomponent()
 
         Compute the non-divergent component of the vector wind and apply
         spectral truncation at triangular T13:
 
-        >>> upsiT13, vpsiT13 = w.nondivergentcomponent(truncation=13)
+            upsiT13, vpsiT13 = w.nondivergentcomponent(truncation=13)
 
         """
-        upsi, vpsi = self._api.nondivergentcomponent(truncation=truncation)
+        upsi, vpsi = self.api.nondivergentcomponent(truncation=truncation)
         upsi = self._metadata(upsi,
+                              id='upsi',
                               units='m s**-1',
                               long_name='non_divergent_eastward_wind')
         vpsi = self._metadata(vpsi,
+                              id='vpsi',
                               units='m s**-1',
                               long_name='non_divergent_northward_wind')
         return upsi, vpsi
@@ -564,10 +557,9 @@ w.helmholtz(truncation=13)
         **Argument:**
 
         *chi*
-            A scalar field. It must be an :py:class:`iris.cube.Cube`
-            with the same latitude and longitude dimensions as the
-            vector wind components that initialized the 
-            :py:class:`~windspharm.iris.VectorWind` instance.
+            A scalar field. It must have the same latitude and longitude
+            dimensions as the vector wind components that initialized
+            the VectorWind instance.
 
         **Optional argument:**
 
@@ -579,66 +571,43 @@ w.helmholtz(truncation=13)
 
         Compute the vector gradient of absolute vorticity:
 
-        >>> avrt = w.absolutevorticity()
-        >>> avrt_zonal, avrt_meridional = w.gradient(avrt)
+            avrt = w.absolutevorticity()
+            avrt_zonal, avrt_meridional = w.gradient(avrt)
 
         Compute the vector gradient of absolute vorticity and apply
         spectral truncation at triangular T13:
 
-        >>> avrt = w.absolutevorticity()
-        >>> avrt_zonalT13, avrt_meridionalT13 = \
-w.gradient(avrt, truncation=13)
+            avrt = w.absolutevorticity()
+            avrt_zonalT13, avrt_meridionalT13 = w.gradient(avrt, truncation=13)
 
         """
-        if type(chi) is not Cube:
-            raise ValueError('scalar field must be an iris cube')
-        name = chi.name()
-        lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
-        lon, lon_dim = _dim_coord_and_dim(chi, 'longitude')
-        apiorder, reorder = self._get_apiorder_reorder(chi, lat_dim, lon_dim)
-        chi = chi.copy()
-        chi.transpose(apiorder)
+        # Check that the input is a cdms2 variable.
+        if not cdms2.isVariable(chi):
+            raise ValueError('scalar field must be a cdms2 variable')
+        order = chi.getOrder()
+        if 'x' not in order or 'y' not in order:
+            raise ValueError('a latitude-longitude grid is required')
+        # Assess how to re-order the inputs to be compatible with the
+        # computation API.
+        apiorder = 'yx' + ''.join([a for a in order if a not in 'xy'])
+        chi = chi.reorder(apiorder)
+        # Record the shape and axes in the API order.
         ishape = chi.shape
-        coords = chi.dim_coords
-        chi = chi.data.reshape(chi.shape[:2] + (np.prod(chi.shape[2:]),))
-        uchi, vchi = self._api.gradient(chi, truncation=truncation)
+        axes = chi.getAxisList()
+        # Re-order to the API order.
+        chi = chi.reshape(chi.shape[:2] + (np.prod(chi.shape[2:]),))
+        # Compute the gradient function.
+        uchi, vchi = self.api.gradient(chi, truncation=truncation)
         uchi = uchi.reshape(ishape)
         vchi = vchi.reshape(ishape)
-        uchi = Cube(uchi,
-                    dim_coords_and_dims=zip(coords, range(uchi.ndim)))
-        vchi = Cube(vchi,
-                    dim_coords_and_dims=zip(coords, range(vchi.ndim)))
-        uchi.transpose(reorder)
-        vchi.transpose(reorder)
-        uchi.long_name = 'zonal_gradient_of_{!s}'.format(name)
-        vchi.long_name = 'meridional_gradient_of_{!s}'.format(name)
+        # Add meta-data and ensure the shape and order of dimensions
+        # is the same as input.
+        uchi = cdms2.createVariable(uchi, axes=axes)
+        vchi = cdms2.createVariable(vchi, axes=axes)
+        uchi = uchi.reorder(order)
+        vchi = vchi.reorder(order)
+        uchi.id = '{0:s}_zonal'.format(chi.id)
+        vchi.id = '{0:s}_meridional'.format(chi.id)
+        uchi.long_name = 'zonal_gradient_of_{0:s}'.format(chi.id)
+        vchi.long_name = 'meridional_gradient_of_{0:s}'.format(chi.id)
         return uchi, vchi
-
-
-def _dim_coord_and_dim(cube, coord):
-    """
-    Retrieve a given dimension coordinate from an
-    ::py:class:`iris.cube.Cube` and the dimension number it corresponds
-    to.
-    
-    """
-    coords = filter(lambda c: coord in c.name(), cube.dim_coords)
-    if len(coords) > 1:
-        raise ValueError('multiple {!s} coordinates not '
-                         'allowed: {!r}'.format(coord, cube))
-    try:
-        c = coords[0]
-    except IndexError:
-        raise ValueError('cannot get {!s} coordinate '
-                         'from cube {!r}'.format(coord, cube))
-    c_dim = cube.coord_dims(c)
-    if len(c_dim) != 1:
-        raise ValueError('multiple dimensions with {!s} coordinate '
-                         'not allowed: {!r}'.format(coord, cube))
-    c_dim = c_dim[0]
-    return c, c_dim
-
-
-if __name__ == '__main__':
-    pass
-

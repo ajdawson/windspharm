@@ -3,6 +3,8 @@ Generate reference solutions for spherical harmonic computations on
 vector winds.
 
 """
+import os
+
 import numpy as np
 try:
     import cdms2
@@ -15,15 +17,21 @@ except ImportError:
     pass
 
 
+def test_data_path():
+    return os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
+
+
 def __read_reference_solutions():
     """Read reference solutions from file."""
     exact = dict()
     for varid in ('psi', 'chi', 'vrt', 'div', 'uchi', 'vchi', 'upsi', 'vpsi',
             'chigradu', 'chigradv', 'uwnd', 'vwnd'):
         try:
-            exact[varid] = np.load('data/{0:s}.ref.npy'.format(varid)).squeeze()
+            filename = os.path.join(test_data_path(),
+                                    '{!s}.ref.npy'.format(varid))
+            exact[varid] = np.load(filename).squeeze()
         except IOError:
-            raise IOError('required data files not found')
+            raise IOError('required data file not found')
     return exact
 
 
