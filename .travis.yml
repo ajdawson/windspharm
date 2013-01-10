@@ -4,7 +4,7 @@ python:
   - "2.7"
 
 install:
-  - sudo apt-get install libnetcdf-dev libhdf5-serial-dev
+  - sudo apt-get install libnetcdf-dev libhdf5-serial-dev gfortran
   - pip install numpy
   - pip install cdat-lite
   # pip can't install pyspharm-1.0.7 so do it manually
