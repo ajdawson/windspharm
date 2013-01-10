@@ -7,6 +7,7 @@ install:
   - sudo apt-get install libnetcdf-dev libhdf5-serial-dev
   - pip install numpy
   - pip install cdat-lite
+  - pip install http://pyspharm.googlecode.com/files/pyspharm-1.0.7.tar.gz
 
 script:
   - python tests.py
