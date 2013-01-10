@@ -1,0 +1,12 @@
+language: python
+
+python:
+  - "2.7"
+
+install:
+  - sudo apt-get install netcdf-dev
+  - pip install numpy
+  - pip install cdat-lite
+
+script:
+  - python tests.py
