@@ -7,7 +7,14 @@ install:
   - sudo apt-get install libnetcdf-dev libhdf5-serial-dev
   - pip install numpy
   - pip install cdat-lite
-  - pip install http://pyspharm.googlecode.com/files/pyspharm-1.0.7.tar.gz
+  # pip can't install pyspharm-1.0.7 so do it manually
+  - CWD=$PWD
+  - mkdir ../prereqs && cd ../prereqs
+  - wget http://pyspharm.googlecode.com/files/pyspharm-1.0.7.tar.gz
+  - tar xfvz pyspharm-1.0.7.tar.gz
+  - cd pyspharm-1.0.7
+  - yes | python setup.py install
+  - cd $CWD
 
 script:
   - python tests.py
