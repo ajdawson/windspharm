@@ -4,7 +4,7 @@ python:
   - "2.7"
 
 install:
-  - sudo apt-get install netcdf-dev
+  - sudo apt-get install libnetcdf-dev
   - pip install numpy
   - pip install cdat-lite
 
