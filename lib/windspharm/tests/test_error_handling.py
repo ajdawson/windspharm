@@ -5,6 +5,7 @@ Includes tests for :py:class:`windspharm.standard.VectorWind`,
 :py:class:`windspharm.cdms.VectorWind`.
 
 """
+from __future__ import absolute_import
 from nose import SkipTest
 from nose.tools import raises
 from unittest import skipIf
@@ -21,7 +22,7 @@ except ImportError:
 
 import windspharm
 
-from reference import reference_solutions
+from .reference import reference_solutions
 
 
 class TestErrorsStandard(object):
@@ -112,7 +113,7 @@ class TestErrorsCDMS(object):
 
 
 @skipIf('iris' not in dir(windspharm) or 'iris' not in dir(),
-        'library component (cdms2) not available')
+        'library component (iris) not available')
 class TestErrorsIris(object):
 
     @raises(TypeError)
