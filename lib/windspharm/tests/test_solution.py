@@ -5,6 +5,7 @@ Includes tests for: :py:class:`windspharm.standard.VectorWind`,
 :py:class:`windspharm.cdms.VectorWind`.
 
 """
+from __future__ import absolute_import
 from nose import SkipTest
 from nose.tools import assert_almost_equal
 from unittest import skipIf
@@ -12,8 +13,8 @@ import numpy as np
 
 import windspharm
 
-from reference import reference_solutions
-from utils import error
+from .reference import reference_solutions
+from .utils import error
 
 
 class TestStandard(object):

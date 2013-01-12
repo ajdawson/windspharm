@@ -19,4 +19,4 @@ setup(name='windspharm',
       geometry using spherical harmonics
       """,
       packages=packages,
-      package_dir={'':'lib'})
+      package_dir={'':'lib'},)
