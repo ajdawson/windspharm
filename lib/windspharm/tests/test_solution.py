@@ -26,6 +26,11 @@ class TestStandard(object):
         cls.vw = windspharm.standard.VectorWind(
                 cls.ref['uwnd'], cls.ref['vwnd'], gridtype='regular')
 
+    def test_magnitude(self):
+        mag1 = self.vw.magnitude()
+        mag2 = (self.ref['uwnd'] ** 2 + self.ref['vwnd'] ** 2) ** 0.5
+        assert_almost_equal(error(mag1, mag2), 0., places=5)
+
     def test_vorticity(self):
         """computed vorticity matches reference solution?"""
         vrt1 = self.vw.vorticity()
