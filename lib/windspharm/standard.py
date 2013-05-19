@@ -1,5 +1,5 @@
 """Spherical harmonic vector wind computations."""
-# Copyright (c) 2012 Andrew Dawson
+# Copyright (c) 2012-2013 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -470,6 +470,12 @@ class VectorWind(object):
             avrt_zonalT13, avrt_meridionalT13 = w.gradient(avrt, truncation=13)
 
         """
+        try:
+            chi = chi.filled(fill_value=np.nan)
+        except AttributeError:
+            pass
+        if np.isnan(chi).any():
+            raise ValueError('chi cannot contain missing values')
         try:
             chispec = self.s.grdtospec(chi, ntrunc=truncation)
         except ValueError:

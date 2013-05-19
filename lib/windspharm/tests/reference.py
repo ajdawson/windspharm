@@ -1,8 +1,23 @@
-"""
-Generate reference solutions for spherical harmonic computations on
-vector winds.
-
-"""
+"""Reference solutions for testing the `windspharm` package."""
+# Copyright (c) 2012-2013 Andrew Dawson
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
 from __future__ import absolute_import
 import os
 
@@ -26,7 +41,7 @@ def __read_reference_solutions():
     """Read reference solutions from file."""
     exact = dict()
     for varid in ('psi', 'chi', 'vrt', 'div', 'uchi', 'vchi', 'upsi', 'vpsi',
-            'chigradu', 'chigradv', 'uwnd', 'vwnd'):
+                  'chigradu', 'chigradv', 'uwnd', 'vwnd'):
         try:
             filename = os.path.join(test_data_path(),
                                     '{!s}.ref.npy'.format(varid))
@@ -36,7 +51,7 @@ def __read_reference_solutions():
     return exact
 
 
-def reference_solutions(container_type):
+def reference_solutions(container_type, gridtype):
     """Generate reference solutions in the required container."""
     container_type = container_type.lower()
     if container_type not in ('standard', 'iris', 'cdms'):
@@ -58,7 +73,7 @@ def reference_solutions(container_type):
             latdim.designateLatitude()
             for name in reference.keys():
                 reference[name] = cdms2.createVariable(reference[name],
-                                                       axes=[latdim,londim],
+                                                       axes=[latdim, londim],
                                                        id=name)
         except NameError:
             raise ValueError("cannot use container 'cdms' without cdms2")
@@ -71,7 +86,7 @@ def reference_solutions(container_type):
             latdim = DimCoord(lats,
                               standard_name='latitude',
                               units='degrees_north')
-            coords = zip((latdim,londim), (0,1))
+            coords = zip((latdim, londim), (0, 1))
             for name in reference.keys():
                 reference[name] = Cube(reference[name],
                                        dim_coords_and_dims=coords,
