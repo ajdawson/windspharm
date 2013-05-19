@@ -258,8 +258,12 @@ def order_latdim(latdim, u, v, axis=0):
         latdim, u, v = order_latdim(latdim, u, v, axis=2)
 
     """
-    u, v, latdim = u.copy(), v.copy(), latdim.copy()
+    latdim = latdim.copy()
     if latdim[0] < latdim[-1]:
         latdim = latdim[::-1]
+        # reverse_latdim() will make copies of u and v
         u, v = reverse_latdim(u, v, axis=axis)
+    else:
+        # we return copies from this function
+        u, v = u.copy(), v.copy()
     return latdim, u, v
