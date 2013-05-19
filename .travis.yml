@@ -37,7 +37,7 @@ install:
   - wget https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.9.16.tar.gz --no-check-certificate
   - tar -xvf grib_api-1.9.16.tar.gz
   - cd grib_api-1.9.16/
-  - ./configure --with-jasper=/usr/local/lib --disable-fortran --enable-python
+  - CFLAGS="-fPIC" ./configure --with-jasper=/usr/local/lib --disable-fortran --enable-python
   - make
   - sudo make install
   - cd python
@@ -49,12 +49,13 @@ install:
 # cartopy
   - git clone git://github.com/SciTools/cartopy.git
   - cd cartopy
-  - git checkout 5e0bda8956158b8c19566ceac81116afb55cdd71
+  - git checkout v0.7.0
   - sudo /usr/bin/python setup.py install
   - cd ..
 # iris
   - git clone git://github.com/SciTools/iris.git
   - cd iris
+  - git checkout v1.3.0
   - /usr/bin/python setup.py std_names
   - sudo /usr/bin/python setup.py install
   - cd ..
@@ -62,10 +63,10 @@ install:
 #-----------------------------------------------------------------------------
 # pyspharm is the primary dependency of windspharm
 #
-# pyspharm (1.0.7 required)
-  - wget http://pyspharm.googlecode.com/files/pyspharm-1.0.7.tar.gz
-  - tar xfvz pyspharm-1.0.7.tar.gz
-  - cd pyspharm-1.0.7
+# pyspharm (1.0.8 required)
+  - wget http://pyspharm.googlecode.com/files/pyspharm-1.0.8.tar.gz
+  - tar xfvz pyspharm-1.0.8.tar.gz
+  - cd pyspharm-1.0.8
   - yes | sudo /usr/bin/python setup.py install
   - cd ../../windspharm
 
