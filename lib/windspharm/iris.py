@@ -594,7 +594,7 @@ class VectorWind(object):
 
         """
         if type(chi) is not Cube:
-            raise ValueError('scalar field must be an iris cube')
+            raise TypeError('scalar field must be an iris cube')
         name = chi.name()
         lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
         lon, lon_dim = _dim_coord_and_dim(chi, 'longitude')
