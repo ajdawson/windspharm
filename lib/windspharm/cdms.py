@@ -583,7 +583,7 @@ class VectorWind(object):
         """
         # Check that the input is a cdms2 variable.
         if not cdms2.isVariable(chi):
-            raise ValueError('scalar field must be a cdms2 variable')
+            raise TypeError('scalar field must be a cdms2 variable')
         order = chi.getOrder()
         if 'x' not in order or 'y' not in order:
             raise ValueError('a latitude-longitude grid is required')
