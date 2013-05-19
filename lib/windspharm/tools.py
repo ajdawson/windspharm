@@ -1,10 +1,9 @@
 """
-Tools for preparing data for use with
-:py:class:`windspharm.standard.VectorWind` or
-:py:class:`spharm.Spharmt`.
+Tools for managing data for use with `~windspharm.standard.VectorWind`
+(or indeed `spharm.Spharmt`).
 
 """
-# Copyright (c) 2012 Andrew Dawson
+# Copyright (c) 2012-2013 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -50,13 +49,12 @@ def __reshape(d):
 
 def prep_data(data, dimorder):
     """
-    Prepare data for input to :py:class:`windspharm.standard.VectorWind`
-    (or to :py:class:`spharm.Spharmt` method calls).
+    Prepare data for input to `~windspharm.standard.VectorWind` (or to
+    `spharm.Spharmt` method calls).
 
     Returns a dictionary of intermediate information that can be passed
-    to :py:func:`~windspharm.tools.recover_data` or
-    :py:func:`~windspharm.tools.get_recovery` to recover the original
-    shape and order of the data.
+    to `recover_data` or `get_recovery` to recover the original shape
+    and order of the data.
 
     **Arguments:**
 
@@ -69,16 +67,28 @@ def prep_data(data, dimorder):
         respectively. Any other characters can be used to represent
         other dimensions.
 
+    **Returns:**
+
+    *pdata*
+        *data* reshaped/reordered to (latitude, longitude, other).
+
+    *info*
+        A dictionary of information required to recover *data*.
+
+    **See also:**
+
+    `recover_data`, `get_recovery`.
+
     **Examples:**
 
     Prepare an array with dimensions (12, 17, 73, 144) where the
-    dimensions are (time, level, latitude, longitude):
+    dimensions are (time, level, latitude, longitude)::
 
         pdata, info = prep_data(data, 'tzyx')
 
     Prepare an array with dimensions (144, 16, 73, 21) where the first
     dimension is longitude and the third dimension is latitude. The
-    characters used to represent the other dimensions are arbitrary:
+    characters used to represent the other dimensions are arbitrary::
 
         pdata, info = prep_data(data, 'xayb')
 
@@ -95,14 +105,12 @@ def prep_data(data, dimorder):
 def recover_data(pdata, info):
     """
     Recover the shape and dimension order of an array output from
-    :py:class:`windspharm.standard.VectorWind` methods (or from
-    :py:class:`spharm.Spharmt` methods).
+    `~windspharm.standard.VectorWind` methods (or from `spharm.Spharmt`
+    methods).
 
-    This function performs the opposite of
-    :py:func:`~windspharm.tools.prep_data`.
+    This function performs the opposite of `prep_data`.
 
-    For recovering the shape of multiple variables, see
-    :py:func:`~windspharm.tools.get_recovery`.
+    For recovering the shape of multiple variables, see `get_recovery`.
 
     **Arguments:**
 
@@ -111,15 +119,23 @@ def recover_data(pdata, info):
         dimensions are latitude and longitude respectively.
 
     *info*
-        Intermediate information output from
-        :py:func:`windspharm.tools.prep_data`.
+        Information dictionary output from `prep_data`.
+
+    **Returns:**
+
+    *data*
+        The data reshaped/reordered.
+
+    **See also:**
+
+    `prep_data`, `get_recovery`.
 
     **Example:**
 
     Recover the original input shape and dimension order of an array
-    processed with :py:func:`~windspharm.tools.prep_data` or an output
-    of :py:class:`windspharm.standard.VectorWind` or
-    :py:class:`sparm.Spharmt` method calls on such data:
+    processed with `prep_data` or an output of
+    `~windspharm.standard.VectorWind` or `sparm.Spharmt` method calls on
+    such data::
 
         data = recover_data(pdata, info)
 
@@ -142,6 +158,8 @@ Recovers variable shape/dimension according to:
 
 {!s}
 
+Returns a `list` of variables.
+
 """
 
 
@@ -149,23 +167,28 @@ def get_recovery(info):
     """
     Return a function that can be used to recover the shape and
     dimension order of multiple arrays output from
-    :py:class:`windspharm.standard.VectorWind` methods (or from
-    :py:class:`spharm.Spharmt` methods) according to a single
-    dictionary of intermediate information.
+    `~windspharm.standard.VectorWind` methods (or from `spharm.Spharmt`
+    methods) according to a single dictionary of recovery information.
 
     **Argument:**
 
     *info*
-        Intermediate information output from
-        :py:func:`~windspharm.tools.prep_data`.
+        Information dictionary output from `prep_data`.
+
+    **Returns:**
+
+    *recover*
+        A function used to recover arrays.
+
+    **See also:**
+
+    `recover_data`, `prep_data`.
 
     **Example:**
 
     Generate a function to recover the original input shape and
-    dimension order of arrays processed with
-    :py:func:`~windspharm.tools.prep_data` and outputs of
-    :py:class:`windspharm.standard.VectorWind` method calls on this
-    data:
+    dimension order of arrays processed with `prep_data` and outputs of
+    `~windspharm.standard.VectorWind` method calls on this data::
 
         u, info = prep_data(u, 'tzyx')
         v, info = prep_data(v, 'tzyx')
@@ -190,8 +213,6 @@ def reverse_latdim(u, v, axis=0):
     Reverse the order of the latitude dimension of zonal and meridional
     wind components.
 
-    Returns copies of the inputs.
-
     **Arguments:**
 
     *u*, *v*
@@ -203,15 +224,25 @@ def reverse_latdim(u, v, axis=0):
         Index of the latitude dimension. This dimension will be reversed
         in the input arrays. Defaults to 0 (the first dimension).
 
+    **Returns:**
+
+    *ur*, *vr*
+        Zonal and meridional wind components with the latitude dimensions
+        reversed. These are always copies of the input.
+
+    **See also:**
+
+    `order_latdim`.
+
     **Examples:**
 
     Reverse the dimension corresponding to latitude when it is the first
-    dimension of the inputs:
+    dimension of the inputs::
 
         u, v = reverse_latdim(u, v)
 
     Reverse the dimension corresponding to latitude when it is the third
-    dimension of the inputs:
+    dimension of the inputs::
 
         u, v = reverse_latdim(u, v, axis=2)
 
@@ -244,16 +275,29 @@ def order_latdim(latdim, u, v, axis=0):
     *axis*
         Index of the latitude dimension in the zonal and meridional wind
         components. Defaults to 0 (the first dimension).
+    
+    **Returns:**
+
+    *latdimr*
+        Possibly reversed *latdim*, always a copy of *latdim*.
+
+    *ur*, *vr*
+        Possibly reversed *u* and *v* respectively. Always copies of *u*
+        and *v* respectively.
+
+    **See also:**
+
+    `reverse_latdim`.
 
     **Examples:**
 
     Order the latitude dimension when latitude is the first dimension of
-    the wind components:
+    the wind components::
 
         latdim, u, v = order_latdim(latdim, u, v)
 
     Order the latitude dimension when latitude is the third dimension of
-    the wind components:
+    the wind components::
 
         latdim, u, v = order_latdim(latdim, u, v, axis=2)
 

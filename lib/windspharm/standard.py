@@ -23,7 +23,7 @@ from spharm import Spharmt, gaussian_lats_wts
 
 
 class VectorWind(object):
-    """Vector Wind computations (standard :py:mod:`numpy` interface)."""
+    """Vector Wind computations (standard `numpy` interface)."""
 
     def __init__(self, u, v, gridtype='regular'):
         """Initialize a VectorWind instance.
@@ -32,10 +32,10 @@ class VectorWind(object):
 
         *u*, *v*
             Zonal and meridional wind components respectively. Their
-            types should be either :py:class:`numpy.ndarray` or
-            :py:class:`numpy.ma.MaskedArray`. *u* and *v* must have
-            matching shapes and contain no missing values. *u* and *v*
-            may be 2 or 3-dimensional with shape (nlat, nlon) or
+            types should be either `numpy.ndarray` or
+            `numpy.ma.MaskedArray`. *u* and *v* must have matching
+            shapes and contain no missing values. *u* and *v* may be 2
+            or 3-dimensional with shape (nlat, nlon) or
             (nlat, nlon, nt), where nlat and nlon are the number of
             latitudes and longitudes respectively and nt is the number
             of fields. The latitude dimension must be oriented
@@ -49,16 +49,24 @@ class VectorWind(object):
             grids, or 'gaussian' for Gaussian grids. Defaults to
             'regular'.
 
+        **See also:**
+
+        `~windspharm.tools.prep_data`,
+        `~windspharm.tools.recover_data`,
+        `~windspharm.tools.get_recovery`,
+        `~windspharm.tools.reverse_latdim`,
+        `~windspharm.tools.order_latdim`.
+        
         **Examples:**
 
-        Initialize a VectorWind instance with zonal and meridional
+        Initialize a `VectorWind` instance with zonal and meridional
         components of the vector wind on the default regular
         (evenly-spaced) grid:
 
             from windspharm.standard import VectorWind
             w = VectorWind(u, v)
 
-        Initialize a VectorWind instance with zonal and meridional
+        Initialize a `VectorWind` instance with zonal and meridional
         components of the vector wind specified on a Gaussian grid:
 
             from windspharm.standard import VectorWind
@@ -111,7 +119,14 @@ class VectorWind(object):
     def magnitude(self):
         """Wind speed (magnitude of vector wind).
 
+        **Returns:**
+
+        *speed*
+            The wind speed.
+
         **Example:**
+
+        Magnitude of the vector wind::
 
             spd = w.magnitude()
 
@@ -127,14 +142,23 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *vrt*, *div*
+            The relative vorticity and divergence respectively.
+
+        **See also:**
+
+        `~VectorWind.vorticity`, `~VectorWind.divergence`.
+
         **Examples:**
 
-        Compute the relative vorticity and divergence:
+        Compute the relative vorticity and divergence::
 
             vrt, div = w.vrtdiv()
 
         Compute the relative vorticity and divergence and apply spectral
-        truncation at triangular T13:
+        truncation at triangular T13::
 
             vrtT13, divT13 = w.vrtdiv(truncation=13)
 
@@ -155,14 +179,23 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *vrt*
+            The relative vorticity.
+
+        **See also:**
+
+        `~VectorWind.vrtdiv`, `~VectorWind.absolutevorticity`.
+
         **Examples:**
 
-        Compute the relative vorticity:
+        Compute the relative vorticity::
 
             vrt = w.vorticity()
 
         Compute the relative vorticity and apply spectral truncation at
-        triangular T13:
+        triangular T13::
 
             vrtT13 = w.vorticity(truncation=13)
 
@@ -182,14 +215,23 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *div*
+            The divergence.
+
+        **See also:**
+
+        `~VectorWind.vrtdiv`.
+
         **Examples:**
 
-        Compute the divergence:
+        Compute the divergence::
 
             div = w.divergence()
 
         Compute the divergence and apply spectral truncation at
-        triangular T13:
+        triangular T13::
 
             divT13 = w.divergence(truncation=13)
 
@@ -209,13 +251,22 @@ class VectorWind(object):
             Earth's angular velocity. The default value if not specified
             is 7.292x10**-5 s**-1.
 
+        **Returns:**
+
+        *pvorticity*
+            The planetary vorticity.
+
+        **See also:**
+
+        `~VectorWind.absolutevorticity`.
+
         **Example:**
 
-        Compute planetary vorticity using default values:
+        Compute planetary vorticity using default values::
 
             pvrt = w.planetaryvorticity()
 
-        Override the default value for Earth's angular velocity:
+        Override the default value for Earth's angular velocity::
 
             pvrt = w.planetaryvorticity(omega=7.2921150)
 
@@ -253,15 +304,24 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *avorticity*
+            The absolute (relative + planetary) vorticity.
+
+        **See also:**
+
+        `~VectorWind.vorticity`, `~VectorWind.planetaryvorticity`.
+
         **Examples:**
 
-        Compute absolute vorticity:
+        Compute absolute vorticity::
 
             avrt = w.absolutevorticity()
 
         Compute absolute vorticity and apply spectral truncation at
         triangular T13, also override the default value for Earth's
-        angular velocity:
+        angular velocity::
 
             avrt = w.absolutevorticity(omega=7.2921150, truncation=13)
 
@@ -279,14 +339,23 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *sf*, *vp*
+            The streamfunction and velocity potential respectively.
+
+        **See also:**
+
+        `~VectorWind.streamfunction`, `~VectorWind.velocitypotential`.
+
         **Examples:**
 
-        Compute streamfunction and velocity potential:
+        Compute streamfunction and velocity potential::
 
             sf, vp = w.sfvp()
 
         Compute streamfunction and velocity potential and apply spectral
-        truncation at triangular T13:
+        truncation at triangular T13::
 
             sfT13, vpT13 = w.sfvp(truncation=13)
 
@@ -303,14 +372,23 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *sf*
+            The streamfunction.
+
+        **See also:**
+
+        `~VectorWind.sfvp`.
+
         **Examples:**
 
-        Compute streamfunction:
+        Compute streamfunction::
 
             sf = w.streamfunction()
 
         Compute streamfunction and apply spectral truncation at
-        triangular T13:
+        triangular T13::
 
             sfT13 = w.streamfunction(truncation=13)
 
@@ -327,14 +405,23 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *vp*
+            The velocity potential.
+
+        **See also:**
+
+        `~VectorWind.sfvp`.
+
         **Examples:**
 
-        Compute velocity potential:
+        Compute velocity potential::
 
             vp = w.velocity potential()
 
         Compute velocity potential and apply spectral truncation at
-        triangular T13:
+        triangular T13::
 
             vpT13 = w.velocity potential(truncation=13)
 
@@ -345,24 +432,32 @@ class VectorWind(object):
     def helmholtz(self, truncation=None):
         """Irrotational and non-divergent components of the vector wind.
 
-        Returns a 4-tuple of the eastward and northward components of
-        the irrotational and non-divergent wind components respectively.
-
         **Optional argument:**
 
         *truncation*
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *uchi*, *vchi*, *upsi*, *vpsi*
+            Zonal and meridional components of irrotational and
+            non-divergent wind components respectively.
+
+        **See also:**
+
+        `~VectorWind.irrotationalcomponent`,
+        `~VectorWind.nondivergentcomponent`.
+
         **Examples:**
 
         Compute the irrotational and non-divergent components of the
-        vector wind:
+        vector wind::
 
             uchi, vchi, upsi, vpsi = w.helmholtz()
 
         Compute the irrotational and non-divergent components of the
-        vector wind and apply spectral truncation at triangular T13:
+        vector wind and apply spectral truncation at triangular T13::
 
             uchiT13, vchiT13, upsiT13, vpsiT13 = w.helmholtz(truncation=13)
 
@@ -377,10 +472,10 @@ class VectorWind(object):
     def irrotationalcomponent(self, truncation=None):
         """Irrotational (divergent) component of the vector wind.
 
-        Returns a 2-tuple of the eastward and northward components of
-        the irrotational wind. If both the irrotational and
-        non-divergent components are required use
-        :py:meth:`~windspharm.standard.VectorWind.helmholtz` instead.
+        .. note::
+
+           If both the irrotational and non-divergent components are
+           required then `~VectorWind.helmholtz` should be used instead.
 
         **Optional argument:**
 
@@ -388,14 +483,24 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *uchi*, *vchi*
+            The zonal and meridional components of the irrotational wind
+            respectively.
+
+        **See also:**
+
+        `~VectorWind.helmholtz`.
+
         **Examples:**
 
-        Compute the irrotational component of the vector wind:
+        Compute the irrotational component of the vector wind::
 
             uchi, vchi = w.irrotationalcomponent()
 
         Compute the irrotational component of the vector wind and apply
-        spectral truncation at triangular T13:
+        spectral truncation at triangular T13::
 
             uchiT13, vchiT13 = w.irrotationalcomponent(truncation=13)
 
@@ -408,10 +513,10 @@ class VectorWind(object):
     def nondivergentcomponent(self, truncation=None):
         """Non-divergent (rotational) component of the vector wind.
 
-        Returns a 2-tuple of the eastward and northward components of
-        the non-divergent wind. If both the irrotational and
-        non-divergent components are required use
-        :py:meth:`~windspharm.standard.VectorWind.helmholtz` instead.
+        .. note::
+
+           If both the non-divergent and irrotational components are
+           required then `~VectorWind.helmholtz` should be used instead.
 
         **Optional argument:**
 
@@ -419,14 +524,24 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *upsi*, *vpsi*
+            The zonal and meridional components of the non-divergent
+            wind respectively.
+
+        **See also:**
+
+        `~VectorWind.helmholtz`.
+
         **Examples:**
 
-        Compute the non-divergent component of the vector wind:
+        Compute the non-divergent component of the vector wind::
 
             upsi, vpsi = w.nondivergentcomponent()
 
         Compute the non-divergent component of the vector wind and apply
-        spectral truncation at triangular T13:
+        spectral truncation at triangular T13::
 
             upsiT13, vpsiT13 = w.nondivergentcomponent(truncation=13)
 
@@ -439,16 +554,13 @@ class VectorWind(object):
     def gradient(self, chi, truncation=None):
         """Computes the vector gradient of a scalar field on the sphere.
 
-        Returns a 2-tuple of the zonal and meridional components of the
-        vector gradient respectively.
-
         **Argument:**
 
         *chi*
             A scalar field. Its shape must be either (nlat, nlon) or
             (nlat, nlon, nfields) where nlat and nlon are the same
             as those for the vector wind components that initialized the
-            VectorWind object.
+            `VectorWind` instance.
 
         **Optional argument:**
 
@@ -456,15 +568,21 @@ class VectorWind(object):
             Truncation limit (triangular truncation) for the spherical
             harmonic computation.
 
+        **Returns:**
+
+        *uchi*, *vchi*
+            The zonal and meridional components of the vector gradient
+            respectively.
+
         **Examples:**
 
-        Compute the vector gradient of absolute vorticity:
+        Compute the vector gradient of absolute vorticity::
 
             avrt = w.absolutevorticity()
             avrt_zonal, avrt_meridional = w.gradient(avrt)
 
         Compute the vector gradient of absolute vorticity and apply
-        spectral truncation at triangular T13:
+        spectral truncation at triangular T13::
 
             avrt = w.absolutevorticity()
             avrt_zonalT13, avrt_meridionalT13 = w.gradient(avrt, truncation=13)
