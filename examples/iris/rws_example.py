@@ -1,6 +1,6 @@
 """Compute Rossby wave source from the long-term mean flow.
 
-This example uses the metadata interface.
+This example uses the iris interface.
 
 """
 import warnings
@@ -18,8 +18,8 @@ from windspharm.examples import example_data_path
 
 
 # Read zonal and meridional wind components from file using the iris module.
-# The components are defined on pressure levels and are in separate files.
-# We catch warnings here because the files are not completely CF compliant.
+# The components are in separate files. We catch warnings here because the
+# files are not completely CF compliant.
 with warnings.catch_warnings():
     warnings.simplefilter('ignore', UserWarning)
     uwnd = iris.load_cube(example_data_path('uwnd_mean.nc'))
@@ -42,18 +42,17 @@ S = eta * -1. * div - uchi * etax + vchi * etay
 
 # Pick out the field for December at 200 hPa.
 time_constraint = iris.Constraint(month='Dec')
-level_constraint = iris.Constraint(Level=[200])
 add_month(S, 'time')
-S_200 = S.extract(time_constraint & level_constraint)
+S_dec = S.extract(time_constraint)
 
 # Plot Rossby wave source.
 m = Basemap(projection='cyl', resolution='c', llcrnrlon=0, llcrnrlat=-90,
-        urcrnrlon=360.01, urcrnrlat=90)
-lons, lats = S_200.coord('longitude'), S_200.coord('latitude')
-S_200, lonsc = addcyclic(S_200.data, lons.points)
+            urcrnrlon=360.01, urcrnrlat=90)
+lons, lats = S_dec.coord('longitude'), S_dec.coord('latitude')
+S_dec, lonsc = addcyclic(S_dec.data, lons.points)
 x, y = m(*np.meshgrid(lonsc, lats.points))
 clevs = [-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30]
-m.contourf(x, y, S_200*1e11, clevs, cmap=plt.cm.RdBu_r, extend='both')
+m.contourf(x, y, S_dec*1e11, clevs, cmap=plt.cm.RdBu_r, extend='both')
 m.drawcoastlines()
 m.drawparallels((-90, -60, -30, 0, 30, 60, 90), labels=[1,0,0,0])
 m.drawmeridians((0, 60, 120, 180, 240, 300, 360), labels=[0,0,0,1])
