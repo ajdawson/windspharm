@@ -12,17 +12,18 @@ from netCDF4 import Dataset
 
 from windspharm.standard import VectorWind
 from windspharm.tools import prep_data, recover_data, order_latdim
+from windspharm.examples import example_data_path
 
 
 # Read zonal and meridional wind components from file using the cdms2 module
 # from CDAT. The components are defined on pressure levels and are in separate
 # files.
-ncu = Dataset('../../example_data/uwnd_mean.nc', 'r')
+ncu = Dataset(example_data_path('uwnd_mean.nc'), 'r')
 uwnd = ncu.variables['uwnd'][:]
 lons = ncu.variables['longitude'][:]
 lats = ncu.variables['latitude'][:]
 ncu.close()
-ncv = Dataset('../../example_data/vwnd_mean.nc', 'r')
+ncv = Dataset(example_data_path('vwnd_mean.nc'), 'r')
 vwnd = ncv.variables['vwnd'][:]
 ncv.close()
 

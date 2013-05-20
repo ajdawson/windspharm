@@ -14,6 +14,7 @@ import iris
 from iris.coord_categorisation import add_month
 
 from windspharm.iris import VectorWind
+from windspharm.examples import example_data_path
 
 
 # Read zonal and meridional wind components from file using the iris module.
@@ -21,8 +22,8 @@ from windspharm.iris import VectorWind
 # We catch warnings here because the files are not completely CF compliant.
 with warnings.catch_warnings():
     warnings.simplefilter('ignore', UserWarning)
-    uwnd = iris.load_cube('../../example_data/uwnd_mean.nc')
-    vwnd = iris.load_cube('../../example_data/vwnd_mean.nc')
+    uwnd = iris.load_cube(example_data_path('uwnd_mean.nc'))
+    vwnd = iris.load_cube(example_data_path('vwnd_mean.nc'))
 
 # Create a VectorWind instance to handle the computations.
 w = VectorWind(uwnd, vwnd)
@@ -33,6 +34,8 @@ eta = w.absolutevorticity()
 div = w.divergence()
 uchi, vchi = w.irrotationalcomponent()
 etax, etay = w.gradient(eta)
+etax.units = 'm**-1 s**-1'
+etay.units = 'm**-1 s**-1'
 
 # Combine the components to form the Rossby wave source term.
 S = eta * -1. * div - uchi * etax + vchi * etay
