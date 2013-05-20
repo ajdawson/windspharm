@@ -8,6 +8,7 @@ Source code downloads for released versions, see the :doc:`changelog` for detail
 ===========================================================================  ====================
 Filename                                                                     Summary
 ===========================================================================  ====================
+:download:`windspharm-1.2.0.tar.gz </distribution/windspharm-1.2.0.tar.gz>`  version 1.2.0 source
 :download:`windspharm-1.1.0.tar.gz </distribution/windspharm-1.1.0.tar.gz>`  version 1.1.0 source
 ===========================================================================  ====================
 
