@@ -31,11 +31,11 @@ ncv.close()
 
 # The standard interface requires that latitude and longitude be the leading
 # dimensions of the input wind components, and that wind components must be
-# either 2D or 3D arrays. The data read in is 4D and has latitude and
+# either 2D or 3D arrays. The data read in is 3D and has latitude and
 # longitude as the last dimensions. The bundled tools can make the process of
 # re-shaping the data a lot easier to manage.
-uwnd, uwnd_info = prep_data(uwnd, 'tzyx')
-vwnd, vwnd_info = prep_data(vwnd, 'tzyx')
+uwnd, uwnd_info = prep_data(uwnd, 'tyx')
+vwnd, vwnd_info = prep_data(vwnd, 'tyx')
 
 # It is also required that the latitude dimension is north-to-south. Again the
 # bundled tools make this easy.
@@ -52,18 +52,18 @@ sf, vp = w.sfvp()
 sf = recover_data(sf, uwnd_info)
 vp = recover_data(vp, uwnd_info)
 
-# Pick out the field for December at 200 hPa and add a cyclic point (the
-# cyclic point is for plotting purposes).
-sf_200, lons_c = addcyclic(sf[11, 9], lons)
-vp_200, lons_c = addcyclic(vp[11, 9], lons)
+# Pick out the field for December and add a cyclic point (the cyclic point is
+# for plotting purposes).
+sf_dec, lons_c = addcyclic(sf[11], lons)
+vp_dec, lons_c = addcyclic(vp[11], lons)
 
 # Plot streamfunction.
 m = Basemap(projection='cyl', resolution='c', llcrnrlon=0, llcrnrlat=-90,
-        urcrnrlon=360.01, urcrnrlat=90)
+            urcrnrlon=360.01, urcrnrlat=90)
 x, y = m(*np.meshgrid(lons_c, lats))
 clevs = [-120, -100, -80, -60, -40, -20, 0, 20, 40, 60, 80, 100, 120]
-m.contourf(x, y, sf_200*1e-06, clevs, cmap=plt.cm.RdBu_r,
-        extend='both')
+m.contourf(x, y, sf_dec*1e-06, clevs, cmap=plt.cm.RdBu_r,
+           extend='both')
 m.drawcoastlines()
 m.drawparallels((-90, -60, -30, 0, 30, 60, 90), labels=[1,0,0,0])
 m.drawmeridians((0, 60, 120, 180, 240, 300, 360), labels=[0,0,0,1])
@@ -73,12 +73,11 @@ plt.title('Streamfunction ($10^6$m$^2$s$^{-1}$)', fontsize=16)
 # Plot velocity potential.
 plt.figure()
 clevs = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10]
-m.contourf(x, y, vp_200*1e-06, clevs, cmap=plt.cm.RdBu_r,
-        extend='both')
+m.contourf(x, y, vp_dec*1e-06, clevs, cmap=plt.cm.RdBu_r,
+           extend='both')
 m.drawcoastlines()
 m.drawparallels((-90, -60, -30, 0, 30, 60, 90), labels=[1,0,0,0])
 m.drawmeridians((0, 60, 120, 180, 240, 300, 360), labels=[0,0,0,1])
 plt.colorbar(orientation='horizontal')
 plt.title('Velocity Potential ($10^6$m$^2$s$^{-1}$)', fontsize=16)
 plt.show()
-

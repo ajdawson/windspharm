@@ -29,11 +29,11 @@ ncv.close()
 
 # The standard interface requires that latitude and longitude be the leading
 # dimensions of the input wind components, and that wind components must be
-# either 2D or 3D arrays. The data read in is 4D and has latitude and
+# either 2D or 3D arrays. The data read in is 3D and has latitude and
 # longitude as the last dimensions. The bundled tools can make the process of
 # re-shaping the data a lot easier to manage.
-uwnd, uwnd_info = prep_data(uwnd, 'tzyx')
-vwnd, vwnd_info = prep_data(vwnd, 'tzyx')
+uwnd, uwnd_info = prep_data(uwnd, 'tyx')
+vwnd, vwnd_info = prep_data(vwnd, 'tyx')
 
 # It is also required that the latitude dimension is north-to-south. Again the
 # bundled tools make this easy.
@@ -55,21 +55,20 @@ etax, etay = w.gradient(eta)
 S = -eta * div - uchi * etax + vchi * etay
 S = recover_data(S, uwnd_info)
 
-# Pick out the field for December at 200 hPa and add a cyclic point (the
-# cyclic point is for plotting purposes).
-S_200, lons_c = addcyclic(S[11, 9], lons)
+# Pick out the field for December and add a cyclic point (the cyclic point is
+# for plotting purposes).
+S_dec, lons_c = addcyclic(S[11], lons)
 
 # Plot Rossby wave source.
 m = Basemap(projection='cyl', resolution='c', llcrnrlon=0, llcrnrlat=-90,
-        urcrnrlon=360.01, urcrnrlat=90)
+            urcrnrlon=360.01, urcrnrlat=90)
 x, y = m(*np.meshgrid(lons_c, lats))
 clevs = [-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30]
-m.contourf(x, y, S_200*1e11, clevs, cmap=plt.cm.RdBu_r,
-        extend='both')
+m.contourf(x, y, S_dec*1e11, clevs, cmap=plt.cm.RdBu_r,
+           extend='both')
 m.drawcoastlines()
 m.drawparallels((-90, -60, -30, 0, 30, 60, 90), labels=[1,0,0,0])
 m.drawmeridians((0, 60, 120, 180, 240, 300, 360), labels=[0,0,0,1])
 plt.colorbar(orientation='horizontal')
 plt.title('Rossby Wave Source ($10^{-11}$s$^{-1}$)', fontsize=16)
 plt.show()
-
