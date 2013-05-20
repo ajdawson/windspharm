@@ -11,15 +11,16 @@ from mpl_toolkits.basemap import Basemap
 import cdms2
 
 from windspharm.cdms import VectorWind
+from windspharm.examples import example_data_path
 
 
 # Read zonal and meridional wind components from file using the cdms2 module
 # from CDAT. The components are defined on pressure levels and are in separate
 # files.
-ncu = cdms2.open('../../example_data/uwnd_mean.nc', 'r')
+ncu = cdms2.open(example_data_path('uwnd_mean.nc'), 'r')
 uwnd = ncu('uwnd')
 ncu.close()
-ncv = cdms2.open('../../example_data/vwnd_mean.nc', 'r')
+ncv = cdms2.open(example_data_path('vwnd_mean.nc'), 'r')
 vwnd = ncv('vwnd')
 ncv.close()
 
