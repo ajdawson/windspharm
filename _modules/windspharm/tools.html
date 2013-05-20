@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.tools &mdash; windspharm 1.1.0 documentation</title>
+    <title>windspharm.tools &mdash; windspharm 1.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.1.0',
+        VERSION:     '1.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="windspharm 1.2.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
@@ -38,7 +38,7 @@
 
 
 <!-- add the logo to the top of the page -->
-<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<div style="background-color: white; text-align: left; padding: 18px 10px 19px 15px">
 <a href="../../index.html"><img src="../../_static/logo.png" border="0" alt="sampledoc"/></a>
 </div>
 
@@ -55,12 +55,12 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">windspharm 1.1.0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">windspharm 1.2.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>
 
-  
+
 
     <div class="document">
       <div class="documentwrapper">
@@ -69,23 +69,22 @@
             
   <h1>Source code for windspharm.tools</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Tools for preparing data for use with</span>
-<span class="sd">:py:class:`windspharm.standard.VectorWind` or</span>
-<span class="sd">:py:class:`spharm.Spharmt`.</span>
+<span class="sd">Tools for managing data for use with `~windspharm.standard.VectorWind`</span>
+<span class="sd">(or indeed `spharm.Spharmt`).</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="c"># Copyright (c) 2012 Andrew Dawson</span>
-<span class="c"># </span>
+<span class="c"># Copyright (c) 2012-2013 Andrew Dawson</span>
+<span class="c">#</span>
 <span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
 <span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
 <span class="c"># in the Software without restriction, including without limitation the rights</span>
 <span class="c"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
 <span class="c"># copies of the Software, and to permit persons to whom the Software is</span>
 <span class="c"># furnished to do so, subject to the following conditions:</span>
-<span class="c"># </span>
+<span class="c">#</span>
 <span class="c"># The above copyright notice and this permission notice shall be included in</span>
 <span class="c"># all copies or substantial portions of the Software.</span>
-<span class="c"># </span>
+<span class="c">#</span>
 <span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
 <span class="c"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
 <span class="c"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
@@ -118,15 +117,14 @@
     <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">shape</span>
 
 
-<div class="viewcode-block" id="prep_data"><a class="viewcode-back" href="../../references.html#windspharm.tools.prep_data">[docs]</a><span class="k">def</span> <span class="nf">prep_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dimorder</span><span class="p">):</span>
+<div class="viewcode-block" id="prep_data"><a class="viewcode-back" href="../../api/windspharm.tools.html#windspharm.tools.prep_data">[docs]</a><span class="k">def</span> <span class="nf">prep_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dimorder</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Prepare data for input to :py:class:`windspharm.standard.VectorWind`</span>
-<span class="sd">    (or to :py:class:`spharm.Spharmt` method calls).</span>
+<span class="sd">    Prepare data for input to `~windspharm.standard.VectorWind` (or to</span>
+<span class="sd">    `spharm.Spharmt` method calls).</span>
 
 <span class="sd">    Returns a dictionary of intermediate information that can be passed</span>
-<span class="sd">    to :py:func:`~windspharm.tools.recover_data` or</span>
-<span class="sd">    :py:func:`~windspharm.tools.get_recovery` to recover the original</span>
-<span class="sd">    shape and order of the data.</span>
+<span class="sd">    to `recover_data` or `get_recovery` to recover the original shape</span>
+<span class="sd">    and order of the data.</span>
 
 <span class="sd">    **Arguments:**</span>
 
@@ -139,39 +137,50 @@
 <span class="sd">        respectively. Any other characters can be used to represent</span>
 <span class="sd">        other dimensions.</span>
 
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    *pdata*</span>
+<span class="sd">        *data* reshaped/reordered to (latitude, longitude, other).</span>
+
+<span class="sd">    *info*</span>
+<span class="sd">        A dictionary of information required to recover *data*.</span>
+
+<span class="sd">    **See also:**</span>
+
+<span class="sd">    `recover_data`, `get_recovery`.</span>
+
 <span class="sd">    **Examples:**</span>
 
 <span class="sd">    Prepare an array with dimensions (12, 17, 73, 144) where the</span>
-<span class="sd">    dimensions are (time, level, latitude, longitude):</span>
+<span class="sd">    dimensions are (time, level, latitude, longitude)::</span>
 
-<span class="sd">    &gt;&gt;&gt; pdata, info = prep_data(data, &#39;tzyx&#39;)</span>
+<span class="sd">        pdata, info = prep_data(data, &#39;tzyx&#39;)</span>
 
 <span class="sd">    Prepare an array with dimensions (144, 16, 73, 21) where the first</span>
 <span class="sd">    dimension is longitude and the third dimension is latitude. The</span>
-<span class="sd">    characters used to represent the other dimensions are arbitrary:</span>
+<span class="sd">    characters used to represent the other dimensions are arbitrary::</span>
 
-<span class="sd">    &gt;&gt;&gt; pdata, info = prep_data(data, &#39;xayb&#39;)</span>
+<span class="sd">        pdata, info = prep_data(data, &#39;xayb&#39;)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># Returns the prepared data and some data info to help data recovery.</span>
     <span class="n">pdata</span><span class="p">,</span> <span class="n">intorder</span> <span class="o">=</span> <span class="n">__order_dims</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dimorder</span><span class="p">)</span>
     <span class="n">pdata</span><span class="p">,</span> <span class="n">intshape</span> <span class="o">=</span> <span class="n">__reshape</span><span class="p">(</span><span class="n">pdata</span><span class="p">)</span>
-    <span class="n">info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">intermediate_shape</span><span class="o">=</span><span class="n">intshape</span><span class="p">,</span> <span class="n">intermediate_order</span><span class="o">=</span><span class="n">intorder</span><span class="p">,</span>
-            <span class="n">original_order</span><span class="o">=</span><span class="n">dimorder</span><span class="p">)</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">intermediate_shape</span><span class="o">=</span><span class="n">intshape</span><span class="p">,</span>
+                <span class="n">intermediate_order</span><span class="o">=</span><span class="n">intorder</span><span class="p">,</span>
+                <span class="n">original_order</span><span class="o">=</span><span class="n">dimorder</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pdata</span><span class="p">,</span> <span class="n">info</span>
 
 </div>
-<div class="viewcode-block" id="recover_data"><a class="viewcode-back" href="../../references.html#windspharm.tools.recover_data">[docs]</a><span class="k">def</span> <span class="nf">recover_data</span><span class="p">(</span><span class="n">pdata</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+<div class="viewcode-block" id="recover_data"><a class="viewcode-back" href="../../api/windspharm.tools.html#windspharm.tools.recover_data">[docs]</a><span class="k">def</span> <span class="nf">recover_data</span><span class="p">(</span><span class="n">pdata</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Recover the shape and dimension order of an array output from</span>
-<span class="sd">    :py:class:`windspharm.standard.VectorWind` methods (or from</span>
-<span class="sd">    :py:class:`spharm.Spharmt` methods).</span>
+<span class="sd">    `~windspharm.standard.VectorWind` methods (or from `spharm.Spharmt`</span>
+<span class="sd">    methods).</span>
 
-<span class="sd">    This function performs the opposite of</span>
-<span class="sd">    :py:func:`~windspharm.tools.prep_data`.</span>
+<span class="sd">    This function performs the opposite of `prep_data`.</span>
 
-<span class="sd">    For recovering the shape of multiple variables, see</span>
-<span class="sd">    :py:func:`~windspharm.tools.get_recovery`.</span>
+<span class="sd">    For recovering the shape of multiple variables, see `get_recovery`.</span>
 
 <span class="sd">    **Arguments:**</span>
 
@@ -180,30 +189,38 @@
 <span class="sd">        dimensions are latitude and longitude respectively.</span>
 
 <span class="sd">    *info*</span>
-<span class="sd">        Intermediate information output from</span>
-<span class="sd">        :py:func:`windspharm.tools.prep_data`.</span>
+<span class="sd">        Information dictionary output from `prep_data`.</span>
+
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    *data*</span>
+<span class="sd">        The data reshaped/reordered.</span>
+
+<span class="sd">    **See also:**</span>
+
+<span class="sd">    `prep_data`, `get_recovery`.</span>
 
 <span class="sd">    **Example:**</span>
 
 <span class="sd">    Recover the original input shape and dimension order of an array</span>
-<span class="sd">    processed with :py:func:`~windspharm.tools.prep_data` or an output</span>
-<span class="sd">    of :py:class:`windspharm.standard.VectorWind` or</span>
-<span class="sd">    :py:class:`sparm.Spharmt` method calls on such data:</span>
+<span class="sd">    processed with `prep_data` or an output of</span>
+<span class="sd">    `~windspharm.standard.VectorWind` or `sparm.Spharmt` method calls on</span>
+<span class="sd">    such data::</span>
 
-<span class="sd">    &gt;&gt;&gt; data = recover_data(pdata, info)</span>
+<span class="sd">        data = recover_data(pdata, info)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># Convert to intermediate shape (full dimensionality, windspharm order).</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pdata</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s">&#39;intermediate_shape&#39;</span><span class="p">])</span>
     <span class="c"># Re-order dimensions correctly.</span>
-    <span class="n">rolldims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">info</span><span class="p">[</span><span class="s">&#39;intermediate_order&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="k">for</span> \
-            <span class="n">dim</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s">&#39;original_order&#39;</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">rolldims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">info</span><span class="p">[</span><span class="s">&#39;intermediate_order&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+                         <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s">&#39;original_order&#39;</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rolldims</span><span class="p">)):</span>
         <span class="c"># Roll the axis to the front.</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">rolldims</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">rolldims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">rolldims</span> <span class="o">&lt;</span> <span class="n">rolldims</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rolldims</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">rolldims</span><span class="p">)</span>
+        <span class="n">rolldims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">rolldims</span> <span class="o">&lt;</span> <span class="n">rolldims</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rolldims</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rolldims</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span>
-    
+
 </div>
 <span class="n">__recover_docstring_template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;Shape/dimension recovery.</span>
 
@@ -211,78 +228,93 @@
 
 <span class="s">{!s}</span>
 
+<span class="s">Returns a `list` of variables.</span>
+
 <span class="s">&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="get_recovery"><a class="viewcode-back" href="../../references.html#windspharm.tools.get_recovery">[docs]</a><span class="k">def</span> <span class="nf">get_recovery</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+<div class="viewcode-block" id="get_recovery"><a class="viewcode-back" href="../../api/windspharm.tools.html#windspharm.tools.get_recovery">[docs]</a><span class="k">def</span> <span class="nf">get_recovery</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a function that can be used to recover the shape and</span>
 <span class="sd">    dimension order of multiple arrays output from</span>
-<span class="sd">    :py:class:`windspharm.standard.VectorWind` methods (or from</span>
-<span class="sd">    :py:class:`spharm.Spharmt` methods) according to a single</span>
-<span class="sd">    dictionary of intermediate information.</span>
+<span class="sd">    `~windspharm.standard.VectorWind` methods (or from `spharm.Spharmt`</span>
+<span class="sd">    methods) according to a single dictionary of recovery information.</span>
 
 <span class="sd">    **Argument:**</span>
 
 <span class="sd">    *info*</span>
-<span class="sd">        Intermediate information output from</span>
-<span class="sd">        :py:func:`~windspharm.tools.prep_data`.</span>
+<span class="sd">        Information dictionary output from `prep_data`.</span>
+
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    *recover*</span>
+<span class="sd">        A function used to recover arrays.</span>
+
+<span class="sd">    **See also:**</span>
+
+<span class="sd">    `recover_data`, `prep_data`.</span>
 
 <span class="sd">    **Example:**</span>
 
 <span class="sd">    Generate a function to recover the original input shape and</span>
-<span class="sd">    dimension order of arrays processed with</span>
-<span class="sd">    :py:func:`~windspharm.tools.prep_data` and outputs of</span>
-<span class="sd">    :py:class:`windspharm.standard.VectorWind` method calls on this</span>
-<span class="sd">    data:</span>
+<span class="sd">    dimension order of arrays processed with `prep_data` and outputs of</span>
+<span class="sd">    `~windspharm.standard.VectorWind` method calls on this data::</span>
 
-<span class="sd">    &gt;&gt;&gt; u, info = prep_data(u, &#39;tzyx&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; v, info = prep_data(v, &#39;tzyx&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; w = VectorWind(u, v)</span>
-<span class="sd">    &gt;&gt;&gt; sf, vp = w.sfvp()</span>
-<span class="sd">    &gt;&gt;&gt; recover = get_recovery(info)</span>
-<span class="sd">    &gt;&gt;&gt; u, v, sf, vp = recover(u, v, sf, vp)</span>
+<span class="sd">        u, info = prep_data(u, &#39;tzyx&#39;)</span>
+<span class="sd">        v, info = prep_data(v, &#39;tzyx&#39;)</span>
+<span class="sd">        w = VectorWind(u, v)</span>
+<span class="sd">        sf, vp = w.sfvp()</span>
+<span class="sd">        recover = get_recovery(info)</span>
+<span class="sd">        u, v, sf, vp = recover(u, v, sf, vp)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__recover</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">recover_data</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
-    <span class="n">info_nice</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&#39;{!s}&#39;: {!s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> \
-            <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+    <span class="n">info_nice</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&#39;{!s}&#39;: {!s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
     <span class="n">__recover</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="s">&#39;recover&#39;</span>
     <span class="n">__recover</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">__recover_docstring_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info_nice</span><span class="p">))</span>
+        <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info_nice</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">__recover</span>
 
 </div>
-<div class="viewcode-block" id="reverse_latdim"><a class="viewcode-back" href="../../references.html#windspharm.tools.reverse_latdim">[docs]</a><span class="k">def</span> <span class="nf">reverse_latdim</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="reverse_latdim"><a class="viewcode-back" href="../../api/windspharm.tools.html#windspharm.tools.reverse_latdim">[docs]</a><span class="k">def</span> <span class="nf">reverse_latdim</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reverse the order of the latitude dimension of zonal and meridional</span>
 <span class="sd">    wind components.</span>
 
-<span class="sd">    Returns copies of the inputs.</span>
-<span class="sd">    </span>
 <span class="sd">    **Arguments:**</span>
-<span class="sd">    </span>
+
 <span class="sd">    *u*, *v*</span>
 <span class="sd">        Zonal and meridional wind components respectively.</span>
-<span class="sd">    </span>
+
 <span class="sd">    **Optional argument:**</span>
-<span class="sd">    </span>
+
 <span class="sd">    *axis*</span>
 <span class="sd">        Index of the latitude dimension. This dimension will be reversed</span>
 <span class="sd">        in the input arrays. Defaults to 0 (the first dimension).</span>
-<span class="sd">    </span>
+
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    *ur*, *vr*</span>
+<span class="sd">        Zonal and meridional wind components with the latitude dimensions</span>
+<span class="sd">        reversed. These are always copies of the input.</span>
+
+<span class="sd">    **See also:**</span>
+
+<span class="sd">    `order_latdim`.</span>
+
 <span class="sd">    **Examples:**</span>
 
 <span class="sd">    Reverse the dimension corresponding to latitude when it is the first</span>
-<span class="sd">    dimension of the inputs:</span>
+<span class="sd">    dimension of the inputs::</span>
 
-<span class="sd">    &gt;&gt;&gt; u, v = reverse_latdim(u, v)</span>
+<span class="sd">        u, v = reverse_latdim(u, v)</span>
 
 <span class="sd">    Reverse the dimension corresponding to latitude when it is the third</span>
-<span class="sd">    dimension of the inputs:</span>
+<span class="sd">    dimension of the inputs::</span>
 
-<span class="sd">    &gt;&gt;&gt; u, v = reverse_latdim(u, v, axis=2)</span>
+<span class="sd">        u, v = reverse_latdim(u, v, axis=2)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">slicelist</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">ndim</span>
@@ -292,7 +324,7 @@
     <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
 
 </div>
-<div class="viewcode-block" id="order_latdim"><a class="viewcode-back" href="../../references.html#windspharm.tools.order_latdim">[docs]</a><span class="k">def</span> <span class="nf">order_latdim</span><span class="p">(</span><span class="n">latdim</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="order_latdim"><a class="viewcode-back" href="../../api/windspharm.tools.html#windspharm.tools.order_latdim">[docs]</a><span class="k">def</span> <span class="nf">order_latdim</span><span class="p">(</span><span class="n">latdim</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Ensure the latitude dimension is north-to-south.</span>
 
 <span class="sd">    Returns copies of the latitude dimension and wind components</span>
@@ -313,29 +345,42 @@
 <span class="sd">    *axis*</span>
 <span class="sd">        Index of the latitude dimension in the zonal and meridional wind</span>
 <span class="sd">        components. Defaults to 0 (the first dimension).</span>
+<span class="sd">    </span>
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    *latdimr*</span>
+<span class="sd">        Possibly reversed *latdim*, always a copy of *latdim*.</span>
+
+<span class="sd">    *ur*, *vr*</span>
+<span class="sd">        Possibly reversed *u* and *v* respectively. Always copies of *u*</span>
+<span class="sd">        and *v* respectively.</span>
+
+<span class="sd">    **See also:**</span>
+
+<span class="sd">    `reverse_latdim`.</span>
 
 <span class="sd">    **Examples:**</span>
 
 <span class="sd">    Order the latitude dimension when latitude is the first dimension of</span>
-<span class="sd">    the wind components:</span>
+<span class="sd">    the wind components::</span>
 
-<span class="sd">    &gt;&gt;&gt; latdim, u, v = order_latdim(latdim, u, v)</span>
+<span class="sd">        latdim, u, v = order_latdim(latdim, u, v)</span>
 
 <span class="sd">    Order the latitude dimension when latitude is the third dimension of</span>
-<span class="sd">    the wind components:</span>
+<span class="sd">    the wind components::</span>
 
-<span class="sd">    &gt;&gt;&gt; latdim, u, v = order_latdim(latdim, u, v, axis=2)</span>
+<span class="sd">        latdim, u, v = order_latdim(latdim, u, v, axis=2)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">latdim</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">latdim</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">latdim</span> <span class="o">=</span> <span class="n">latdim</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">latdim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">latdim</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
         <span class="n">latdim</span> <span class="o">=</span> <span class="n">latdim</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c"># reverse_latdim() will make copies of u and v</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">reverse_latdim</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">latdim</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
-
-</div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># we return copies from this function</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">latdim</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
 </pre></div>
 
           </div>
@@ -343,11 +388,11 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<h3>Table Of Contents</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../references.html">API References</a></li>
+    <h3>Table Of Contents</h3>
+    <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../downloads.html">Downloads</a></li>
 </ul>
 
 
@@ -377,7 +422,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">windspharm 1.1.0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">windspharm 1.2.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
