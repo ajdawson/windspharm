@@ -1,10 +1,13 @@
 {% extends "!layout.html" %}
 
 
+{% block sidebar2 %}{{ sidebar() }}{% endblock %}
+{% block sidebar1 %}{% endblock %}
+
 {% block relbar1 %}
 
 <!-- add the logo to the top of the page -->
-<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<div style="background-color: white; text-align: left; padding: 18px 10px 19px 15px">
 <a href="{{ pathto('index') }}"><img src="{{
 pathto("_static/logo.png", 1) }}" border="0" alt="sampledoc"/></a>
 </div>
@@ -18,7 +21,6 @@ pathto("_static/logo.png", 1) }}" border="0" alt="sampledoc"/></a>
 
 
 {% block sidebartoc %}
-<h3>{{ _('Table Of Contents') }}</h3>
-{{ toctree() }}
+    <h3>{{ _('Table Of Contents') }}</h3>
+    {{ toctree(includehidden=True) }}
 {% endblock %}
-
