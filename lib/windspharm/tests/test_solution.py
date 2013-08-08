@@ -52,9 +52,14 @@ class SolutionTest(VectorWindTest):
                                             cls.solution['vwnd'], **kwargs)
         except KeyError:
             raise SkipTest(skip_message.format(cls.interface))
+        cls.unmodify_solution()
 
     @classmethod
     def modify_solution(cls):
+        pass
+
+    @classmethod
+    def unmodify_solution(cls):
         pass
 
     def test_magnitude(self):
@@ -213,6 +218,21 @@ class TestCDMSGridTranspose(CDMSSolutionTest):
         for field_name in cls.solution:
             cls.solution[field_name] = cls.solution[field_name].reorder('xy')
 
+class TestCDMSInvertedLatitude(CDMSSolutionTest):
+    gridtype = 'regular'
+
+    @classmethod
+    def modify_solution(cls):
+        for field_name in ('uwnd', 'vwnd'):
+            cls.solution[field_name] = \
+                cls.solution[field_name](latitude=(-90, 90))
+
+    @classmethod
+    def unmodify_solution(cls):
+        for field_name in ('uwnd', 'vwnd'):
+            cls.solution[field_name] = \
+                cls.solution[field_name](latitude=(90, -90))
+
 
 #-----------------------------------------------------------------------------
 # Tests for the Iris interface
@@ -240,3 +260,17 @@ class TestIrisGridTranspose(IrisSolutionTest):
     def modify_solution(cls):
         for field_name in cls.solution.keys():
             cls.solution[field_name].transpose([1, 0])
+
+
+class TestIrisInvertedLatitude(IrisSolutionTest):
+    gridtype = 'regular'
+
+    @classmethod
+    def modify_solution(cls):
+        for field_name in ('uwnd', 'vwnd'):
+            cls.solution[field_name] = cls.solution[field_name][::-1]
+
+    @classmethod
+    def unmodify_solution(cls):
+        for field_name in ('uwnd', 'vwnd'):
+            cls.solution[field_name] = cls.solution[field_name][::-1]
