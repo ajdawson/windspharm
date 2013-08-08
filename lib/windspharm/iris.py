@@ -63,6 +63,14 @@ class VectorWind(object):
         # Extract the latitude and longitude dimension coordinates.
         lat, lat_dim = _dim_coord_and_dim(u, 'latitude')
         lon, lon_dim = _dim_coord_and_dim(v, 'longitude')
+        # Reverse the latitude dimension if necessary.
+        if (lat.points[0] < lat.points[1]):
+            # need to reverse latitude dimension
+            u = reverse(u, lat_dim)
+            v = reverse(v, lat_dim)
+            lat, lat_dim = _dim_coord_and_dim(u, 'latitude')
+        # Determine the grid type of the input.
+        gridtype = self._gridtype(lat.points)
         # Determine the ordering list (input to transpose) which will put the
         # latitude and longitude dimensions at the front of the cube's
         # dimensions, and the ordering list which will reverse this process.
@@ -74,13 +82,6 @@ class VectorWind(object):
         v = v.copy()
         u.transpose(apiorder)
         v.transpose(apiorder)
-        # Reverse the latitude dimension if necessary.
-        if (lat.points[0] < lat.points[1]):
-            # need to reverse latitude dimension
-            u = reverse(u, lat_dim)
-            v = reverse(v, lat_dim)
-        # Determine the grid type of the input.
-        gridtype = self._gridtype(lat.points)
         # Records the current shape and dimension coordinates of the inputs.
         self._ishape = u.shape
         self._coords = u.dim_coords
