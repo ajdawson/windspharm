@@ -5,6 +5,12 @@ Changelog
 v1.2.x
 ------
 
+v1.2.1
+~~~~~~
+
+* Fixed error in the iris interface where cubes with a south-north latitude dimension
+  could not be used [`#22 <https://github.com/ajdawson/windspharm/pull/22>`_].
+
 v1.2.0
 ~~~~~~
 
