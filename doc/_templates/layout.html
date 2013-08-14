@@ -1,26 +1,15 @@
-{% extends "!layout.html" %}
+{%- extends "sphinx13_mod/layout.html" %}
 
 
-{% block sidebar2 %}{{ sidebar() }}{% endblock %}
-{% block sidebar1 %}{% endblock %}
-
-{% block relbar1 %}
-
-<!-- add the logo to the top of the page -->
-<div style="background-color: white; text-align: left; padding: 18px 10px 19px 15px">
-<a href="{{ pathto('index') }}"><img src="{{
-pathto("_static/logo.png", 1) }}" border="0" alt="sampledoc"/></a>
+{# put a header image on each page #}
+{% block header %}
+<div class="pageheader">
+  <div>
+    <a href="{{ pathto('index') }}">
+      <img src="{{ pathto('_static/headerimage.png', 1) }}" alt="SPHINX" />
+    </a>
+  </div>
 </div>
-
-<!-- add the github ribbon to the corner -->
-<a href="https://github.com/ajdawson/windspharm"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
-
-{{ super() }}
-
 {% endblock %}
 
 
-{% block sidebartoc %}
-    <h3>{{ _('Table Of Contents') }}</h3>
-    {{ toctree(includehidden=True) }}
-{% endblock %}
