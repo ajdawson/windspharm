@@ -8,7 +8,7 @@
     
     <title>Streamfunction and velocity potential &mdash; windspharm 1.2.1 documentation</title>
     
-    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -28,24 +28,51 @@
     <link rel="up" title="Iris interface examples" href="iris_examples_index.html" />
     <link rel="next" title="Rossby wave source" href="rws_iris.html" />
     <link rel="prev" title="Iris interface examples" href="iris_examples_index.html" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+     
+        <style type="text/css">
+            table.right { float: right; margin-left: 20px; }
+            table.right td { border: 1px solid #ccc; }
+        </style>
+        <script type="text/javascript">
+            // intelligent scrolling of the sidebar content
+            $(window).scroll(function() {
+                var sb = $('.sphinxsidebarwrapper');
+                var win = $(window);
+                var sbh = sb.height();
+                var offset = $('.sphinxsidebar').position()['top'];
+                var wintop = win.scrollTop();
+                var winbot = wintop + win.innerHeight();
+                var curtop = sb.position()['top'];
+                var curbot = curtop + sbh;
+                // does sidebar fit in window?
+                if (sbh < win.innerHeight()) {
+                    // yes: easy case -- always keep at the top
+                    sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                         $(document).height() - sbh - 200]));
+                } else {
+                    // no: only scroll if top/bottom edge of sidebar is at
+                    // top/bottom edge of window
+                    if (curtop > wintop && curbot > winbot) {
+                        sb.css('top', $u.max([wintop - offset - 10, 0]));
+                    } else if (curtop < wintop && curbot < winbot) {
+                        sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                             $(document).height() - sbh - 200]));
+                    }
+                }
+            });
+        </script>
 
   </head>
   <body>
-
-
-<!-- add the logo to the top of the page -->
-<div style="background-color: white; text-align: left; padding: 18px 10px 19px 15px">
-<a href="../index.html"><img src="../_static/logo.png" border="0" alt="sampledoc"/></a>
+<div class="pageheader">
+  <div>
+    <a href="../index.html">
+      <img src="../_static/headerimage.png" alt="SPHINX" />
+    </a>
+  </div>
 </div>
-
-<!-- add the github ribbon to the corner -->
-<a href="https://github.com/ajdawson/windspharm"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
-
 
     <div class="related">
       <h3>Navigation</h3>
@@ -54,21 +81,62 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="rws_iris.html" title="Rossby wave source"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="iris_examples_index.html" title="Iris interface examples"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">windspharm 1.2.1 documentation</a> &raquo;</li>
+    <li><a href="../index.html">home</a>|&nbsp;</li>
+    <li><a href="../search.html">search</a>|&nbsp;</li>
+
           <li><a href="index.html" >Examples</a> &raquo;</li>
           <li><a href="iris_examples_index.html" accesskey="U">Iris interface examples</a> &raquo;</li> 
       </ul>
     </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+    <h2>windspharm v1.2.1</h2>
+    <h3>Table of Contents</h3>
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../userguide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="standard_examples_index.html">Standard interface examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cdms_examples_index.html">cdms interface examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="iris_examples_index.html">Iris interface examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../downloads.html">Downloads</a></li>
+</ul>
 
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="iris_examples_index.html"
+                        title="previous chapter">Iris interface examples</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="rws_iris.html"
+                        title="next chapter">Rossby wave source</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/sfvp_iris.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -95,13 +163,14 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">iris</span>
+<span class="kn">import</span> <span class="nn">iris.plot</span> <span class="kn">as</span> <span class="nn">iplt</span>
+<span class="kn">from</span> <span class="nn">iris.coord_categorisation</span> <span class="kn">import</span> <span class="n">add_month</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mpl</span>
 <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;mathtext.default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;regular&#39;</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span><span class="p">,</span> <span class="n">addcyclic</span>
-<span class="kn">import</span> <span class="nn">iris</span>
-<span class="kn">from</span> <span class="nn">iris.coord_categorisation</span> <span class="kn">import</span> <span class="n">add_month</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">windspharm.iris</span> <span class="kn">import</span> <span class="n">VectorWind</span>
 <span class="kn">from</span> <span class="nn">windspharm.examples</span> <span class="kn">import</span> <span class="n">example_data_path</span>
@@ -114,6 +183,8 @@
     <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s">&#39;ignore&#39;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
     <span class="n">uwnd</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">example_data_path</span><span class="p">(</span><span class="s">&#39;uwnd_mean.nc&#39;</span><span class="p">))</span>
     <span class="n">vwnd</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">example_data_path</span><span class="p">(</span><span class="s">&#39;vwnd_mean.nc&#39;</span><span class="p">))</span>
+<span class="n">uwnd</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s">&#39;longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">circular</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">vwnd</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s">&#39;longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">circular</span> <span class="o">=</span> <span class="bp">True</span>
 
 <span class="c"># Create a VectorWind instance to handle the computation of streamfunction and</span>
 <span class="c"># velocity potential.</span>
@@ -130,29 +201,22 @@
 <span class="n">vp_dec</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">time_constraint</span><span class="p">)</span>
 
 <span class="c"># Plot streamfunction.</span>
-<span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">&#39;cyl&#39;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="n">llcrnrlon</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">llcrnrlat</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span>
-            <span class="n">urcrnrlon</span><span class="o">=</span><span class="mf">360.01</span><span class="p">,</span> <span class="n">urcrnrlat</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
-<span class="n">lons</span><span class="p">,</span> <span class="n">lats</span> <span class="o">=</span> <span class="n">sf_dec</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s">&#39;longitude&#39;</span><span class="p">),</span> <span class="n">sf_dec</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s">&#39;latitude&#39;</span><span class="p">)</span>
-<span class="n">sf_dec</span><span class="p">,</span> <span class="n">lonsc</span> <span class="o">=</span> <span class="n">addcyclic</span><span class="p">(</span><span class="n">sf_dec</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lons</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
-<span class="n">vp_dec</span><span class="p">,</span> <span class="n">lonsc</span> <span class="o">=</span> <span class="n">addcyclic</span><span class="p">(</span><span class="n">vp_dec</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lons</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lonsc</span><span class="p">,</span> <span class="n">lats</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
-
 <span class="n">clevs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">120</span><span class="p">]</span>
-<span class="n">m</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sf_dec</span><span class="o">*</span><span class="mf">1e-06</span><span class="p">,</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s">&#39;both&#39;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">()</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawparallels</span><span class="p">((</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawmeridians</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">360</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">))</span>
+<span class="n">fill_sf</span> <span class="o">=</span> <span class="n">iplt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">sf_dec</span><span class="o">*</span><span class="mf">1e-06</span><span class="p">,</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s">&#39;both&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">fill_sf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s">&#39;horizontal&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Streamfunction ($10^6$m$^2$s$^{-1}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 
 <span class="c"># Plot velocity potential.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">clevs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
-<span class="n">m</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vp_dec</span><span class="o">*</span><span class="mf">1e-06</span><span class="p">,</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s">&#39;both&#39;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">()</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawparallels</span><span class="p">((</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawmeridians</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">360</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">))</span>
+<span class="n">fill_vp</span> <span class="o">=</span> <span class="n">iplt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">vp_dec</span><span class="o">*</span><span class="mf">1e-06</span><span class="p">,</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s">&#39;both&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">fill_vp</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s">&#39;horizontal&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Velocity Potential ($10^6$m$^2$s$^{-1}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -161,42 +225,6 @@
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-    <h3>Table Of Contents</h3>
-    <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="standard_examples_index.html">Standard interface examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cdms_examples_index.html">cdms interface examples</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="iris_examples_index.html">Iris interface examples</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../downloads.html">Downloads</a></li>
-</ul>
-
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="iris_examples_index.html"
-                        title="previous chapter">Iris interface examples</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="rws_iris.html"
-                        title="next chapter">Rossby wave source</a></p>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -208,15 +236,14 @@
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="rws_iris.html" title="Rossby wave source"
              >next</a> |</li>
         <li class="right" >
           <a href="iris_examples_index.html" title="Iris interface examples"
              >previous</a> |</li>
-        <li><a href="../index.html">windspharm 1.2.1 documentation</a> &raquo;</li>
+    <li><a href="../index.html">home</a>|&nbsp;</li>
+    <li><a href="../search.html">search</a>|&nbsp;</li>
+
           <li><a href="index.html" >Examples</a> &raquo;</li>
           <li><a href="iris_examples_index.html" >Iris interface examples</a> &raquo;</li> 
       </ul>

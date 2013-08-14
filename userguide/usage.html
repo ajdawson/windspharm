@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basic usage &mdash; windspharm 1.2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinx13_mod.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="windspharm 1.2.1 documentation" href="../index.html" />
+    <link rel="up" title="User Guide" href="index.html" />
+    <link rel="next" title="Examples" href="../examples/index.html" />
+    <link rel="prev" title="windspharm interfaces" href="interfaces.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+     
+        <style type="text/css">
+            table.right { float: right; margin-left: 20px; }
+            table.right td { border: 1px solid #ccc; }
+        </style>
+        <script type="text/javascript">
+            // intelligent scrolling of the sidebar content
+            $(window).scroll(function() {
+                var sb = $('.sphinxsidebarwrapper');
+                var win = $(window);
+                var sbh = sb.height();
+                var offset = $('.sphinxsidebar').position()['top'];
+                var wintop = win.scrollTop();
+                var winbot = wintop + win.innerHeight();
+                var curtop = sb.position()['top'];
+                var curbot = curtop + sbh;
+                // does sidebar fit in window?
+                if (sbh < win.innerHeight()) {
+                    // yes: easy case -- always keep at the top
+                    sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                         $(document).height() - sbh - 200]));
+                } else {
+                    // no: only scroll if top/bottom edge of sidebar is at
+                    // top/bottom edge of window
+                    if (curtop > wintop && curbot > winbot) {
+                        sb.css('top', $u.max([wintop - offset - 10, 0]));
+                    } else if (curtop < wintop && curbot < winbot) {
+                        sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                             $(document).height() - sbh - 200]));
+                    }
+                }
+            });
+        </script>
+
+  </head>
+  <body>
+<div class="pageheader">
+  <div>
+    <a href="../index.html">
+      <img src="../_static/headerimage.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../examples/index.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="interfaces.html" title="windspharm interfaces"
+             accesskey="P">previous</a> |</li>
+    <li><a href="../index.html">home</a>|&nbsp;</li>
+    <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="index.html" accesskey="U">User Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+    <h2>windspharm v1.2.1</h2>
+    <h3>Table of Contents</h3>
+    <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html"><strong>windspharm</strong> interfaces</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Basic usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../downloads.html">Downloads</a></li>
+</ul>
+
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="interfaces.html"
+                        title="previous chapter"><strong>windspharm</strong> interfaces</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../examples/index.html"
+                        title="next chapter">Examples</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/userguide/usage.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="basic-usage">
+<h1>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h1>
+<p>This section describes the basic usage of the <strong>VectorWind</strong> objects in a generic way that is applicable to all interfaces.</p>
+<div class="section" id="importing-a-vectorwind-object">
+<h2>Importing a <strong>VectorWind</strong> object<a class="headerlink" href="#importing-a-vectorwind-object" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>VectorWind</strong> objects are stored in interface specific modules: <strong>windspharm.&lt;interface&gt;.VectorWind</strong>. To import the standard interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">windspharm.standard</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+</pre></div>
+</div>
+<p>the iris interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">windspharm.iris</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+</pre></div>
+</div>
+<p>and the cdms interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">windspharm.cdms</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-a-vectorwind-object">
+<h2>Creating a <strong>VectorWind</strong> object<a class="headerlink" href="#creating-a-vectorwind-object" title="Permalink to this headline">¶</a></h2>
+<p>Creating a <strong>VectorWind</strong> object from eastward and northward wind components <em>u</em> and <em>v</em> can be as simple as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the case of the <a class="reference internal" href="../api/windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a> interface there is a keyword argument <em>gridtype</em> which should be set to either <em>&#8216;regular&#8217;</em> for equally spaced grids or <em>&#8216;gaussian&#8217;</em> for Gaussian grids (the default is <em>&#8216;regular&#8217;</em>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="s">&#39;gaussian&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="computing-with-vectorwind">
+<h2>Computing with <strong>VectorWind</strong><a class="headerlink" href="#computing-with-vectorwind" title="Permalink to this headline">¶</a></h2>
+<p>To perform a computation you call one of the methods of the <strong>VectorWind</strong> object.
+For example, to compute the vorticity and divergence:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">vrt</span><span class="p">,</span> <span class="n">div</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">vrtdiv</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>All the computation methods take an optional <em>truncation</em> keyword argument which can be used to truncate the spectral coefficients before doing the computation.</p>
+<p>It is also possible to compute gradients of scalar fields, which is useful for many applications. For example, to compute the gradients of absolute vorticity:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">absvrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">absolutevorticity</span><span class="p">()</span>
+<span class="n">absvrt_u</span><span class="p">,</span> <span class="n">absvrt_v</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">absvrt</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some of the quantities can be computed separately or part of another computation e.g. <strong>vorticity()</strong> and <strong>divergence()</strong> or <strong>vrtdiv()</strong>. If you only want one of the results then you can call the single version, but if you want both the method that computes both at once will always be faster than calling both single versions.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../examples/index.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="interfaces.html" title="windspharm interfaces"
+             >previous</a> |</li>
+    <li><a href="../index.html">home</a>|&nbsp;</li>
+    <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="index.html" >User Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2013, Andrew Dawson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>
