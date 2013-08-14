@@ -1,8 +1,10 @@
+.. default-role:: py:obj
+
 API reference
 =============
 
-.. default-role:: py:obj
-
+Full documentation
+------------------
 
 .. toctree::
    :maxdepth: 1

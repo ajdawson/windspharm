@@ -4,6 +4,7 @@
    :maxdepth: 2
    :hidden:
 
+   userguide/index
    examples/index
    api/index
    downloads
