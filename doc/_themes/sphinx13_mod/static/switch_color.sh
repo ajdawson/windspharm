@@ -12,22 +12,22 @@ if [ $# -ne 1 ]; then
 fi
 color="$1"
 
-link_destinations=("sphinx13_mod.css"
-                   "headerbg.png"
-                   "footerbg.png"
-                   "relbg.png")
+destinations=("sphinx13_mod.css"
+              "headerbg.png"
+              "footerbg.png"
+              "relbg.png")
 
-for link_dest in ${link_destinations[@]}; do
-    link_target_name="${link_dest%.*}"
-    link_target_ext="${link_dest##*.}"
-    link_target="${link_target_name}-${color}.${link_target_ext}"
-    if [ ! -f $link_target ]; then
-        echo "error: link target does not exist '${link_target}'"
+for dest in ${destinations[@]}; do
+    target_name="${dest%.*}"
+    target_ext="${dest##*.}"
+    target="${target_name}-${color}.${target_ext}"
+    if [ ! -f $target ]; then
+        echo "error: target does not exist '${target}'"
         exit 2
     fi
-    if [ -f $link_dest ]; then
-        rm -f $link_dest
+    if [ -f $dest ]; then
+        rm -f $dest
     fi
-    ln -s $link_target $link_dest
-    echo "ln -s $link_target $link_dest"
+    cp $target $dest
+    echo "cp $target $dest"
 done
