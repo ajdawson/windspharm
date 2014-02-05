@@ -1,5 +1,5 @@
 """Build and install the windspharm package."""
-from distutils.core import setup
+from setuptools import setup
 
 for line in open('lib/windspharm/__init__.py').readlines():
     if line.startswith('__version__'):
@@ -23,4 +23,5 @@ setup(name='windspharm',
       """,
       packages=packages,
       package_dir={'':'lib'},
-      package_data=package_data)
+      package_data=package_data,
+      use_2to3=True)
