@@ -2,31 +2,31 @@ language: python
 
 python:
   - "2.7"
+  - "3.3"
 
 install:
 
-# add repository (from iris .travis.yml)
-  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3E5C1192
-  - yes | sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-  - sudo apt-get update
-
-# install dependencies
-  - sudo apt-get install python-pip python-scipy cython
+# install required dependencies
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo apt-get install python-pip python-numpy; else pip install numpy; fi
   - sudo apt-get install gfortran
-  - sudo apt-get install libudunits2-dev libhdf5-serial-dev libnetcdf-dev netcdf-bin
-  - sudo apt-get install libgeos-dev libproj-dev
-  - sudo apt-get install make unzip python-sphinx
-  - sudo /usr/bin/pip install --use-mirrors shapely nose pyshp pep8 mock
-#  - sudo /usr/bin/pip install matplotlib
-  - sudo /usr/bin/pip install pyke netCDF4
-  - sudo /usr/bin/pip install cdat-lite
-  - sudo /usr/bin/pip install coverage
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo /usr/bin/pip install nose coverage six; else pip install nose coverage six; fi
 
 #-----------------------------------------------------------------------------
 # create a directory to download and install dependencies in
 #
   - mkdir ../prereqs
   - cd ../prereqs
+
+#-----------------------------------------------------------------------------
+# pyspharm is the primary dependency of windspharm
+#
+# pyspharm (1.0.8 required)
+  - wget http://pyspharm.googlecode.com/files/pyspharm-1.0.8.tar.gz
+  - tar xfvz pyspharm-1.0.8.tar.gz
+  - cd pyspharm-1.0.8
+  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then cp ../../windspharm/.pyspharm.python3.patch . && patch -p0 < .pyspharm.python3.patch; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then yes | sudo /usr/bin/python setup.py install; else yes | python setup.py install; fi
+  - cd ..
 
 #-----------------------------------------------------------------------------
 # Dependencies for iris and iris itself
@@ -43,35 +43,40 @@ install:
 #  - cd python
 #  - sudo /usr/bin/python setup.py install
 #  - cd ../..
-# distutils
-  - wget http://python-distribute.org/distribute_setup.py
-  - sudo /usr/bin/python distribute_setup.py
-# cartopy
-  - git clone git://github.com/SciTools/cartopy.git
-  - cd cartopy
-  - git checkout v0.7.0
-  - sudo /usr/bin/python setup.py install
-  - cd ..
-# iris
-  - git clone git://github.com/SciTools/iris.git
-  - cd iris
-  - git checkout v1.3.0
-  - /usr/bin/python setup.py std_names
-  - sudo /usr/bin/python setup.py install
-  - cd ..
 
-#-----------------------------------------------------------------------------
-# pyspharm is the primary dependency of windspharm
-#
-# pyspharm (1.0.8 required)
-  - wget http://pyspharm.googlecode.com/files/pyspharm-1.0.8.tar.gz
-  - tar xfvz pyspharm-1.0.8.tar.gz
-  - cd pyspharm-1.0.8
-  - yes | sudo /usr/bin/python setup.py install
-  - cd ../../windspharm
+# Only do these ones for Python 2.* because Iris/cdms are not Python3 compatible anyway
+# add repository (from iris .travis.yml)
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3E5C1192; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then yes | sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo apt-get update; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo apt-get install python-scipy cython; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo apt-get install libudunits2-dev libhdf5-serial-dev libnetcdf-dev netcdf-bin; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo apt-get install libgeos-dev libproj-dev; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo apt-get install make unzip python-sphinx; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo /usr/bin/pip install --use-mirrors shapely pyshp pep8 mock; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo /usr/bin/pip install pyke netCDF4; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo /usr/bin/pip install cdat-lite; fi
+
+# distutils
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then wget http://python-distribute.org/distribute_setup.py; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo /usr/bin/python distribute_setup.py; fi
+# cartopy
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then git clone git://github.com/SciTools/cartopy.git; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then cd cartopy; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then git checkout v0.7.0; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo /usr/bin/python setup.py install; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then cd ..; fi
+# iris
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then git clone git://github.com/SciTools/iris.git; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then cd iris; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then git checkout v1.3.0; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then /usr/bin/python setup.py std_names; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo /usr/bin/python setup.py install; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then cd ..; fi
+  - cd ../windspharm
 
 script:
-  - /usr/bin/python tests.py --verbosity=2 --with-coverage --cover-package=windspharm
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then /usr/bin/python tests.py --verbosity=2 --with-coverage --cover-package=windspharm; else python tests.py --verbosity=2 --with-coverage --cover-package=windspharm; fi
 
 notifications:
   email: false

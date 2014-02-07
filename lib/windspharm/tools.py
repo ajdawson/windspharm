@@ -24,6 +24,7 @@ Tools for managing data for use with `~windspharm.standard.VectorWind`
 # THE SOFTWARE.
 from __future__ import absolute_import
 
+from six.moves import xrange
 import numpy as np
 
 

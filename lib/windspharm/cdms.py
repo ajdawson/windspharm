@@ -119,7 +119,7 @@ class VectorWind(object):
 
     def _metadata(self, var, **attributes):
         """Re-shape and re-order raw results, and add meta-data."""
-        if 'id' not in attributes.keys():
+        if 'id' not in list(attributes.keys()):
             raise ValueError('meta-data construction requires id')
         var = cdms2.createVariable(var.reshape(self.ishape), axes=self.axes)
         var = var.reorder(self.order)
