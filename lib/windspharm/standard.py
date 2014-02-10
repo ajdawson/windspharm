@@ -285,7 +285,7 @@ class VectorWind(object):
                 lat = np.arange(90 - dlat / 2., -90, -dlat)
         try:
             cp = 2. * omega * np.sin(np.deg2rad(lat))
-        except TypeError, ValueError:
+        except (TypeError, ValueError):
             raise ValueError('invalid value for omega: {!r}'.format(omega))
         indices = [slice(0, None)] + [np.newaxis] * (len(self.u.shape) - 1)
         f = cp[indices] * np.ones(self.u.shape, dtype=np.float32)

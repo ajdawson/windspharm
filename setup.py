@@ -6,9 +6,11 @@ for line in open('lib/windspharm/__init__.py').readlines():
         exec(line)
 
 packages = ['windspharm',
-            'windspharm.examples']
+            'windspharm.examples',
+            'windspharm.tests' ]
 
-package_data = {'windspharm.examples': ['example_data/*']}
+package_data = {'windspharm.examples': ['example_data/*'],
+                'windspharm.tests': ['data/*.npy'],}
 
 setup(name='windspharm',
       version=__version__,
