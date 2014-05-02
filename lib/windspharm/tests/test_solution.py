@@ -140,6 +140,12 @@ class SolutionTest(VectorWindTest):
         assert_almost_equal(error(upsi1, upsi2), 0., places=5)
         assert_almost_equal(error(vpsi1, vpsi2), 0., places=5)
 
+    def test_truncate(self):
+        # vorticity truncated to T21 matches reference?
+        div_trunc = self.vw.truncate(self.solution['vrt'], truncation=21)
+        assert_almost_equal(error(div_trunc, self.solution['vrt_trunc']),
+                            0., places=5)
+
 
 #-----------------------------------------------------------------------------
 # Tests for the standard interface

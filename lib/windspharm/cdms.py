@@ -731,3 +731,70 @@ class VectorWind(object):
         uchi.long_name = 'zonal_gradient_of_{0:s}'.format(chi.id)
         vchi.long_name = 'meridional_gradient_of_{0:s}'.format(chi.id)
         return uchi, vchi
+
+    def truncate(self, field, truncation=None):
+        """Apply spectral truncation to a scalar field.
+
+        This is useful to represent other fields in a way consistent
+        with the output of other `VectorWind` methods.
+
+        **Argument:**
+
+        *field*
+            A scalar field. It must be a `cdms2` variable with the same
+            latitude and longitude dimensions as the vector wind
+            components that initialized the `VectorWind` instance.
+
+        **Optional argument:**
+
+        *truncation*
+            Truncation limit (triangular truncation) for the spherical
+            harmonic computation. If not specified it will default to
+            *nlats - 1* where *nlats* is the number of latitudes.
+
+        **Returns:**
+
+        *truncated_field*
+            The field with spectral truncation applied.
+
+        **Examples:**
+
+        Truncate a scalar field to the computational resolution of the
+        `VectorWind` instance::
+
+            scalar_field_truncated = w.truncate(scalar_field)
+
+        Truncate a scalar field to T21::
+
+            scalar_field_T21 = w.truncate(scalar_field, truncation=21)
+
+        """
+        # Check that the input is a cdms2 variable.
+        if not cdms2.isVariable(field):
+            raise TypeError('scalar field must be a cdms2 variable')
+        order = field.getOrder()
+        if 'x' not in order or 'y' not in order:
+            raise ValueError('a latitude-longitude grid is required')
+        # Assess how to re-order the inputs to be compatible with the
+        # computation API.
+        apiorder = 'yx' + ''.join([a for a in order if a not in 'xy'])
+        # Clone the field, this one will be used for the output, and reorder
+        # its axes to be compatible with the computation API.
+        field = field.clone()
+        field = field.reorder(apiorder)
+        # Record the shape and axes in the API order.
+        ishape = field.shape
+        axes = field.getAxisList()
+        # Extract the data from the field in the correct shape for the API.
+        fielddata = field.asma().reshape(
+            field.shape[:2] + (np.prod(field.shape[2:]),))
+        # Apply the truncation.
+        fieldtrunc = self.api.truncate(fielddata, truncation=truncation)
+        # Set the data values of the field to the re-shaped truncated values.
+        field[:] = fieldtrunc.reshape(ishape)
+        # Put the field back in its original order.
+        field = field.reorder(order)
+        # Set the variable id to indicate the truncation.
+        tnumber = truncation or fieldtrunc.shape[0] - 1
+        field.id = '{}_T{}'.format(field.id, tnumber)
+        return field
