@@ -42,6 +42,8 @@ After downloading the source code archive, unzip it and change into the unzipped
 
 Alternatively you can check out the source code for the development version from the `github repository <https://github.com/ajdawson/windspharm>`_.
 
+Installation requires setuptools_.
+
 
 Getting Started
 ---------------
@@ -77,7 +79,7 @@ The following is a very simple illustrative example which computes the streamfun
 Requirements
 ------------
 
-This package requires as a minimum that you have numpy_ and pyspharm_ available.
+This package requires as a minimum that you have numpy_ and pyspharm_ available, and requires setuptools_ for installation.
 It is recommended that you use pyspharm version 1.0.8 or later, versions of pyspharm prior to 1.0.7 should not be used at all due to a serious bug.
 The `windspharm.iris` interface can only be used if the `iris` module is available (see the iris_ documentation).
 The `windspharm.cdms` interface can only be used if the `cdms2` module is available.
@@ -123,6 +125,8 @@ If you have code you would like to contribute, fork the `repository <http://gith
 .. _cdat-lite: http://proj.badc.rl.ac.uk/cedaservices/wiki/CdatLite
 
 .. _nose: https://nose.readthedocs.org/en/latest/
+
+.. _setuptools: https://pypi.python.org/pypi/setuptools
 
 .. _issues: http://github.com/ajdawson/windspharm/issues?state=open
 

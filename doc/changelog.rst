@@ -2,6 +2,16 @@ Changelog
 =========
 
 
+v1.3.x
+------
+
+v1.3.0
+~~~~~~
+
+* Added a method to apply spectral truncation to a scalar field.
+* Basic Python3 compatibility using 2to3 (pyspharm does not yet have Python3 support but some Linux distros provide a patched package).
+
+
 v1.2.x
 ------
 
