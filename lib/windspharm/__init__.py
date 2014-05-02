@@ -29,7 +29,7 @@ from . import tools
 __all__ = []
 
 # Package version number.
-__version__ = '1.3.x'
+__version__ = '1.4.x'
 
 try:
     from . import cdms
