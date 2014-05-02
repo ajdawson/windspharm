@@ -734,6 +734,60 @@ class VectorWind(object):
         vchi.long_name = 'meridional_gradient_of_{!s}'.format(name)
         return uchi, vchi
 
+    def truncate(self, field, truncation=None):
+        """Apply spectral truncation to a scalar field.
+
+        This is useful to represent other fields in a way consistent
+        with the output of other `VectorWind` methods.
+
+        **Argument:**
+
+        *field*
+            A scalar field. It must be a `~iris.cube.Cube`
+            with the same latitude and longitude dimensions as the
+            vector wind components that initialized the `VectorWind`
+            instance.
+
+        **Optional argument:**
+
+        *truncation*
+            Truncation limit (triangular truncation) for the spherical
+            harmonic computation. If not specified it will default to
+            *nlats - 1* where *nlats* is the number of latitudes.
+
+        **Returns:**
+
+        *truncated_field*
+            The field with spectral truncation applied.
+
+        **Examples:**
+
+        Truncate a scalar field to the computational resolution of the
+        `VectorWind` instance::
+
+            scalar_field_truncated = w.truncate(scalar_field)
+
+        Truncate a scalar field to T21::
+
+            scalar_field_T21 = w.truncate(scalar_field, truncation=21)
+
+        """
+        if type(field) is not Cube:
+            raise TypeError('scalar field must be an iris cube')
+        lat, lat_dim = _dim_coord_and_dim(field, 'latitude')
+        lon, lon_dim = _dim_coord_and_dim(field, 'longitude')
+        apiorder, reorder = self._get_apiorder_reorder(field, lat_dim, lon_dim)
+        field = field.copy()
+        field.transpose(apiorder)
+        ishape = field.shape
+        coords = field.dim_coords
+        fielddata = field.data.reshape(
+            field.shape[:2] + (np.prod(field.shape[2:]),))
+        fieldtrunc = self._api.truncate(fielddata, truncation=truncation)
+        field.data = fieldtrunc.reshape(ishape)
+        field.transpose(reorder)
+        return field
+
 
 def _dim_coord_and_dim(cube, coord):
     """

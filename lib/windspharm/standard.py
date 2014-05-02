@@ -600,3 +600,54 @@ class VectorWind(object):
             raise ValueError('input field is not compatitble')
         uchi, vchi = self.s.getgrad(chispec)
         return uchi, vchi
+
+    def truncate(self, field, truncation=None):
+        """Apply spectral truncation to a scalar field.
+
+        This is useful to represent other fields in a way consistent
+        with the output of other `VectorWind` methods.
+
+        **Argument:**
+
+        *field*
+            A scalar field. Its shape must be either (nlat, nlon) or
+            (nlat, nlon, nfields) where nlat and nlon are the same
+            as those for the vector wind components that initialized the
+            `VectorWind` instance.
+
+        **Optional argument:**
+
+        *truncation*
+            Truncation limit (triangular truncation) for the spherical
+            harmonic computation. If not specified it will default to
+            *nlats - 1* where *nlats* is the number of latitudes.
+
+        **Returns:**
+
+        *truncated_field*
+            The field with spectral truncation applied.
+
+        **Examples:**
+
+        Truncate a scalar field to the computational resolution of the
+        `VectorWind` instance::
+
+            scalar_field_truncated = w.truncate(scalar_field)
+
+        Truncate a scalar field to T21::
+
+            scalar_field_T21 = w.truncate(scalar_field, truncation=21)
+
+        """
+        try:
+            field = field.filled(fill_value=np.nan)
+        except AttributeError:
+            pass
+        if np.isnan(field).any():
+            raise ValueError('field cannot contain missing values')
+        try:
+            fieldspec = self.s.grdtospec(field, ntrunc=truncation)
+        except ValueError:
+            raise ValueError('field is not compatible')
+        fieldtrunc = self.s.spectogrd(fieldspec)
+        return fieldtrunc

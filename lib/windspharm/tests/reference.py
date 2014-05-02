@@ -41,7 +41,7 @@ def __read_reference_solutions():
     """Read reference solutions from file."""
     exact = dict()
     for varid in ('psi', 'chi', 'vrt', 'div', 'uchi', 'vchi', 'upsi', 'vpsi',
-                  'chigradu', 'chigradv', 'uwnd', 'vwnd'):
+                  'chigradu', 'chigradv', 'uwnd', 'vwnd', 'vrt_trunc'):
         try:
             filename = os.path.join(test_data_path(),
                                     '{!s}.ref.npy'.format(varid))
