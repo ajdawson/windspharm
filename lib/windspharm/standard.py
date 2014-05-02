@@ -74,21 +74,16 @@ class VectorWind(object):
 
         """
         # For both the input components check if there are missing values by
-        # attempting to fill missing values and detect them. If the inputs are
-        # not masked arrays then this check isn't needed so take a copy.
+        # attempting to fill missing values with NaN and detect them. If the
+        # inputs are not masked arrays then take copies and check for NaN.
         try:
-            self.u = u.filled()
-            if (self.u == u.fill_value).any():
-                raise ValueError('u and v cannot contain missing values')
+            self.u = u.filled(fill_value=np.nan)
         except AttributeError:
             self.u = u.copy()
         try:
-            self.v = v.filled()
-            if (self.v == v.fill_value).any():
-                raise ValueError('u and v cannot contain missing values')
+            self.v = v.filled(fill_value=np.nan)
         except AttributeError:
             self.v = v.copy()
-        # Check for NaN values.
         if np.isnan(self.u).any() or np.isnan(self.v).any():
             raise ValueError('u and v cannot contain missing values')
         # Make sure the shapes of the two components match.
@@ -96,12 +91,8 @@ class VectorWind(object):
             raise ValueError('u and v must be the same shape')
         if len(u.shape) not in (2, 3):
             raise ValueError('u and v must be rank 2 or 3 arrays')
-        try:
-            # Get the number of latitudes and longitudes.
-            nlat = u.shape[0]
-            nlon = u.shape[1]
-        except AssertionError:
-            raise ValueError('nlon must be >= 4 and nlat must be >= 3')
+        nlat = u.shape[0]
+        nlon = u.shape[1]
         try:
             # Create a Spharmt object to do the computations.
             self.gridtype = gridtype.lower()
