@@ -43,7 +43,7 @@ After downloading the source code archive, unzip it and change into the unzipped
 
 `windspharm` can also be installed from PyPI using pip:
 
-.. code-block::
+.. code-block:: bash
 
    $ pip install windspharm
 
