@@ -34,15 +34,21 @@ Download & Installation
 -----------------------
 
 Released versions of `windspharm` can be downloaded from the :doc:`downloads` page.
-After downloading the source code archive, unzip it and change into the unzipped archive's directory, then to install in your home directory:
+You must have setuptools_ installed in order to install `windspharm`.
+After downloading the source code archive, unzip it and change into the unzipped archive's directory, then to install it:
 
 .. code-block:: bash
 
-   $ python setup.py install --user
+   $ python setup.py install
 
-Alternatively you can check out the source code for the development version from the `github repository <https://github.com/ajdawson/windspharm>`_.
+`windspharm` can also be installed from PyPI using pip:
 
-Installation requires setuptools_.
+.. code-block::
+
+   $ pip install windspharm
+
+
+You can also check out the source code for the development version from the `github repository <https://github.com/ajdawson/windspharm>`_ to access features which are not yet in the released version.
 
 
 Getting Started
@@ -106,7 +112,7 @@ It is always a good idea to run the tests during development, to do so:
 .. code-block:: bash
 
    $ cd windspharm
-   $ python tests.py
+   $ nosetests
 
 Running the tests requires nose_.
 
