@@ -28,6 +28,7 @@ install:
     - if [[ "$TRAVIS_PYTHON_VERSION" == 2* ]]; then
         conda config --add channels rsignell;
         conda install cdat-lite iris;
+        export UDUNITS2_XML_PATH=/home/travis/miniconda/envs/test-environment/share/udunits/udunits2.xml;
       fi
     # Install the package:
     - python setup.py install
