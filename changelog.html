@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Changelog &mdash; windspharm 1.3.0 documentation</title>
+    <title>Changelog &mdash; windspharm 1.3.1 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.3.0',
+        VERSION:     '1.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.3.0 documentation" href="index.html" />
+    <link rel="top" title="windspharm 1.3.1 documentation" href="index.html" />
     <link rel="up" title="Downloads" href="downloads.html" />
     <link rel="prev" title="Downloads" href="downloads.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
@@ -91,7 +91,7 @@
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.3.0</h2>
+    <h2>windspharm v1.3.1</h2>
     <h3>Table of Contents</h3>
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="userguide/index.html">User Guide</a></li>
@@ -137,40 +137,81 @@
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="v1-3-x">
 <h2>v1.3.x<a class="headerlink" href="#v1-3-x" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="v1-3-0">
-<h3>v1.3.0<a class="headerlink" href="#v1-3-0" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Release:</th><td class="field-body">v1.3.1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Date:</th><td class="field-body">1 June 2014</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Improved support for setuptools, users already using v1.3.0 need not upgrade to v1.3.1.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Release:</th><td class="field-body">v1.3.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Date:</th><td class="field-body">2 May 2014</td>
+</tr>
+</tbody>
+</table>
 <ul class="simple">
 <li>Added a method to apply spectral truncation to a scalar field.</li>
 <li>Basic Python3 compatibility using 2to3 (pyspharm does not yet have Python3 support but some Linux distros provide a patched package).</li>
 </ul>
 </div>
-</div>
 <div class="section" id="v1-2-x">
 <h2>v1.2.x<a class="headerlink" href="#v1-2-x" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="v1-2-1">
-<h3>v1.2.1<a class="headerlink" href="#v1-2-1" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Release:</th><td class="field-body">v1.2.1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Date:</th><td class="field-body">8 August 2013</td>
+</tr>
+</tbody>
+</table>
 <ul class="simple">
 <li>Fixed error in the iris interface where cubes with a south-north latitude dimension
 could not be used [<a class="reference external" href="https://github.com/ajdawson/windspharm/pull/22">#22</a>].</li>
 </ul>
-</div>
-<div class="section" id="v1-2-0">
-<h3>v1.2.0<a class="headerlink" href="#v1-2-0" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Release:</th><td class="field-body">v1.2.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Date:</th><td class="field-body">20 May 2013</td>
+</tr>
+</tbody>
+</table>
 <ul class="simple">
 <li>Prevented possible double copying of data in <tt class="xref py py-obj docutils literal"><span class="pre">order_latdim</span></tt> [<a class="reference external" href="https://github.com/ajdawson/windspharm/pull/16">#16</a>].</li>
 <li>Refactored test suite and added more test coverage [<a class="reference external" href="https://github.com/ajdawson/windspharm/pull/14">#14</a>].</li>
 <li>Fixed bug in calculation of the magnitude of a vector wind [<a class="reference external" href="https://github.com/ajdawson/windspharm/pull/13">#13</a>, <a class="reference external" href="https://github.com/ajdawson/windspharm/issues/11">#11</a>].</li>
 </ul>
 </div>
-</div>
 <div class="section" id="v1-1-x">
 <h2>v1.1.x<a class="headerlink" href="#v1-1-x" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="v1-1-0">
-<h3>v1.1.0<a class="headerlink" href="#v1-1-0" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Release:</th><td class="field-body">v1.1.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Date:</th><td class="field-body">10 January 2013</td>
+</tr>
+</tbody>
+</table>
 <ul class="simple">
 <li>First release.</li>
 </ul>
-</div>
 </div>
 </div>
 
@@ -197,7 +238,7 @@ could not be used [<a class="reference external" href="https://github.com/ajdaws
     </div>
     <div class="footer">
         &copy; Copyright 2012-2013, Andrew Dawson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
