@@ -20,6 +20,7 @@ Requirements
 ------------
 
 ``windspharm`` only requires ``numpy`` and ``pyspharm`` (version 1.0.8 or higher), but for full functionality (meta-data interfaces) either or both of the [``iris``](http://scitools.org.uk/iris/) module or the ``cdms2`` module is required.
+The setuptools package is required for installation.
 ``cdms2`` is part of the Climate Data Analysis Tools ([CDAT](http://www2-pcmdi.llnl.gov/cdat)) or can be obtained separately in the [cdat_lite](http://proj.badc.rl.ac.uk/ndg/wiki/CdatLite) package.
 
 
