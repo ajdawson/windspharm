@@ -34,7 +34,7 @@ uchi, vchi = w.irrotationalcomponent()
 etax, etay = w.gradient(eta)
 
 # Combine the components to form the Rossby wave source term.
-S = -eta * div - uchi * etax + vchi * etay
+S = -eta * div - (uchi * etax + vchi * etay)
 
 # Pick out the field for December and add a cyclic point (the cyclic point is
 # for plotting purposes).
