@@ -704,6 +704,7 @@ class VectorWind(object):
         # Check that the input is a cdms2 variable.
         if not cdms2.isVariable(chi):
             raise TypeError('scalar field must be a cdms2 variable')
+        name = chi.id
         order = chi.getOrder()
         if 'x' not in order or 'y' not in order:
             raise ValueError('a latitude-longitude grid is required')
@@ -729,10 +730,10 @@ class VectorWind(object):
         vchi = cdms2.createVariable(vchi, axes=axes)
         uchi = uchi.reorder(order)
         vchi = vchi.reorder(order)
-        uchi.id = '{0:s}_zonal'.format(chi.id)
-        vchi.id = '{0:s}_meridional'.format(chi.id)
-        uchi.long_name = 'zonal_gradient_of_{0:s}'.format(chi.id)
-        vchi.long_name = 'meridional_gradient_of_{0:s}'.format(chi.id)
+        uchi.id = '{0:s}_zonal'.format(name)
+        vchi.id = '{0:s}_meridional'.format(name)
+        uchi.long_name = 'zonal_gradient_of_{0:s}'.format(name)
+        vchi.long_name = 'meridional_gradient_of_{0:s}'.format(name)
         return uchi, vchi
 
     def truncate(self, field, truncation=None):
@@ -775,6 +776,7 @@ class VectorWind(object):
         # Check that the input is a cdms2 variable.
         if not cdms2.isVariable(field):
             raise TypeError('scalar field must be a cdms2 variable')
+        name = field.id
         order = field.getOrder()
         if 'x' not in order or 'y' not in order:
             raise ValueError('a latitude-longitude grid is required')
@@ -802,5 +804,5 @@ class VectorWind(object):
         field = field.reorder(order)
         # Set the variable id to indicate the truncation.
         tnumber = truncation or fieldtrunc.shape[0] - 1
-        field.id = '{}_T{}'.format(field.id, tnumber)
+        field.id = '{}_T{}'.format(name, tnumber)
         return field
