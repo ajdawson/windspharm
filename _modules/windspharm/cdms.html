@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.cdms &mdash; windspharm 1.3.1 documentation</title>
+    <title>windspharm.cdms &mdash; windspharm 1.3.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.3.1',
+        VERSION:     '1.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.3.1 documentation" href="../../index.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="windspharm 1.3.2 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
@@ -63,7 +63,7 @@
         </script>
 
   </head>
-  <body>
+  <body role="document">
 <div class="pageheader">
   <div>
     <a href="../../index.html">
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -81,13 +81,13 @@
     <li><a href="../../index.html">home</a>|&nbsp;</li>
     <li><a href="../../search.html">search</a>|&nbsp;</li>
 
-          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.3.1</h2>
+    <h2>windspharm v1.3.2</h2>
     <h3>Table of Contents</h3>
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../userguide/index.html">User Guide</a></li>
@@ -97,7 +97,7 @@
 </ul>
 
 
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -116,7 +116,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for windspharm.cdms</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Spherical harmonic vector wind computations (`cdms2` interface).&quot;&quot;&quot;</span>
@@ -825,6 +825,7 @@
         <span class="c"># Check that the input is a cdms2 variable.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">isVariable</span><span class="p">(</span><span class="n">chi</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;scalar field must be a cdms2 variable&#39;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">id</span>
         <span class="n">order</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">getOrder</span><span class="p">()</span>
         <span class="k">if</span> <span class="s">&#39;x&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">order</span> <span class="ow">or</span> <span class="s">&#39;y&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;a latitude-longitude grid is required&#39;</span><span class="p">)</span>
@@ -832,6 +833,9 @@
         <span class="c"># computation API.</span>
         <span class="n">apiorder</span> <span class="o">=</span> <span class="s">&#39;yx&#39;</span> <span class="o">+</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">order</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s">&#39;xy&#39;</span><span class="p">])</span>
         <span class="n">chi</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">reorder</span><span class="p">(</span><span class="n">apiorder</span><span class="p">)</span>
+        <span class="c"># Do a region selection on the input to ensure the latitude dimension</span>
+        <span class="c"># is north-to-south.</span>
+        <span class="n">chi</span> <span class="o">=</span> <span class="n">chi</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">))</span>
         <span class="c"># Record the shape and axes in the API order.</span>
         <span class="n">ishape</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">axes</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">getAxisList</span><span class="p">()</span>
@@ -847,10 +851,10 @@
         <span class="n">vchi</span> <span class="o">=</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">vchi</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
         <span class="n">uchi</span> <span class="o">=</span> <span class="n">uchi</span><span class="o">.</span><span class="n">reorder</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
         <span class="n">vchi</span> <span class="o">=</span> <span class="n">vchi</span><span class="o">.</span><span class="n">reorder</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
-        <span class="n">uchi</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&#39;{0:s}_zonal&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chi</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="n">vchi</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&#39;{0:s}_meridional&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chi</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="n">uchi</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&#39;zonal_gradient_of_{0:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chi</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="n">vchi</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&#39;meridional_gradient_of_{0:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chi</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">uchi</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&#39;{0:s}_zonal&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">vchi</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&#39;{0:s}_meridional&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">uchi</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&#39;zonal_gradient_of_{0:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">vchi</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&#39;meridional_gradient_of_{0:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span>
 </div>
 <div class="viewcode-block" id="VectorWind.truncate"><a class="viewcode-back" href="../../api/windspharm.cdms.html#windspharm.cdms.VectorWind.truncate">[docs]</a>    <span class="k">def</span> <span class="nf">truncate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -893,6 +897,7 @@
         <span class="c"># Check that the input is a cdms2 variable.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">isVariable</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;scalar field must be a cdms2 variable&#39;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">id</span>
         <span class="n">order</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">getOrder</span><span class="p">()</span>
         <span class="k">if</span> <span class="s">&#39;x&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">order</span> <span class="ow">or</span> <span class="s">&#39;y&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;a latitude-longitude grid is required&#39;</span><span class="p">)</span>
@@ -903,6 +908,9 @@
         <span class="c"># its axes to be compatible with the computation API.</span>
         <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
         <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">reorder</span><span class="p">(</span><span class="n">apiorder</span><span class="p">)</span>
+        <span class="c"># Do a region selection on the input to ensure the latitude dimension</span>
+        <span class="c"># is north-to-south.</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">))</span>
         <span class="c"># Record the shape and axes in the API order.</span>
         <span class="n">ishape</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">axes</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">getAxisList</span><span class="p">()</span>
@@ -917,7 +925,7 @@
         <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">reorder</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
         <span class="c"># Set the variable id to indicate the truncation.</span>
         <span class="n">tnumber</span> <span class="o">=</span> <span class="n">truncation</span> <span class="ow">or</span> <span class="n">fieldtrunc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="n">field</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&#39;{}_T{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tnumber</span><span class="p">)</span>
+        <span class="n">field</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&#39;{}_T{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tnumber</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">field</span></div></div>
 </pre></div>
 
@@ -926,7 +934,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -935,12 +943,12 @@
     <li><a href="../../index.html">home</a>|&nbsp;</li>
     <li><a href="../../search.html">search</a>|&nbsp;</li>
 
-          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2012-2014, Andrew Dawson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2012-2013, Andrew Dawson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

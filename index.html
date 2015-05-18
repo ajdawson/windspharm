@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Introduction &mdash; windspharm 1.3.1 documentation</title>
+    <title>Introduction &mdash; windspharm 1.3.2 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.3.1',
+        VERSION:     '1.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.3.1 documentation" href="#" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="windspharm 1.3.2 documentation" href="#" />
     <link rel="next" title="User Guide" href="userguide/index.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
@@ -63,7 +63,7 @@
         </script>
 
   </head>
-  <body>
+  <body role="document">
 <div class="pageheader">
   <div>
     <a href="#">
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -86,10 +86,10 @@
  
       </ul>
     </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.3.1</h2>
+    <h2>windspharm v1.3.2</h2>
     <h3>Table of Contents</h3>
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="userguide/index.html">User Guide</a></li>
@@ -102,12 +102,14 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="userguide/index.html"
                         title="next chapter">User Guide</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -126,13 +128,13 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="toctree-wrapper compound">
 </div>
 <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p><tt class="xref py py-obj docutils literal"><span class="pre">windspharm</span></tt> is a Python package for performing computations on global wind fields in spherical geometry. It provides a high level interface for computations using spherical harmonics. <tt class="xref py py-obj docutils literal"><span class="pre">windspharm</span></tt> is capable of computing the following quantities from an input vector wind:</p>
+<p><code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code> is a Python package for performing computations on global wind fields in spherical geometry. It provides a high level interface for computations using spherical harmonics. <code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code> is capable of computing the following quantities from an input vector wind:</p>
 <ul class="simple">
 <li>divergence</li>
 <li>vorticity (relative and absolute)</li>
@@ -144,13 +146,13 @@
 </ul>
 <div class="section" id="download-installation">
 <h2>Download &amp; Installation<a class="headerlink" href="#download-installation" title="Permalink to this headline">¶</a></h2>
-<p>Released versions of <tt class="xref py py-obj docutils literal"><span class="pre">windspharm</span></tt> can be downloaded from the <a class="reference internal" href="downloads.html"><em>Downloads</em></a> page.
-You must have <a class="reference external" href="https://pypi.python.org/pypi/setuptools">setuptools</a> installed in order to install <tt class="xref py py-obj docutils literal"><span class="pre">windspharm</span></tt>.
+<p>Released versions of <code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code> can be downloaded from the <a class="reference internal" href="downloads.html"><em>Downloads</em></a> page.
+You must have <a class="reference external" href="https://pypi.python.org/pypi/setuptools">setuptools</a> installed in order to install <code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code>.
 After downloading the source code archive, unzip it and change into the unzipped archive&#8217;s directory, then to install it:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python setup.py install
 </pre></div>
 </div>
-<p><tt class="xref py py-obj docutils literal"><span class="pre">windspharm</span></tt> can also be installed from PyPI using pip:</p>
+<p><code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code> can also be installed from PyPI using pip:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pip install windspharm
 </pre></div>
 </div>
@@ -158,11 +160,11 @@ After downloading the source code archive, unzip it and change into the unzipped
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>The <tt class="xref py py-obj docutils literal"><span class="pre">windspharm</span></tt> package currently provides three interfaces for performing computations.
-The <a class="reference internal" href="api/windspharm.standard.html#module-windspharm.standard" title="windspharm.standard"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.standard</span></tt></a> interface is designed to work with <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/index.html#module-numpy" title="(in NumPy v1.8)"><tt class="xref py py-obj docutils literal"><span class="pre">numpy</span></tt></a> arrays; the <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></tt></a> interface is designed to work with <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.6)"><tt class="xref py py-obj docutils literal"><span class="pre">iris</span></tt></a> cubes; and the <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></tt></a> interface is designed to work with <tt class="xref py py-obj docutils literal"><span class="pre">cdms2</span></tt> variables.
-Each interface supports exactly the same sets of operations, the only differences are that the <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></tt></a> and <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></tt></a> interfaces also use the meta-data stored in input variables to construct outputs with meta-data.</p>
-<p>Regardless of which interface you use, the basic usage is the same. All computation is handled by the <a class="reference internal" href="api/windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.standard.VectorWind</span></tt></a>, <a class="reference internal" href="api/windspharm.iris.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.iris.VectorWind</span></tt></a> or <a class="reference internal" href="api/windspharm.cdms.html#windspharm.cdms.VectorWind" title="windspharm.cdms.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms.VectorWind</span></tt></a> classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
-<p>The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the <tt class="xref py py-obj docutils literal"><span class="pre">cdms</span></tt> interface:</p>
+<p>The <code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code> package currently provides three interfaces for performing computations.
+The <a class="reference internal" href="api/windspharm.standard.html#module-windspharm.standard" title="windspharm.standard"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.standard</span></code></a> interface is designed to work with <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/index.html#module-numpy" title="(in NumPy v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">numpy</span></code></a> arrays; the <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></code></a> interface is designed to work with <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> cubes; and the <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></code></a> interface is designed to work with <code class="xref py py-obj docutils literal"><span class="pre">cdms2</span></code> variables.
+Each interface supports exactly the same sets of operations, the only differences are that the <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></code></a> and <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></code></a> interfaces also use the meta-data stored in input variables to construct outputs with meta-data.</p>
+<p>Regardless of which interface you use, the basic usage is the same. All computation is handled by the <a class="reference internal" href="api/windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.standard.VectorWind</span></code></a>, <a class="reference internal" href="api/windspharm.iris.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris.VectorWind</span></code></a> or <a class="reference internal" href="api/windspharm.cdms.html#windspharm.cdms.VectorWind" title="windspharm.cdms.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms.VectorWind</span></code></a> classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
+<p>The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the <code class="xref py py-obj docutils literal"><span class="pre">cdms</span></code> interface:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cdms2</span>
 <span class="kn">from</span> <span class="nn">windspharm.cdms</span> <span class="kn">import</span> <span class="n">VectorWind</span>
 
@@ -186,8 +188,8 @@ Each interface supports exactly the same sets of operations, the only difference
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <p>This package requires as a minimum that you have <a class="reference external" href="http://numpy.scipy.org">numpy</a> and <a class="reference external" href="https://code.google.com/p/pyspharm">pyspharm</a> available, and requires <a class="reference external" href="https://pypi.python.org/pypi/setuptools">setuptools</a> for installation.
 It is recommended that you use pyspharm version 1.0.8 or later, versions of pyspharm prior to 1.0.7 should not be used at all due to a serious bug.
-The <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></tt></a> interface can only be used if the <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.6)"><tt class="xref py py-obj docutils literal"><span class="pre">iris</span></tt></a> module is available (see the <a class="reference external" href="http://scitools.org.uk/iris">iris</a> documentation).
-The <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></tt></a> interface can only be used if the <tt class="xref py py-obj docutils literal"><span class="pre">cdms2</span></tt> module is available.
+The <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></code></a> interface can only be used if the <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> module is available (see the <a class="reference external" href="http://scitools.org.uk/iris">iris</a> documentation).
+The <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></code></a> interface can only be used if the <code class="xref py py-obj docutils literal"><span class="pre">cdms2</span></code> module is available.
 This module is distributed as part of the <a class="reference external" href="http://uv-cdat.llnl.gov">CDAT</a> project.
 It is also distributed as part of the <a class="reference external" href="http://proj.badc.rl.ac.uk/cedaservices/wiki/CdatLite">cdat-lite</a> package.</p>
 <div class="admonition warning">
@@ -219,7 +221,7 @@ If you have code you would like to contribute, fork the <a class="reference exte
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -233,9 +235,9 @@ If you have code you would like to contribute, fork the <a class="reference exte
  
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2012-2014, Andrew Dawson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2012-2013, Andrew Dawson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

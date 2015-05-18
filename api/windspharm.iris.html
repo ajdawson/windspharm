@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.iris &mdash; windspharm 1.3.1 documentation</title>
+    <title>windspharm.iris &mdash; windspharm 1.3.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.3.1',
+        VERSION:     '1.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.3.1 documentation" href="../index.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="windspharm 1.3.2 documentation" href="../index.html" />
     <link rel="up" title="API reference" href="index.html" />
     <link rel="next" title="windspharm.tools" href="windspharm.tools.html" />
     <link rel="prev" title="windspharm.cdms" href="windspharm.cdms.html" />
@@ -65,7 +65,7 @@
         </script>
 
   </head>
-  <body>
+  <body role="document">
 <div class="pageheader">
   <div>
     <a href="../index.html">
@@ -74,7 +74,7 @@
   </div>
 </div>
 
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -89,13 +89,13 @@
     <li><a href="../index.html">home</a>|&nbsp;</li>
     <li><a href="../search.html">search</a>|&nbsp;</li>
 
-          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
       </ul>
     </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.3.1</h2>
+    <h2>windspharm v1.3.2</h2>
     <h3>Table of Contents</h3>
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../userguide/index.html">User Guide</a></li>
@@ -110,16 +110,18 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="windspharm.cdms.html"
-                        title="previous chapter"><tt class="docutils literal"><span class="pre">windspharm.cdms</span></tt></a></p>
+                        title="previous chapter"><code class="docutils literal"><span class="pre">windspharm.cdms</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="windspharm.tools.html"
-                        title="next chapter"><tt class="docutils literal"><span class="pre">windspharm.tools</span></tt></a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/api/windspharm.iris.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+                        title="next chapter"><code class="docutils literal"><span class="pre">windspharm.tools</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/windspharm.iris.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -138,26 +140,26 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-windspharm.iris">
-<span id="windspharm-iris"></span><h1><a class="reference internal" href="#module-windspharm.iris" title="windspharm.iris"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></tt></a><a class="headerlink" href="#module-windspharm.iris" title="Permalink to this headline">¶</a></h1>
-<p>Spherical harmonic vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.6)"><tt class="xref py py-obj docutils literal"><span class="pre">iris</span></tt></a> interface).</p>
+<span id="windspharm-iris"></span><h1><a class="reference internal" href="#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></code></a><a class="headerlink" href="#module-windspharm.iris" title="Permalink to this headline">¶</a></h1>
+<p>Spherical harmonic vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> interface).</p>
 <dl class="class">
 <dt id="windspharm.iris.VectorWind">
-<em class="property">class </em><tt class="descclassname">windspharm.iris.</tt><tt class="descname">VectorWind</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.6)"><tt class="xref py py-obj docutils literal"><span class="pre">iris</span></tt></a> interface).</p>
+<em class="property">class </em><code class="descclassname">windspharm.iris.</code><code class="descname">VectorWind</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> interface).</p>
 <p>Initialize a VectorWind instance.</p>
 <p><strong>Arguments:</strong></p>
 <dl class="docutils">
 <dt><em>u</em>, <em>v</em></dt>
 <dd>Zonal and meridional components of the vector wind
-respectively. Both components should be <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.6)"><tt class="xref py py-obj docutils literal"><span class="pre">Cube</span></tt></a>
+respectively. Both components should be <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
 instances. The components must have the same dimension
 coordinates and contain no missing values.</dd>
 </dl>
 <p><strong>Example:</strong></p>
-<p>Initialize a <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a> instance with zonal and meridional
+<p>Initialize a <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a> instance with zonal and meridional
 components of the vector wind:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">windspharm.iris</span> <span class="kn">import</span> <span class="n">VectorWind</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -165,7 +167,7 @@ components of the vector wind:</p>
 </div>
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.u">
-<tt class="descname">u</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.u" title="Permalink to this definition">¶</a></dt>
+<code class="descname">u</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.u" title="Permalink to this definition">¶</a></dt>
 <dd><p>Zonal component of vector wind.</p>
 <p><strong>Returns:</strong></p>
 <dl class="docutils">
@@ -181,7 +183,7 @@ components of the vector wind:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.v">
-<tt class="descname">v</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.v"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.v" title="Permalink to this definition">¶</a></dt>
+<code class="descname">v</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.v"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.v" title="Permalink to this definition">¶</a></dt>
 <dd><p>Meridional component of vector wind.</p>
 <p><strong>Returns:</strong></p>
 <dl class="docutils">
@@ -197,7 +199,7 @@ components of the vector wind:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.magnitude">
-<tt class="descname">magnitude</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.magnitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.magnitude" title="Permalink to this definition">¶</a></dt>
+<code class="descname">magnitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.magnitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.magnitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wind speed (magnitude of vector wind).</p>
 <p><strong>Returns:</strong></p>
 <dl class="docutils">
@@ -213,7 +215,7 @@ components of the vector wind:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.vrtdiv">
-<tt class="descname">vrtdiv</tt><big>(</big><em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.vrtdiv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.vrtdiv" title="Permalink to this definition">¶</a></dt>
+<code class="descname">vrtdiv</code><span class="sig-paren">(</span><em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.vrtdiv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.vrtdiv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Relative vorticity and horizontal divergence.</p>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -227,7 +229,7 @@ harmonic computation.</dd>
 <dd>The relative vorticity and divergence respectively.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.vorticity" title="windspharm.iris.VectorWind.vorticity"><tt class="xref py py-obj docutils literal"><span class="pre">vorticity</span></tt></a>, <a class="reference internal" href="#windspharm.iris.VectorWind.divergence" title="windspharm.iris.VectorWind.divergence"><tt class="xref py py-obj docutils literal"><span class="pre">divergence</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.vorticity" title="windspharm.iris.VectorWind.vorticity"><code class="xref py py-obj docutils literal"><span class="pre">vorticity</span></code></a>, <a class="reference internal" href="#windspharm.iris.VectorWind.divergence" title="windspharm.iris.VectorWind.divergence"><code class="xref py py-obj docutils literal"><span class="pre">divergence</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute the relative vorticity and divergence:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">vrt</span><span class="p">,</span> <span class="n">div</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">vrtdiv</span><span class="p">()</span>
@@ -242,7 +244,7 @@ truncation at triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.vorticity">
-<tt class="descname">vorticity</tt><big>(</big><em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.vorticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.vorticity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">vorticity</code><span class="sig-paren">(</span><em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.vorticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.vorticity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Relative vorticity.</p>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -256,7 +258,7 @@ harmonic computation.</dd>
 <dd>The relative vorticity.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.vrtdiv" title="windspharm.iris.VectorWind.vrtdiv"><tt class="xref py py-obj docutils literal"><span class="pre">vrtdiv</span></tt></a>, <a class="reference internal" href="#windspharm.iris.VectorWind.absolutevorticity" title="windspharm.iris.VectorWind.absolutevorticity"><tt class="xref py py-obj docutils literal"><span class="pre">absolutevorticity</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.vrtdiv" title="windspharm.iris.VectorWind.vrtdiv"><code class="xref py py-obj docutils literal"><span class="pre">vrtdiv</span></code></a>, <a class="reference internal" href="#windspharm.iris.VectorWind.absolutevorticity" title="windspharm.iris.VectorWind.absolutevorticity"><code class="xref py py-obj docutils literal"><span class="pre">absolutevorticity</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute the relative vorticity:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">vrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">vorticity</span><span class="p">()</span>
@@ -271,7 +273,7 @@ triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.divergence">
-<tt class="descname">divergence</tt><big>(</big><em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.divergence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.divergence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">divergence</code><span class="sig-paren">(</span><em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.divergence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.divergence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Horizontal divergence.</p>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -285,7 +287,7 @@ harmonic computation.</dd>
 <dd>The divergence.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.vrtdiv" title="windspharm.iris.VectorWind.vrtdiv"><tt class="xref py py-obj docutils literal"><span class="pre">vrtdiv</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.vrtdiv" title="windspharm.iris.VectorWind.vrtdiv"><code class="xref py py-obj docutils literal"><span class="pre">vrtdiv</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute the divergence:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">div</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">divergence</span><span class="p">()</span>
@@ -300,7 +302,7 @@ triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.planetaryvorticity">
-<tt class="descname">planetaryvorticity</tt><big>(</big><em>omega=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.planetaryvorticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.planetaryvorticity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">planetaryvorticity</code><span class="sig-paren">(</span><em>omega=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.planetaryvorticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.planetaryvorticity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Planetary vorticity (Coriolis parameter).</p>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -314,7 +316,7 @@ is 7.292x10**-5 s**-1.</dd>
 <dd>The planetary vorticity.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.absolutevorticity" title="windspharm.iris.VectorWind.absolutevorticity"><tt class="xref py py-obj docutils literal"><span class="pre">absolutevorticity</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.absolutevorticity" title="windspharm.iris.VectorWind.absolutevorticity"><code class="xref py py-obj docutils literal"><span class="pre">absolutevorticity</span></code></a>.</p>
 <p><strong>Example:</strong></p>
 <p>Compute planetary vorticity using default values:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">pvrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">planetaryvorticity</span><span class="p">()</span>
@@ -328,7 +330,7 @@ is 7.292x10**-5 s**-1.</dd>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.absolutevorticity">
-<tt class="descname">absolutevorticity</tt><big>(</big><em>omega=None</em>, <em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.absolutevorticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.absolutevorticity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">absolutevorticity</code><span class="sig-paren">(</span><em>omega=None</em>, <em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.absolutevorticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.absolutevorticity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Absolute vorticity (sum of relative and planetary vorticity).</p>
 <p><strong>Optional arguments:</strong></p>
 <dl class="docutils">
@@ -345,7 +347,7 @@ harmonic computation.</dd>
 <dd>The absolute (relative + planetary) vorticity.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.vorticity" title="windspharm.iris.VectorWind.vorticity"><tt class="xref py py-obj docutils literal"><span class="pre">vorticity</span></tt></a>, <a class="reference internal" href="#windspharm.iris.VectorWind.planetaryvorticity" title="windspharm.iris.VectorWind.planetaryvorticity"><tt class="xref py py-obj docutils literal"><span class="pre">planetaryvorticity</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.vorticity" title="windspharm.iris.VectorWind.vorticity"><code class="xref py py-obj docutils literal"><span class="pre">vorticity</span></code></a>, <a class="reference internal" href="#windspharm.iris.VectorWind.planetaryvorticity" title="windspharm.iris.VectorWind.planetaryvorticity"><code class="xref py py-obj docutils literal"><span class="pre">planetaryvorticity</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute absolute vorticity:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">avrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">absolutevorticity</span><span class="p">()</span>
@@ -361,7 +363,7 @@ angular velocity:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.sfvp">
-<tt class="descname">sfvp</tt><big>(</big><em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.sfvp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.sfvp" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sfvp</code><span class="sig-paren">(</span><em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.sfvp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.sfvp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Streamfunction and velocity potential.</p>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -375,7 +377,7 @@ harmonic computation.</dd>
 <dd>The streamfunction and velocity potential respectively.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.streamfunction" title="windspharm.iris.VectorWind.streamfunction"><tt class="xref py py-obj docutils literal"><span class="pre">streamfunction</span></tt></a>, <a class="reference internal" href="#windspharm.iris.VectorWind.velocitypotential" title="windspharm.iris.VectorWind.velocitypotential"><tt class="xref py py-obj docutils literal"><span class="pre">velocitypotential</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.streamfunction" title="windspharm.iris.VectorWind.streamfunction"><code class="xref py py-obj docutils literal"><span class="pre">streamfunction</span></code></a>, <a class="reference internal" href="#windspharm.iris.VectorWind.velocitypotential" title="windspharm.iris.VectorWind.velocitypotential"><code class="xref py py-obj docutils literal"><span class="pre">velocitypotential</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute streamfunction and velocity potential:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">sf</span><span class="p">,</span> <span class="n">vp</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sfvp</span><span class="p">()</span>
@@ -390,7 +392,7 @@ truncation at triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.streamfunction">
-<tt class="descname">streamfunction</tt><big>(</big><em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.streamfunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.streamfunction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">streamfunction</code><span class="sig-paren">(</span><em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.streamfunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.streamfunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Streamfunction.</p>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -404,7 +406,7 @@ harmonic computation.</dd>
 <dd>The streamfunction.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.sfvp" title="windspharm.iris.VectorWind.sfvp"><tt class="xref py py-obj docutils literal"><span class="pre">sfvp</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.sfvp" title="windspharm.iris.VectorWind.sfvp"><code class="xref py py-obj docutils literal"><span class="pre">sfvp</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute streamfunction:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">sf</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">streamfunction</span><span class="p">()</span>
@@ -419,7 +421,7 @@ triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.velocitypotential">
-<tt class="descname">velocitypotential</tt><big>(</big><em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.velocitypotential"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.velocitypotential" title="Permalink to this definition">¶</a></dt>
+<code class="descname">velocitypotential</code><span class="sig-paren">(</span><em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.velocitypotential"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.velocitypotential" title="Permalink to this definition">¶</a></dt>
 <dd><p>Velocity potential.</p>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -433,7 +435,7 @@ harmonic computation.</dd>
 <dd>The velocity potential.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.sfvp" title="windspharm.iris.VectorWind.sfvp"><tt class="xref py py-obj docutils literal"><span class="pre">sfvp</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.sfvp" title="windspharm.iris.VectorWind.sfvp"><code class="xref py py-obj docutils literal"><span class="pre">sfvp</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute velocity potential:</p>
 <div class="highlight-python"><div class="highlight"><pre>vp = w.velocity potential()
@@ -448,7 +450,7 @@ triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.helmholtz">
-<tt class="descname">helmholtz</tt><big>(</big><em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.helmholtz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.helmholtz" title="Permalink to this definition">¶</a></dt>
+<code class="descname">helmholtz</code><span class="sig-paren">(</span><em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.helmholtz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.helmholtz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Irrotational and non-divergent components of the vector wind.</p>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -463,8 +465,8 @@ harmonic computation.</dd>
 non-divergent wind components respectively.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.irrotationalcomponent" title="windspharm.iris.VectorWind.irrotationalcomponent"><tt class="xref py py-obj docutils literal"><span class="pre">irrotationalcomponent</span></tt></a>,
-<a class="reference internal" href="#windspharm.iris.VectorWind.nondivergentcomponent" title="windspharm.iris.VectorWind.nondivergentcomponent"><tt class="xref py py-obj docutils literal"><span class="pre">nondivergentcomponent</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.irrotationalcomponent" title="windspharm.iris.VectorWind.irrotationalcomponent"><code class="xref py py-obj docutils literal"><span class="pre">irrotationalcomponent</span></code></a>,
+<a class="reference internal" href="#windspharm.iris.VectorWind.nondivergentcomponent" title="windspharm.iris.VectorWind.nondivergentcomponent"><code class="xref py py-obj docutils literal"><span class="pre">nondivergentcomponent</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute the irrotational and non-divergent components of the
 vector wind:</p>
@@ -480,12 +482,12 @@ vector wind and apply spectral truncation at triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.irrotationalcomponent">
-<tt class="descname">irrotationalcomponent</tt><big>(</big><em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.irrotationalcomponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.irrotationalcomponent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">irrotationalcomponent</code><span class="sig-paren">(</span><em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.irrotationalcomponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.irrotationalcomponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Irrotational (divergent) component of the vector wind.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If both the irrotational and non-divergent components are
-required then <a class="reference internal" href="#windspharm.iris.VectorWind.helmholtz" title="windspharm.iris.VectorWind.helmholtz"><tt class="xref py py-obj docutils literal"><span class="pre">helmholtz</span></tt></a> should be used instead.</p>
+required then <a class="reference internal" href="#windspharm.iris.VectorWind.helmholtz" title="windspharm.iris.VectorWind.helmholtz"><code class="xref py py-obj docutils literal"><span class="pre">helmholtz</span></code></a> should be used instead.</p>
 </div>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -500,7 +502,7 @@ harmonic computation.</dd>
 respectively.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.helmholtz" title="windspharm.iris.VectorWind.helmholtz"><tt class="xref py py-obj docutils literal"><span class="pre">helmholtz</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.helmholtz" title="windspharm.iris.VectorWind.helmholtz"><code class="xref py py-obj docutils literal"><span class="pre">helmholtz</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute the irrotational component of the vector wind:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">irrotationalcomponent</span><span class="p">()</span>
@@ -515,12 +517,12 @@ spectral truncation at triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.nondivergentcomponent">
-<tt class="descname">nondivergentcomponent</tt><big>(</big><em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.nondivergentcomponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.nondivergentcomponent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">nondivergentcomponent</code><span class="sig-paren">(</span><em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.nondivergentcomponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.nondivergentcomponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Non-divergent (rotational) component of the vector wind.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If both the non-divergent and irrotational components are
-required then <a class="reference internal" href="#windspharm.iris.VectorWind.helmholtz" title="windspharm.iris.VectorWind.helmholtz"><tt class="xref py py-obj docutils literal"><span class="pre">helmholtz</span></tt></a> should be used instead.</p>
+required then <a class="reference internal" href="#windspharm.iris.VectorWind.helmholtz" title="windspharm.iris.VectorWind.helmholtz"><code class="xref py py-obj docutils literal"><span class="pre">helmholtz</span></code></a> should be used instead.</p>
 </div>
 <p><strong>Optional argument:</strong></p>
 <dl class="docutils">
@@ -535,7 +537,7 @@ harmonic computation.</dd>
 wind respectively.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.iris.VectorWind.helmholtz" title="windspharm.iris.VectorWind.helmholtz"><tt class="xref py py-obj docutils literal"><span class="pre">helmholtz</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.iris.VectorWind.helmholtz" title="windspharm.iris.VectorWind.helmholtz"><code class="xref py py-obj docutils literal"><span class="pre">helmholtz</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Compute the non-divergent component of the vector wind:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">nondivergentcomponent</span><span class="p">()</span>
@@ -550,14 +552,14 @@ spectral truncation at triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.gradient">
-<tt class="descname">gradient</tt><big>(</big><em>chi</em>, <em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.gradient" title="Permalink to this definition">¶</a></dt>
+<code class="descname">gradient</code><span class="sig-paren">(</span><em>chi</em>, <em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.gradient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the vector gradient of a scalar field on the sphere.</p>
 <p><strong>Argument:</strong></p>
 <dl class="docutils">
 <dt><em>chi</em></dt>
-<dd>A scalar field. It must be a <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.6)"><tt class="xref py py-obj docutils literal"><span class="pre">Cube</span></tt></a>
+<dd>A scalar field. It must be a <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
 with the same latitude and longitude dimensions as the
-vector wind components that initialized the <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a>
+vector wind components that initialized the <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a>
 instance.</dd>
 </dl>
 <p><strong>Optional argument:</strong></p>
@@ -588,16 +590,16 @@ spectral truncation at triangular T13:</p>
 
 <dl class="method">
 <dt id="windspharm.iris.VectorWind.truncate">
-<tt class="descname">truncate</tt><big>(</big><em>field</em>, <em>truncation=None</em><big>)</big><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.truncate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.truncate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">truncate</code><span class="sig-paren">(</span><em>field</em>, <em>truncation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind.truncate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind.truncate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply spectral truncation to a scalar field.</p>
 <p>This is useful to represent other fields in a way consistent
-with the output of other <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a> methods.</p>
+with the output of other <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a> methods.</p>
 <p><strong>Argument:</strong></p>
 <dl class="docutils">
 <dt><em>field</em></dt>
-<dd>A scalar field. It must be a <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.6)"><tt class="xref py py-obj docutils literal"><span class="pre">Cube</span></tt></a>
+<dd>A scalar field. It must be a <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
 with the same latitude and longitude dimensions as the
-vector wind components that initialized the <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a>
+vector wind components that initialized the <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a>
 instance.</dd>
 </dl>
 <p><strong>Optional argument:</strong></p>
@@ -614,7 +616,7 @@ harmonic computation. If not specified it will default to
 </dl>
 <p><strong>Examples:</strong></p>
 <p>Truncate a scalar field to the computational resolution of the
-<a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a> instance:</p>
+<a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a> instance:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">scalar_field_truncated</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">scalar_field</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -634,7 +636,7 @@ harmonic computation. If not specified it will default to
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -649,12 +651,12 @@ harmonic computation. If not specified it will default to
     <li><a href="../index.html">home</a>|&nbsp;</li>
     <li><a href="../search.html">search</a>|&nbsp;</li>
 
-          <li><a href="index.html" >API reference</a> &raquo;</li> 
+          <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2012-2014, Andrew Dawson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2012-2013, Andrew Dawson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

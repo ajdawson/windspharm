@@ -41,7 +41,7 @@ etax.units = 'm**-1 s**-1'
 etay.units = 'm**-1 s**-1'
 
 # Combine the components to form the Rossby wave source term.
-S = eta * -1. * div - (uchi * etax + vchi * etay)
+S = eta * -1. * div - uchi * etax + vchi * etay
 S.coord('longitude').attributes['circular'] = True
 
 # Pick out the field for December at 200 hPa.

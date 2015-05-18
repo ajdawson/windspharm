@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.tools &mdash; windspharm 1.3.1 documentation</title>
+    <title>windspharm.tools &mdash; windspharm 1.3.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.3.1',
+        VERSION:     '1.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.3.1 documentation" href="../index.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="windspharm 1.3.2 documentation" href="../index.html" />
     <link rel="up" title="API reference" href="index.html" />
     <link rel="next" title="Downloads" href="../downloads.html" />
     <link rel="prev" title="windspharm.iris" href="windspharm.iris.html" />
@@ -65,7 +65,7 @@
         </script>
 
   </head>
-  <body>
+  <body role="document">
 <div class="pageheader">
   <div>
     <a href="../index.html">
@@ -74,7 +74,7 @@
   </div>
 </div>
 
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -89,13 +89,13 @@
     <li><a href="../index.html">home</a>|&nbsp;</li>
     <li><a href="../search.html">search</a>|&nbsp;</li>
 
-          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
       </ul>
     </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.3.1</h2>
+    <h2>windspharm v1.3.2</h2>
     <h3>Table of Contents</h3>
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../userguide/index.html">User Guide</a></li>
@@ -110,16 +110,18 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="windspharm.iris.html"
-                        title="previous chapter"><tt class="docutils literal"><span class="pre">windspharm.iris</span></tt></a></p>
+                        title="previous chapter"><code class="docutils literal"><span class="pre">windspharm.iris</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="../downloads.html"
                         title="next chapter">Downloads</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/api/windspharm.tools.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/windspharm.tools.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -138,19 +140,19 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-windspharm.tools">
-<span id="windspharm-tools"></span><h1><a class="reference internal" href="#module-windspharm.tools" title="windspharm.tools"><tt class="xref py py-obj docutils literal"><span class="pre">windspharm.tools</span></tt></a><a class="headerlink" href="#module-windspharm.tools" title="Permalink to this headline">¶</a></h1>
-<p>Tools for managing data for use with <a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a>
-(or indeed <tt class="xref py py-obj docutils literal"><span class="pre">spharm.Spharmt</span></tt>).</p>
+<span id="windspharm-tools"></span><h1><a class="reference internal" href="#module-windspharm.tools" title="windspharm.tools"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.tools</span></code></a><a class="headerlink" href="#module-windspharm.tools" title="Permalink to this headline">¶</a></h1>
+<p>Tools for managing data for use with <a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a>
+(or indeed <code class="xref py py-obj docutils literal"><span class="pre">spharm.Spharmt</span></code>).</p>
 <dl class="function">
 <dt id="windspharm.tools.prep_data">
-<tt class="descclassname">windspharm.tools.</tt><tt class="descname">prep_data</tt><big>(</big><em>data</em>, <em>dimorder</em><big>)</big><a class="reference internal" href="../_modules/windspharm/tools.html#prep_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.prep_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Prepare data for input to <a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a> (or to
-<tt class="xref py py-obj docutils literal"><span class="pre">spharm.Spharmt</span></tt> method calls).</p>
+<code class="descclassname">windspharm.tools.</code><code class="descname">prep_data</code><span class="sig-paren">(</span><em>data</em>, <em>dimorder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/tools.html#prep_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.prep_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare data for input to <a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a> (or to
+<code class="xref py py-obj docutils literal"><span class="pre">spharm.Spharmt</span></code> method calls).</p>
 <p>Returns a dictionary of intermediate information that can be passed
-to <a class="reference internal" href="#windspharm.tools.recover_data" title="windspharm.tools.recover_data"><tt class="xref py py-obj docutils literal"><span class="pre">recover_data</span></tt></a> or <a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><tt class="xref py py-obj docutils literal"><span class="pre">get_recovery</span></tt></a> to recover the original shape
+to <a class="reference internal" href="#windspharm.tools.recover_data" title="windspharm.tools.recover_data"><code class="xref py py-obj docutils literal"><span class="pre">recover_data</span></code></a> or <a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><code class="xref py py-obj docutils literal"><span class="pre">get_recovery</span></code></a> to recover the original shape
 and order of the data.</p>
 <p><strong>Arguments:</strong></p>
 <dl class="docutils">
@@ -170,7 +172,7 @@ other dimensions.</dd>
 <dd>A dictionary of information required to recover <em>data</em>.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.tools.recover_data" title="windspharm.tools.recover_data"><tt class="xref py py-obj docutils literal"><span class="pre">recover_data</span></tt></a>, <a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><tt class="xref py py-obj docutils literal"><span class="pre">get_recovery</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.tools.recover_data" title="windspharm.tools.recover_data"><code class="xref py py-obj docutils literal"><span class="pre">recover_data</span></code></a>, <a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><code class="xref py py-obj docutils literal"><span class="pre">get_recovery</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Prepare an array with dimensions (12, 17, 73, 144) where the
 dimensions are (time, level, latitude, longitude):</p>
@@ -187,19 +189,19 @@ characters used to represent the other dimensions are arbitrary:</p>
 
 <dl class="function">
 <dt id="windspharm.tools.recover_data">
-<tt class="descclassname">windspharm.tools.</tt><tt class="descname">recover_data</tt><big>(</big><em>pdata</em>, <em>info</em><big>)</big><a class="reference internal" href="../_modules/windspharm/tools.html#recover_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.recover_data" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">windspharm.tools.</code><code class="descname">recover_data</code><span class="sig-paren">(</span><em>pdata</em>, <em>info</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/tools.html#recover_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.recover_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recover the shape and dimension order of an array output from
-<a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a> methods (or from <tt class="xref py py-obj docutils literal"><span class="pre">spharm.Spharmt</span></tt>
+<a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a> methods (or from <code class="xref py py-obj docutils literal"><span class="pre">spharm.Spharmt</span></code>
 methods).</p>
-<p>This function performs the opposite of <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-obj docutils literal"><span class="pre">prep_data</span></tt></a>.</p>
-<p>For recovering the shape of multiple variables, see <a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><tt class="xref py py-obj docutils literal"><span class="pre">get_recovery</span></tt></a>.</p>
+<p>This function performs the opposite of <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><code class="xref py py-obj docutils literal"><span class="pre">prep_data</span></code></a>.</p>
+<p>For recovering the shape of multiple variables, see <a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><code class="xref py py-obj docutils literal"><span class="pre">get_recovery</span></code></a>.</p>
 <p><strong>Arguments:</strong></p>
 <dl class="docutils">
 <dt><em>pdata</em></dt>
 <dd>Data array with either 2 or 3 dimensions. The first two
 dimensions are latitude and longitude respectively.</dd>
 <dt><em>info</em></dt>
-<dd>Information dictionary output from <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-obj docutils literal"><span class="pre">prep_data</span></tt></a>.</dd>
+<dd>Information dictionary output from <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><code class="xref py py-obj docutils literal"><span class="pre">prep_data</span></code></a>.</dd>
 </dl>
 <p><strong>Returns:</strong></p>
 <dl class="docutils">
@@ -207,11 +209,11 @@ dimensions are latitude and longitude respectively.</dd>
 <dd>The data reshaped/reordered.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-obj docutils literal"><span class="pre">prep_data</span></tt></a>, <a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><tt class="xref py py-obj docutils literal"><span class="pre">get_recovery</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><code class="xref py py-obj docutils literal"><span class="pre">prep_data</span></code></a>, <a class="reference internal" href="#windspharm.tools.get_recovery" title="windspharm.tools.get_recovery"><code class="xref py py-obj docutils literal"><span class="pre">get_recovery</span></code></a>.</p>
 <p><strong>Example:</strong></p>
 <p>Recover the original input shape and dimension order of an array
-processed with <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-obj docutils literal"><span class="pre">prep_data</span></tt></a> or an output of
-<a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a> or <tt class="xref py py-obj docutils literal"><span class="pre">sparm.Spharmt</span></tt> method calls on
+processed with <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><code class="xref py py-obj docutils literal"><span class="pre">prep_data</span></code></a> or an output of
+<a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a> or <code class="xref py py-obj docutils literal"><span class="pre">sparm.Spharmt</span></code> method calls on
 such data:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">recover_data</span><span class="p">(</span><span class="n">pdata</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
 </pre></div>
@@ -220,15 +222,15 @@ such data:</p>
 
 <dl class="function">
 <dt id="windspharm.tools.get_recovery">
-<tt class="descclassname">windspharm.tools.</tt><tt class="descname">get_recovery</tt><big>(</big><em>info</em><big>)</big><a class="reference internal" href="../_modules/windspharm/tools.html#get_recovery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.get_recovery" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">windspharm.tools.</code><code class="descname">get_recovery</code><span class="sig-paren">(</span><em>info</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/tools.html#get_recovery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.get_recovery" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a function that can be used to recover the shape and
 dimension order of multiple arrays output from
-<a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a> methods (or from <tt class="xref py py-obj docutils literal"><span class="pre">spharm.Spharmt</span></tt>
+<a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a> methods (or from <code class="xref py py-obj docutils literal"><span class="pre">spharm.Spharmt</span></code>
 methods) according to a single dictionary of recovery information.</p>
 <p><strong>Argument:</strong></p>
 <dl class="docutils">
 <dt><em>info</em></dt>
-<dd>Information dictionary output from <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-obj docutils literal"><span class="pre">prep_data</span></tt></a>.</dd>
+<dd>Information dictionary output from <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><code class="xref py py-obj docutils literal"><span class="pre">prep_data</span></code></a>.</dd>
 </dl>
 <p><strong>Returns:</strong></p>
 <dl class="docutils">
@@ -236,11 +238,11 @@ methods) according to a single dictionary of recovery information.</p>
 <dd>A function used to recover arrays.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.tools.recover_data" title="windspharm.tools.recover_data"><tt class="xref py py-obj docutils literal"><span class="pre">recover_data</span></tt></a>, <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-obj docutils literal"><span class="pre">prep_data</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.tools.recover_data" title="windspharm.tools.recover_data"><code class="xref py py-obj docutils literal"><span class="pre">recover_data</span></code></a>, <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><code class="xref py py-obj docutils literal"><span class="pre">prep_data</span></code></a>.</p>
 <p><strong>Example:</strong></p>
 <p>Generate a function to recover the original input shape and
-dimension order of arrays processed with <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><tt class="xref py py-obj docutils literal"><span class="pre">prep_data</span></tt></a> and outputs of
-<a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><tt class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></tt></a> method calls on this data:</p>
+dimension order of arrays processed with <a class="reference internal" href="#windspharm.tools.prep_data" title="windspharm.tools.prep_data"><code class="xref py py-obj docutils literal"><span class="pre">prep_data</span></code></a> and outputs of
+<a class="reference internal" href="windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a> method calls on this data:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">u</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">prep_data</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s">&#39;tzyx&#39;</span><span class="p">)</span>
 <span class="n">v</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">prep_data</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;tzyx&#39;</span><span class="p">)</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -253,7 +255,7 @@ dimension order of arrays processed with <a class="reference internal" href="#wi
 
 <dl class="function">
 <dt id="windspharm.tools.reverse_latdim">
-<tt class="descclassname">windspharm.tools.</tt><tt class="descname">reverse_latdim</tt><big>(</big><em>u</em>, <em>v</em>, <em>axis=0</em><big>)</big><a class="reference internal" href="../_modules/windspharm/tools.html#reverse_latdim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.reverse_latdim" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">windspharm.tools.</code><code class="descname">reverse_latdim</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/tools.html#reverse_latdim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.reverse_latdim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reverse the order of the latitude dimension of zonal and meridional
 wind components.</p>
 <p><strong>Arguments:</strong></p>
@@ -274,7 +276,7 @@ in the input arrays. Defaults to 0 (the first dimension).</dd>
 reversed. These are always copies of the input.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.tools.order_latdim" title="windspharm.tools.order_latdim"><tt class="xref py py-obj docutils literal"><span class="pre">order_latdim</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.tools.order_latdim" title="windspharm.tools.order_latdim"><code class="xref py py-obj docutils literal"><span class="pre">order_latdim</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Reverse the dimension corresponding to latitude when it is the first
 dimension of the inputs:</p>
@@ -290,7 +292,7 @@ dimension of the inputs:</p>
 
 <dl class="function">
 <dt id="windspharm.tools.order_latdim">
-<tt class="descclassname">windspharm.tools.</tt><tt class="descname">order_latdim</tt><big>(</big><em>latdim</em>, <em>u</em>, <em>v</em>, <em>axis=0</em><big>)</big><a class="reference internal" href="../_modules/windspharm/tools.html#order_latdim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.order_latdim" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">windspharm.tools.</code><code class="descname">order_latdim</code><span class="sig-paren">(</span><em>latdim</em>, <em>u</em>, <em>v</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/tools.html#order_latdim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.tools.order_latdim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ensure the latitude dimension is north-to-south.</p>
 <p>Returns copies of the latitude dimension and wind components
 with the latitude dimension going from north to south. If the
@@ -318,7 +320,7 @@ components. Defaults to 0 (the first dimension).</dd>
 and <em>v</em> respectively.</dd>
 </dl>
 <p><strong>See also:</strong></p>
-<p><a class="reference internal" href="#windspharm.tools.reverse_latdim" title="windspharm.tools.reverse_latdim"><tt class="xref py py-obj docutils literal"><span class="pre">reverse_latdim</span></tt></a>.</p>
+<p><a class="reference internal" href="#windspharm.tools.reverse_latdim" title="windspharm.tools.reverse_latdim"><code class="xref py py-obj docutils literal"><span class="pre">reverse_latdim</span></code></a>.</p>
 <p><strong>Examples:</strong></p>
 <p>Order the latitude dimension when latitude is the first dimension of
 the wind components:</p>
@@ -340,7 +342,7 @@ the wind components:</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -355,12 +357,12 @@ the wind components:</p>
     <li><a href="../index.html">home</a>|&nbsp;</li>
     <li><a href="../search.html">search</a>|&nbsp;</li>
 
-          <li><a href="index.html" >API reference</a> &raquo;</li> 
+          <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2012-2014, Andrew Dawson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2012-2013, Andrew Dawson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

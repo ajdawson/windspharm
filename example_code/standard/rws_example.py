@@ -52,7 +52,7 @@ etax, etay = w.gradient(eta)
 # Combine the components to form the Rossby wave source term. Re-shape the
 # Rossby wave source array to the 4D shape of the wind components as they were
 # read off files.
-S = -eta * div - (uchi * etax + vchi * etay)
+S = -eta * div - uchi * etax + vchi * etay
 S = recover_data(S, uwnd_info)
 
 # Pick out the field for December and add a cyclic point (the cyclic point is
