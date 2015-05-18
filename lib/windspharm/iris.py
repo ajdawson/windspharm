@@ -715,6 +715,10 @@ class VectorWind(object):
         name = chi.name()
         lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
         lon, lon_dim = _dim_coord_and_dim(chi, 'longitude')
+        if (lat.points[0] < lat.points[1]):
+            # need to reverse latitude dimension
+            chi = reverse(chi, lat_dim)
+            lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
         apiorder, reorder = self._get_apiorder_reorder(chi, lat_dim, lon_dim)
         chi = chi.copy()
         chi.transpose(apiorder)
@@ -776,6 +780,10 @@ class VectorWind(object):
             raise TypeError('scalar field must be an iris cube')
         lat, lat_dim = _dim_coord_and_dim(field, 'latitude')
         lon, lon_dim = _dim_coord_and_dim(field, 'longitude')
+        if (lat.points[0] < lat.points[1]):
+            # need to reverse latitude dimension
+            chi = reverse(chi, lat_dim)
+            lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
         apiorder, reorder = self._get_apiorder_reorder(field, lat_dim, lon_dim)
         field = field.copy()
         field.transpose(apiorder)

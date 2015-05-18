@@ -711,6 +711,9 @@ class VectorWind(object):
         # computation API.
         apiorder = 'yx' + ''.join([a for a in order if a not in 'xy'])
         chi = chi.reorder(apiorder)
+        # Do a region selection on the input to ensure the latitude dimension
+        # is north-to-south.
+        chi = chi(latitude=(90, -90))
         # Record the shape and axes in the API order.
         ishape = chi.shape
         axes = chi.getAxisList()
@@ -782,6 +785,9 @@ class VectorWind(object):
         # its axes to be compatible with the computation API.
         field = field.clone()
         field = field.reorder(apiorder)
+        # Do a region selection on the input to ensure the latitude dimension
+        # is north-to-south.
+        field = field(latitude=(90, -90))
         # Record the shape and axes in the API order.
         ishape = field.shape
         axes = field.getAxisList()
