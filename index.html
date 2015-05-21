@@ -156,7 +156,17 @@ After downloading the source code archive, unzip it and change into the unzipped
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pip install windspharm
 </pre></div>
 </div>
+<p>Releases are also available via <a class="reference external" href="http://conda.pydata.org/docs/">conda</a> and <a class="reference external" href="https://binstar.org">binstar</a>, packages are built for both Python 2 and 3 on 32 and 64-bit Linux platforms:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>conda install -c ajdawson windspharm
+</pre></div>
+</div>
 <p>You can also check out the source code for the development version from the <a class="reference external" href="https://github.com/ajdawson/windspharm">github repository</a> to access features which are not yet in the released version.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When installing via pip it may appear that the installation has hung.
+However, it is likely that pip is just trying to install the dependency pyspharm, whose setup process requires the user to accept a license.
+If you think your install has hung, try typing <em>yes</em> and pressing enter, the install should continue after a short pause (but know that in doing so you are accepting the terms of the Spherepack license: <a class="reference external" href="http://www2.cisl.ucar.edu/resources/legacy/spherepack/license">http://www2.cisl.ucar.edu/resources/legacy/spherepack/license</a>).</p>
+</div>
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
