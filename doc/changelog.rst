@@ -5,6 +5,12 @@ Changelog
 v1.3.x
 ------
 
+:Release: v1.3.2
+:Date: 18 May 2015
+
+* Fixed a bug in the iris and cdms interfaces that caused incorrect results to be returned from the `gradient` method if the input had a latitude dimension ordered south-north (thanks to Adrian Matthews for the report).
+* Fixed the metadata of the return values from the gradient and truncate methods in the cdms interface, previously a temporary variable name would be included in the id and long_name attributes when it should have been the name of the input field.
+
 :Release: v1.3.1
 :Date: 1 June 2014
 
