@@ -5,6 +5,8 @@ python:
     - "3.3"
     - "3.4"
 
+sudo: false
+
 install:
     # Install Miniconda so we can use it to manage dependencies:
     - if [[ "$TRAVIS_PYTHON_VERSION" == 2* ]]; then
