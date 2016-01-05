@@ -1,5 +1,5 @@
 """Utilities for constructing tests."""
-# Copyright (c) 2012-2013 Andrew Dawson
+# Copyright (c) 2012-2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,13 @@ try:
     from iris.cube import Cube
 except ImportError:
     pass
+try:
+    import xarray as xr
+except ImportError:
+    try:
+        import xray as xr
+    except ImportError:
+        pass
 
 
 def __tomasked(*args):
@@ -40,7 +47,7 @@ def __tomasked(*args):
     """
     def __asma(a):
         try:
-            if type(a) is Cube:
+            if isinstance(a, Cube):
                 # Retrieve the data from the cube.
                 a = a.data
         except NameError:
@@ -51,6 +58,11 @@ def __tomasked(*args):
         except AttributeError:
             # The input is already an array or masked array, either extracted
             # from an iris cube, or was like that to begin with.
+            pass
+        try:
+            if isinstance(a, xr.DataArray):
+                a = a.values
+        except NameError:
             pass
         return a
     return [__asma(a) for a in args]

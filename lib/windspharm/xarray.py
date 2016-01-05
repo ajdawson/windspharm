@@ -1,5 +1,5 @@
-"""Spherical harmonic vector wind computations (`iris` interface)."""
-# Copyright (c) 2012-2016 Andrew Dawson
+"""Spherical harmonic vector wind computations (`xarray` interface)."""
+# Copyright (c) 2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +21,17 @@
 from __future__ import absolute_import
 
 import numpy as np
-from iris.cube import Cube
-from iris.util import reverse
-from spharm import gaussian_lats_wts
+try:
+    import xarray as xr
+except ImportError:
+    import xray as xr
 
 from . import standard
 from ._common import get_apiorder, inspect_gridtype
 
 
 class VectorWind(object):
-    """Vector wind computations (`iris` interface)."""
+    """Vector wind computations (`xarray` interface)."""
 
     def __init__(self, u, v):
         """Initialize a VectorWind instance.
@@ -39,7 +40,7 @@ class VectorWind(object):
 
         *u*, *v*
             Zonal and meridional components of the vector wind
-            respectively. Both components should be `~iris.cube.Cube`
+            respectively. Both components should be `~xarray.DataArray`
             instances. The components must have the same dimension
             coordinates and contain no missing values.
 
@@ -48,58 +49,51 @@ class VectorWind(object):
         Initialize a `VectorWind` instance with zonal and meridional
         components of the vector wind::
 
-            from windspharm.iris import VectorWind
+            from windspharm.xray import VectorWind
             w = VectorWind(u, v)
 
         """
-        # Make sure inputs are Iris cubes.
-        if type(u) is not Cube or type(v) is not Cube:
-            raise TypeError('u and v must be iris cubes')
-        # Get the coordinates of each component and make sure they are the
-        # same.
-        ucoords = u.dim_coords
-        vcoords = v.dim_coords
-        if ucoords != vcoords:
-            raise ValueError('u and v must have the same dimensions')
-        # Extract the latitude and longitude dimension coordinates.
-        lat, lat_dim = _dim_coord_and_dim(u, 'latitude')
-        lon, lon_dim = _dim_coord_and_dim(v, 'longitude')
-        # Reverse the latitude dimension if necessary.
-        if (lat.points[0] < lat.points[1]):
-            # need to reverse latitude dimension
-            u = reverse(u, lat_dim)
-            v = reverse(v, lat_dim)
-            lat, lat_dim = _dim_coord_and_dim(u, 'latitude')
-        # Determine the grid type of the input.
-        gridtype = inspect_gridtype(lat.points)
-        # Determine the ordering list (input to transpose) which will put the
-        # latitude and longitude dimensions at the front of the cube's
-        # dimensions, and the ordering list which will reverse this process.
-        apiorder, self._reorder = get_apiorder(u.ndim, lat_dim, lon_dim)
-        # Re-order the inputs (in-place, so we take a copy first) so latiutude
-        # and longitude are at the front.
-        u = u.copy()
-        v = v.copy()
-        u.transpose(apiorder)
-        v.transpose(apiorder)
-        # Records the current shape and dimension coordinates of the inputs.
+        if not isinstance(u, xr.DataArray) or not isinstance(v, xr.DataArray):
+            raise TypeError('u and v must be xarray.DataArray instances')
+        # Check that the dimension coordinates have the same names and values.
+        ucoords = [u.coords[name].values for name in u.dims]
+        vcoords = [v.coords[name].values for name in v.dims]
+        if (u.dims != v.dims):
+            msg = 'u and v must have the same dimension coordinates'
+            raise ValueError(msg)
+        if not all([(uc == vc).all() for uc, vc in zip(ucoords, vcoords)]):
+            msg = 'u and v must have the same dimension coordinate values'
+            raise ValueError(msg)
+        # Find the latitude and longitude coordinates and reverse the latitude
+        # dimension if necessary.
+        lat, lat_dim = _find_latitude_coordinate(u)
+        lon, lon_dim = _find_longitude_coordinate(u)
+        if lat.values[0] < lat.values[1]:
+            u = _reverse(u, lat_dim)
+            v = _reverse(v, lat_dim)
+            lat, lat_dim = _find_latitude_coordinate(u)
+        # Determine the gridtype of the input.
+        gridtype = inspect_gridtype(lat.values)
+        # Determine how the DataArrays should be reordered to conform to the
+        # windspharm.standard API.
+        apiorder, _ = get_apiorder(u.ndim, lat_dim, lon_dim)
+        apiorder = [u.dims[i] for i in apiorder]
+        self._reorder = u.dims
+        u = u.copy().transpose(*apiorder)
+        v = v.copy().transpose(*apiorder)
+        # Reshape the raw data and input into the API.
         self._ishape = u.shape
-        self._coords = u.dim_coords
-        # Reshape the inputs so they are compatible with pyspharm.
-        u = u.data.reshape(u.shape[:2] + (np.prod(u.shape[2:]),))
-        v = v.data.reshape(v.shape[:2] + (np.prod(v.shape[2:]),))
-        # Create a base VectorWind instance to do the computations.
+        self._coords = [u.coords[name] for name in u.dims]
+        u = u.values.reshape(u.shape[:2] + (np.prod(u.shape[2:]),))
+        v = v.values.reshape(v.shape[:2] + (np.prod(v.shape[2:]),))
         self._api = standard.VectorWind(u, v, gridtype=gridtype)
 
-    def _metadata(self, var, **attributes):
-        """Re-shape outputs and add meta-data."""
+    def _metadata(self, var, name, **attributes):
         var = var.reshape(self._ishape)
-        var = Cube(
-            var,
-            dim_coords_and_dims=list(zip(self._coords, range(var.ndim))))
-        var.transpose(self._reorder)
-        for attribute, value in attributes.items():
-            setattr(var, attribute, value)
+        var = xr.DataArray(var, coords=self._coords, name=name)
+        var = var.transpose(*self._reorder)
+        for attr, value in attributes.items():
+            var.attrs[attr] = value
         return var
 
     def u(self):
@@ -117,11 +111,10 @@ class VectorWind(object):
             u = w.u()
 
         """
-        u = self._api.u
-        u = self._metadata(u,
-                           standard_name='eastward_wind',
+        u = self._metadata(u, 'u',
                            units='m s**-1',
-                           long_name='eastward component of wind')
+                           standard_name='eastward_wind',
+                           long_name='eastward_component_of_wind')
         return u
 
     def v(self):
@@ -139,11 +132,10 @@ class VectorWind(object):
             v = w.v()
 
         """
-        v = self._api.v
-        v = self._metadata(v,
-                           standard_name='northward_wind',
+        v = self._metadata(v, 'v',
                            units='m s**-1',
-                           long_name='northward component of wind')
+                           standard_name='northward_wind',
+                           long_name='northward_component_of_wind')
         return v
 
     def magnitude(self):
@@ -162,10 +154,10 @@ class VectorWind(object):
 
         """
         m = self._api.magnitude()
-        m = self._metadata(m,
-                           standard_name='wind_speed',
+        m = self._metadata(m, 'speed',
                            units='m s**-1',
-                           long_name='wind speed')
+                           standard_name='wind_speed',
+                           long_name='wind_speed')
         return m
 
     def vrtdiv(self, truncation=None):
@@ -199,14 +191,14 @@ class VectorWind(object):
 
         """
         vrt, div = self._api.vrtdiv(truncation=truncation)
-        vrt = self._metadata(vrt,
+        vrt = self._metadata(vrt, 'vorticity',
                              units='s**-1',
                              standard_name='atmosphere_relative_vorticity',
-                             long_name='relative vorticity')
-        div = self._metadata(div,
+                             long_name='relative_vorticity')
+        div = self._metadata(div, 'divergence',
                              units='s**-1',
                              standard_name='divergence_of_wind',
-                             long_name='horizontal divergence')
+                             long_name='horizontal_divergence')
         return vrt, div
 
     def vorticity(self, truncation=None):
@@ -240,10 +232,10 @@ class VectorWind(object):
 
         """
         vrt = self._api.vorticity(truncation=truncation)
-        vrt = self._metadata(vrt,
+        vrt = self._metadata(vrt, 'vorticity',
                              units='s**-1',
                              standard_name='atmosphere_relative_vorticity',
-                             long_name='relative vorticity')
+                             long_name='relative_vorticity')
         return vrt
 
     def divergence(self, truncation=None):
@@ -277,10 +269,10 @@ class VectorWind(object):
 
         """
         div = self._api.divergence(truncation=truncation)
-        div = self._metadata(div,
+        div = self._metadata(div, 'divergence',
                              units='s**-1',
                              standard_name='divergence_of_wind',
-                             long_name='horizontal divergence')
+                             long_name='horizontal_divergence')
         return div
 
     def planetaryvorticity(self, omega=None):
@@ -314,10 +306,10 @@ class VectorWind(object):
         """
         f = self._api.planetaryvorticity(omega=omega)
         f = self._metadata(
-            f,
+            f, 'coriolis',
             units='s**-1',
             standard_name='coriolis_parameter',
-            long_name='planetary vorticity (coriolis parameter)')
+            long_name='planetary_vorticity')
         return f
 
     def absolutevorticity(self, omega=None, truncation=None):
@@ -356,10 +348,10 @@ class VectorWind(object):
 
         """
         avrt = self._api.absolutevorticity(omega=omega, truncation=truncation)
-        avrt = self._metadata(avrt,
+        avrt = self._metadata(avrt, 'absolute_vorticity',
                               units='s**-1',
                               standard_name='atmosphere_absolute_vorticity',
-                              long_name='absolute vorticity')
+                              long_name='absolute_vorticity')
         return avrt
 
     def sfvp(self, truncation=None):
@@ -394,12 +386,12 @@ class VectorWind(object):
         """
         sf, vp = self._api.sfvp(truncation=truncation)
         sf = self._metadata(
-            sf,
+            sf, 'streamfunction',
             units='m**2 s**-1',
             standard_name='atmosphere_horizontal_streamfunction',
             long_name='streamfunction')
         vp = self._metadata(
-            vp,
+            vp, 'velocity_potential',
             units='m**2 s**-1',
             standard_name='atmosphere_horizontal_velocity_potential',
             long_name='velocity potential')
@@ -437,7 +429,7 @@ class VectorWind(object):
         """
         sf = self._api.streamfunction(truncation=truncation)
         sf = self._metadata(
-            sf,
+            sf, 'streamfunction',
             units='m**2 s**-1',
             standard_name='atmosphere_horizontal_streamfunction',
             long_name='streamfunction')
@@ -475,7 +467,7 @@ class VectorWind(object):
         """
         vp = self._api.velocitypotential(truncation=truncation)
         vp = self._metadata(
-            vp,
+            vp, 'velocity_potential',
             units='m**2 s**-1',
             standard_name='atmosphere_horizontal_velocity_potential',
             long_name='velocity potential')
@@ -515,16 +507,16 @@ class VectorWind(object):
 
         """
         uchi, vchi, upsi, vpsi = self._api.helmholtz(truncation=truncation)
-        uchi = self._metadata(uchi,
+        uchi = self._metadata(uchi, 'u_chi',
                               units='m s**-1',
                               long_name='irrotational_eastward_wind')
-        vchi = self._metadata(vchi,
+        vchi = self._metadata(vchi, 'v_chi',
                               units='m s**-1',
                               long_name='irrotational_northward_wind')
-        upsi = self._metadata(upsi,
+        upsi = self._metadata(upsi, 'u_psi',
                               units='m s**-1',
                               long_name='non_divergent_eastward_wind')
-        vpsi = self._metadata(vpsi,
+        vpsi = self._metadata(vpsi, 'v_psi',
                               units='m s**-1',
                               long_name='non_divergent_northward_wind')
         return uchi, vchi, upsi, vpsi
@@ -566,10 +558,10 @@ class VectorWind(object):
 
         """
         uchi, vchi = self._api.irrotationalcomponent(truncation=truncation)
-        uchi = self._metadata(uchi,
+        uchi = self._metadata(uchi, 'u_chi',
                               units='m s**-1',
                               long_name='irrotational_eastward_wind')
-        vchi = self._metadata(vchi,
+        vchi = self._metadata(vchi, 'v_chi',
                               units='m s**-1',
                               long_name='irrotational_northward_wind')
         return uchi, vchi
@@ -611,10 +603,10 @@ class VectorWind(object):
 
         """
         upsi, vpsi = self._api.nondivergentcomponent(truncation=truncation)
-        upsi = self._metadata(upsi,
+        upsi = self._metadata(upsi, 'u_psi',
                               units='m s**-1',
                               long_name='non_divergent_eastward_wind')
-        vpsi = self._metadata(vpsi,
+        vpsi = self._metadata(vpsi, 'v_psi',
                               units='m s**-1',
                               long_name='non_divergent_northward_wind')
         return upsi, vpsi
@@ -625,10 +617,9 @@ class VectorWind(object):
         **Argument:**
 
         *chi*
-            A scalar field. It must be a `~iris.cube.Cube`
-            with the same latitude and longitude dimensions as the
-            vector wind components that initialized the `VectorWind`
-            instance.
+            A scalar field. It must be a `~xarray.DataArray` with the
+            same latitude and longitude dimensions as the vector wind
+            components that initialized the `VectorWind` instance.
 
         **Optional argument:**
 
@@ -656,34 +647,33 @@ class VectorWind(object):
             avrt_zonalT13, avrt_meridionalT13 = w.gradient(avrt, truncation=13)
 
         """
-        if type(chi) is not Cube:
-            raise TypeError('scalar field must be an iris cube')
-        name = chi.name()
-        lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
-        lon, lon_dim = _dim_coord_and_dim(chi, 'longitude')
-        if (lat.points[0] < lat.points[1]):
+        if not isinstance(chi, xr.DataArray):
+            raise TypeError('scalar field must be an xarray.DataArray')
+        name = chi.name
+        lat, lat_dim = _find_latitude_coordinate(chi)
+        lon, lon_dim = _find_longitude_coordinate(chi)
+        if (lat.values[0] < lat.values[1]):
             # need to reverse latitude dimension
-            chi = reverse(chi, lat_dim)
-            lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
-        apiorder, reorder = get_apiorder(chi.ndim, lat_dim, lon_dim)
-        chi = chi.copy()
-        chi.transpose(apiorder)
+            chi = _reverse(chi, lat_dim)
+            lat, lat_dim = _find_latitude_coordinate(chi)
+        apiorder, _ = get_apiorder(chi.ndim, lat_dim, lon_dim)
+        apiorder = [chi.dims[i] for i in apiorder]
+        reorder = chi.dims
+        chi = chi.copy().transpose(*apiorder)
         ishape = chi.shape
-        coords = chi.dim_coords
+        coords = [chi.coords[name] for name in chi.dims]
         chi = chi.data.reshape(chi.shape[:2] + (np.prod(chi.shape[2:]),))
         uchi, vchi = self._api.gradient(chi, truncation=truncation)
         uchi = uchi.reshape(ishape)
         vchi = vchi.reshape(ishape)
-        uchi = Cube(
-            uchi,
-            dim_coords_and_dims=list(zip(coords, range(uchi.ndim))))
-        vchi = Cube(
-            vchi,
-            dim_coords_and_dims=list(zip(coords, range(vchi.ndim))))
-        uchi.transpose(reorder)
-        vchi.transpose(reorder)
-        uchi.long_name = 'zonal_gradient_of_{!s}'.format(name)
-        vchi.long_name = 'meridional_gradient_of_{!s}'.format(name)
+        uchi_name = 'zonal_gradient_of_{!s}'.format(name)
+        vchi_name = 'meridional_gradient_of_{!s}'.format(name)
+        uchi = xr.DataArray(uchi, coords=coords, name=uchi_name,
+                            attrs={'long_name': uchi_name})
+        vchi = xr.DataArray(vchi, coords=coords, name=vchi_name,
+                            attrs={'long_name': vchi_name})
+        uchi = uchi.transpose(*reorder)
+        vchi = vchi.transpose(*reorder)
         return uchi, vchi
 
     def truncate(self, field, truncation=None):
@@ -695,10 +685,9 @@ class VectorWind(object):
         **Argument:**
 
         *field*
-            A scalar field. It must be a `~iris.cube.Cube`
-            with the same latitude and longitude dimensions as the
-            vector wind components that initialized the `VectorWind`
-            instance.
+            A scalar field. It must be a `~xarray.DataArray` with the
+            same latitude and longitude dimensions as the vector wind
+            components that initialized the `VectorWind` instance.
 
         **Optional argument:**
 
@@ -724,45 +713,69 @@ class VectorWind(object):
             scalar_field_T21 = w.truncate(scalar_field, truncation=21)
 
         """
-        if type(field) is not Cube:
-            raise TypeError('scalar field must be an iris cube')
-        lat, lat_dim = _dim_coord_and_dim(field, 'latitude')
-        lon, lon_dim = _dim_coord_and_dim(field, 'longitude')
-        if (lat.points[0] < lat.points[1]):
+        if not isinstance(field, xr.DataArray):
+            raise TypeError('scalar field must be an xarray.Dataset')
+        lat, lat_dim = _find_latitude_coordinate(field)
+        lon, lon_dim = _find_longitude_coordinate(field)
+        if (lat.values[0] < lat.values[1]):
             # need to reverse latitude dimension
-            field = reverse(field, lat_dim)
-            lat, lat_dim = _dim_coord_and_dim(field, 'latitude')
-        apiorder, reorder = get_apiorder(field.ndim, lat_dim, lon_dim)
-        field = field.copy()
-        field.transpose(apiorder)
+            field = _reverse(field, lat_dim)
+            lat, lat_dim = _find_latitude_coordinate(field)
+        apiorder, _ = get_apiorder(field.ndim, lat_dim, lon_dim)
+        apiorder = [field.dims[i] for i in apiorder]
+        reorder = field.dims
+        field = field.copy().transpose(*apiorder)
         ishape = field.shape
-        coords = field.dim_coords
-        fielddata = field.data.reshape(
+        coords = [field.coords[name] for name in field.dims]
+        fielddata = field.values.reshape(
             field.shape[:2] + (np.prod(field.shape[2:]),))
         fieldtrunc = self._api.truncate(fielddata, truncation=truncation)
-        field.data = fieldtrunc.reshape(ishape)
-        field.transpose(reorder)
+        field.values = fieldtrunc.reshape(ishape)
+        field = field.transpose(*reorder)
         return field
 
 
-def _dim_coord_and_dim(cube, coord):
+def _reverse(array, dim):
+    """Reverse an `xarray.DataArray` along a given dimension."""
+    slicers = [slice(0, None)] * array.ndim
+    slicers[dim] = slice(-1, None, -1)
+    return array[tuple(slicers)]
+
+
+def _find_coord_and_dim(array, predicate, name):
     """
-    Retrieve a given dimension coordinate from a `~iris.cube.Cube` and
-    the dimension number it corresponds to.
+    Find a dimension coordinate in an `xarray.DataArray` that satisfies
+    a predicate function.
 
     """
-    coords = [c for c in cube.dim_coords if coord in c.name()]
-    if len(coords) > 1:
-        raise ValueError('multiple {!s} coordinates not '
-                         'allowed: {!r}'.format(coord, cube))
-    try:
-        c = coords[0]
-    except IndexError:
-        raise ValueError('cannot get {!s} coordinate '
-                         'from cube {!r}'.format(coord, cube))
-    c_dim = cube.coord_dims(c)
-    if len(c_dim) != 1:
-        raise ValueError('multiple dimensions with {!s} coordinate '
-                         'not allowed: {!r}'.format(coord, cube))
-    c_dim = c_dim[0]
-    return c, c_dim
+    candidates = [coord
+                  for coord in [array.coords[name] for name in array.dims]
+                  if predicate(coord)]
+    if not candidates:
+        raise ValueError('cannot find a {!s} coordinate'.format(name))
+    if len(candidates) > 1:
+        msg = 'multiple {!s} coordinates are not allowed'
+        raise ValueError(msg.format(name))
+    coord = candidates[0]
+    dim = array.dims.index(coord.name)
+    return coord, dim
+
+
+def _find_latitude_coordinate(array):
+    """Find a latitude dimension coordinate in an `xarray.DataArray`."""
+    return _find_coord_and_dim(
+        array,
+        lambda c: (c.name in ('latitude', 'lat') or
+                   c.attrs.get('units') == 'degrees_north' or
+                   c.attrs.get('axis') == 'Y'),
+        'latitude')
+
+
+def _find_longitude_coordinate(array):
+    """Find a longitude dimension coordinate in an `xarray.DataArray`."""
+    return _find_coord_and_dim(
+        array,
+        lambda c: (c.name in ('longitude', 'lon') or
+                   c.attrs.get('units') == 'degrees_east' or
+                   c.attrs.get('axis') == 'X'),
+        'longitude')

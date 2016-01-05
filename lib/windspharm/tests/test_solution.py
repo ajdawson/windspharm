@@ -282,3 +282,45 @@ class TestIrisInvertedLatitude(IrisSolutionTest):
     def unmodify_solution(cls):
         for field_name in ('uwnd', 'vwnd'):
             cls.solution[field_name] = cls.solution[field_name][::-1]
+
+
+# ----------------------------------------------------------------------------
+# Tests for the Xarray interface
+
+
+class XarraySolutionTest(SolutionTest):
+    """Base class for all Xarray interface solution test classes."""
+    interface = 'xarray'
+
+
+class TestXarrayRegular(XarraySolutionTest):
+    """Regular grid."""
+    gridtype = 'regular'
+
+
+class TestXarrayGaussian(XarraySolutionTest):
+    """Gaussian grid."""
+    gridtype = 'gaussian'
+
+
+class TestXarrayGridTranspose(XarraySolutionTest):
+    gridtype = 'regular'
+
+    @classmethod
+    def modify_solution(cls):
+        for field_name in cls.solution.keys():
+            cls.solution[field_name].transpose()
+
+
+class TestXarrayInvertedLatitude(XarraySolutionTest):
+    gridtype = 'regular'
+
+    @classmethod
+    def modify_solution(cls):
+        for field_name in ('uwnd', 'vwnd'):
+            cls.solution[field_name] = cls.solution[field_name][::-1]
+
+    @classmethod
+    def unmodify_solution(cls):
+        for field_name in ('uwnd', 'vwnd'):
+            cls.solution[field_name] = cls.solution[field_name][::-1]
