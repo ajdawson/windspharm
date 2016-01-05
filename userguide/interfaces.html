@@ -160,21 +160,21 @@ Descriptions of each interface are below, and are summarised in the following ta
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>iris</td>
-<td>Data contained in and <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> cube.</td>
+<td>Data contained in and <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> cube.</td>
 </tr>
 <tr class="row-odd"><td>cdms</td>
 <td>Data stored in a <code class="xref py py-obj docutils literal"><span class="pre">cdms2</span></code> variable.</td>
 </tr>
 <tr class="row-even"><td>standard</td>
-<td>Other data, stored in a <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>.</td>
+<td>Other data, stored in a <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.10)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="iris-interface">
 <h2>Iris interface<a class="headerlink" href="#iris-interface" title="Permalink to this headline">¶</a></h2>
-<p>The iris interface works with <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a> objects, which are the data containers used by the iris data analysis package.
+<p>The iris interface works with <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a> objects, which are the data containers used by the iris data analysis package.
 The meta-data, including coordinate dimensions, associated with iris Cube objects is understood by the <a class="reference internal" href="../api/windspharm.iris.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris.VectorWind</span></code></a> interface.
-The outputs of <a class="reference internal" href="../api/windspharm.iris.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris.VectorWind</span></code></a> methods are also contained in <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.8)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a> objects, meaning they can be used with tools in the iris package, and easily written to a file.</p>
+The outputs of <a class="reference internal" href="../api/windspharm.iris.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris.VectorWind</span></code></a> methods are also contained in <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a> objects, meaning they can be used with tools in the iris package, and easily written to a file.</p>
 </div>
 <div class="section" id="cdms-interface">
 <h2>cdms interface<a class="headerlink" href="#cdms-interface" title="Permalink to this headline">¶</a></h2>
@@ -182,7 +182,7 @@ The outputs of <a class="reference internal" href="../api/windspharm.iris.html#w
 </div>
 <div class="section" id="standard-interface">
 <h2>standard interface<a class="headerlink" href="#standard-interface" title="Permalink to this headline">¶</a></h2>
-<p>The standard interface works with <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/index.html#module-numpy" title="(in NumPy v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">numpy</span></code></a> arrays, which makes the standard interface the general purpose interface. Any data that can be stored in a <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> can be analysed with the <a class="reference internal" href="../api/windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.standard.VectorWind</span></code></a> interface.</p>
+<p>The standard interface works with <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/index.html#module-numpy" title="(in NumPy v1.10)"><code class="xref py py-obj docutils literal"><span class="pre">numpy</span></code></a> arrays, which makes the standard interface the general purpose interface. Any data that can be stored in a <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.10)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> can be analysed with the <a class="reference internal" href="../api/windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.standard.VectorWind</span></code></a> interface.</p>
 </div>
 </div>
 

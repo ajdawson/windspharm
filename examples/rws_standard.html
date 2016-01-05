@@ -205,7 +205,7 @@
 <span class="c"># Combine the components to form the Rossby wave source term. Re-shape the</span>
 <span class="c"># Rossby wave source array to the 4D shape of the wind components as they were</span>
 <span class="c"># read off files.</span>
-<span class="n">S</span> <span class="o">=</span> <span class="o">-</span><span class="n">eta</span> <span class="o">*</span> <span class="n">div</span> <span class="o">-</span> <span class="n">uchi</span> <span class="o">*</span> <span class="n">etax</span> <span class="o">+</span> <span class="n">vchi</span> <span class="o">*</span> <span class="n">etay</span>
+<span class="n">S</span> <span class="o">=</span> <span class="o">-</span><span class="n">eta</span> <span class="o">*</span> <span class="n">div</span> <span class="o">-</span> <span class="p">(</span><span class="n">uchi</span> <span class="o">*</span> <span class="n">etax</span> <span class="o">+</span> <span class="n">vchi</span> <span class="o">*</span> <span class="n">etay</span><span class="p">)</span>
 <span class="n">S</span> <span class="o">=</span> <span class="n">recover_data</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">uwnd_info</span><span class="p">)</span>
 
 <span class="c"># Pick out the field for December and add a cyclic point (the cyclic point is</span>

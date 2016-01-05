@@ -194,7 +194,7 @@
 <span class="n">etay</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s">&#39;m**-1 s**-1&#39;</span>
 
 <span class="c"># Combine the components to form the Rossby wave source term.</span>
-<span class="n">S</span> <span class="o">=</span> <span class="n">eta</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.</span> <span class="o">*</span> <span class="n">div</span> <span class="o">-</span> <span class="n">uchi</span> <span class="o">*</span> <span class="n">etax</span> <span class="o">+</span> <span class="n">vchi</span> <span class="o">*</span> <span class="n">etay</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">eta</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.</span> <span class="o">*</span> <span class="n">div</span> <span class="o">-</span> <span class="p">(</span><span class="n">uchi</span> <span class="o">*</span> <span class="n">etax</span> <span class="o">+</span> <span class="n">vchi</span> <span class="o">*</span> <span class="n">etay</span><span class="p">)</span>
 <span class="n">S</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s">&#39;longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&#39;circular&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
 
 <span class="c"># Pick out the field for December at 200 hPa.</span>
