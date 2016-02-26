@@ -3,7 +3,7 @@ Tools for managing data for use with `~windspharm.standard.VectorWind`
 (or indeed `spharm.Spharmt`).
 
 """
-# Copyright (c) 2012-2013 Andrew Dawson
+# Copyright (c) 2012-2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -275,7 +275,7 @@ def order_latdim(latdim, u, v, axis=0):
     *axis*
         Index of the latitude dimension in the zonal and meridional wind
         components. Defaults to 0 (the first dimension).
-    
+
     **Returns:**
 
     *latdimr*

@@ -1,5 +1,5 @@
 """Build and install the windspharm package."""
-# Copyright (c) 2012-2014 Andrew Dawson
+# Copyright (c) 2012-2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ for line in open('lib/windspharm/__init__.py').readlines():
 
 packages = ['windspharm',
             'windspharm.examples',
-            'windspharm.tests' ]
+            'windspharm.tests']
 
 package_data = {
     'windspharm.examples': ['example_data/*'],
@@ -44,6 +44,6 @@ setup(name='windspharm',
       geometry using spherical harmonics
       """,
       packages=packages,
-      package_dir={'':'lib'},
+      package_dir={'': 'lib'},
       package_data=package_data,
       install_requires=['numpy', 'pyspharm >= 1.0.8'],)
