@@ -1,5 +1,5 @@
 """Test windspharm computations against reference solutions."""
-# Copyright (c) 2012-2014 Andrew Dawson
+# Copyright (c) 2012-2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -147,7 +147,7 @@ class SolutionTest(VectorWindTest):
                             0., places=5)
 
 
-#-----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Tests for the standard interface
 
 
@@ -193,12 +193,12 @@ class TestStandardMultiTime(StandardSolutionTest):
 
     @classmethod
     def modify_solution(cls):
-        repeater = lambda a: a[..., np.newaxis].repeat(5, axis=-1)
         for field_name in cls.solution:
-            cls.solution[field_name] = repeater(cls.solution[field_name])
+            cls.solution[field_name] = \
+                cls.solution[field_name][..., np.newaxis].repeat(5, axis=-1)
 
 
-#-----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Tests for the CDMS interface
 
 
@@ -225,6 +225,7 @@ class TestCDMSGridTranspose(CDMSSolutionTest):
         for field_name in cls.solution:
             cls.solution[field_name] = cls.solution[field_name].reorder('xy')
 
+
 class TestCDMSInvertedLatitude(CDMSSolutionTest):
     gridtype = 'regular'
 
@@ -241,7 +242,7 @@ class TestCDMSInvertedLatitude(CDMSSolutionTest):
                 cls.solution[field_name](latitude=(90, -90))
 
 
-#-----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Tests for the Iris interface
 
 

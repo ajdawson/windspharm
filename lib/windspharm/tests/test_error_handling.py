@@ -1,5 +1,5 @@
 """Tests for error handling in `windspharm`."""
-# Copyright (c) 2012-2013 Andrew Dawson
+# Copyright (c) 2012-2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ class ErrorHandlersTest(VectorWindTest):
             raise SkipTest(skip_message.format(cls.interface))
 
 
-#-----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Tests for the standard interface
 
 
@@ -140,7 +140,7 @@ class TestStandardErrorHandlers(ErrorHandlersTest):
         uchi, vchi = vw.gradient(solution['chi'][:-1])
 
 
-#-----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Tests for the cdms interface
 
 
@@ -206,7 +206,7 @@ class TestCDMSErrorHandlers(ErrorHandlersTest):
         uchi, vchi = vw.gradient(solution['chi'])
 
 
-#-----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Tests for the iris interface
 
 
