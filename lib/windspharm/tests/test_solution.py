@@ -161,9 +161,9 @@ class TestStandardRegular(StandardSolutionTest):
     gridtype = 'regular'
 
 
-#class TestStandardGaussian(StandardSolutionTest):
-#    """Gaussian grid."""
-#    gridtype = 'gaussian'
+class TestStandardGaussian(StandardSolutionTest):
+    """Gaussian grid."""
+    gridtype = 'gaussian'
 
 
 class TestStandardRegularSingleton(StandardSolutionTest):
@@ -177,14 +177,15 @@ class TestStandardRegularSingleton(StandardSolutionTest):
                 cls.solution[field_name][..., np.newaxis]
 
 
-#class TestStandardGaussianSingleton(StandardSolutionTest):
-#    """Singleton right-most dimension."""
-#    gridtype = 'gaussian'
-#
-#    @classmethod
-#    def modify_solution(cls):
-#        cls.solution['uwnd'] = cls.solution['uwnd'][..., np.newaxis]
-#        cls.solution['vwnd'] = cls.solution['vwnd'][..., np.newaxis]
+class TestStandardGaussianSingleton(StandardSolutionTest):
+    """Singleton right-most dimension."""
+    gridtype = 'gaussian'
+
+    @classmethod
+    def modify_solution(cls):
+        for field_name in cls.solution:
+            cls.solution[field_name] = \
+                cls.solution[field_name][..., np.newaxis]
 
 
 class TestStandardMultiTime(StandardSolutionTest):
@@ -211,9 +212,9 @@ class TestCDMSRegular(CDMSSolutionTest):
     gridtype = 'regular'
 
 
-#class TestCDMSGaussian(CDMSSolutionTest):
-#    """Gaussian grid."""
-#    gridtype = 'gaussian'
+class TestCDMSGaussian(CDMSSolutionTest):
+    """Gaussian grid."""
+    gridtype = 'gaussian'
 
 
 class TestCDMSGridTranspose(CDMSSolutionTest):
@@ -254,9 +255,9 @@ class TestIrisRegular(IrisSolutionTest):
     gridtype = 'regular'
 
 
-#class TestIrisGaussian(IrisSolutionTest):
-#    """Gaussian grid."""
-#    gridtype = 'gaussian'
+class TestIrisGaussian(IrisSolutionTest):
+    """Gaussian grid."""
+    gridtype = 'gaussian'
 
 
 class TestIrisGridTranspose(IrisSolutionTest):
