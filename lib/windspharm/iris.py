@@ -105,8 +105,8 @@ class VectorWind(object):
             # be gaussian. Construct sample gaussian latitudes and check if
             # the two match.
             gauss_reference, wts = gaussian_lats_wts(nlat)
-            difference = np.abs(latitudes - gaussian_reference)
-            if (d > tolerance).any():
+            difference = np.abs(latitudes - gauss_reference)
+            if (difference > tolerance).any():
                 raise ValueError('latitudes are unequally-spaced '
                                  'but are not gaussian')
             gridtype = 'gaussian'

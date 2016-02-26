@@ -28,8 +28,9 @@ packages = ['windspharm',
             'windspharm.examples',
             'windspharm.tests' ]
 
-package_data = {'windspharm.examples': ['example_data/*'],
-                'windspharm.tests': ['data/*.npy'],}
+package_data = {
+    'windspharm.examples': ['example_data/*'],
+    'windspharm.tests': ['data/regular/*.npy', 'data/gaussian/*.npy']}
 
 setup(name='windspharm',
       version=__version__,

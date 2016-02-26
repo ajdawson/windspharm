@@ -31,23 +31,25 @@ try:
     from iris.coords import DimCoord
 except ImportError:
     pass
+from spharm import gaussian_lats_wts
 
 
 def test_data_path():
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
 
-def __read_reference_solutions():
+def __read_reference_solutions(gridtype):
     """Read reference solutions from file."""
     exact = dict()
     for varid in ('psi', 'chi', 'vrt', 'div', 'uchi', 'vchi', 'upsi', 'vpsi',
                   'chigradu', 'chigradv', 'uwnd', 'vwnd', 'vrt_trunc'):
         try:
-            filename = os.path.join(test_data_path(),
+            filename = os.path.join(test_data_path(), gridtype,
                                     '{!s}.ref.npy'.format(varid))
             exact[varid] = np.load(filename).squeeze()
         except IOError:
-            raise IOError('required data file not found')
+            msg = 'required data file not found: {!s}'
+            raise IOError(msg.format(filename))
     return exact
 
 
@@ -57,13 +59,16 @@ def reference_solutions(container_type, gridtype):
     if container_type not in ('standard', 'iris', 'cdms'):
         raise ValueError("unknown container type: "
                          "'{!s}'".format(container_type))
-    reference = __read_reference_solutions()
+    reference = __read_reference_solutions(gridtype)
     if container_type == 'standard':
         # Reference solution already in numpy arrays.
         return reference
     # Generate coordinate dimensions for meta-data interfaces.
+    if gridtype == 'gaussian':
+        lats, _ = gaussian_lats_wts(72)
+    else:
+        lats = np.linspace(90, -90, 73)
     lons = np.arange(0, 360, 2.5)
-    lats = np.linspace(90, -90, 73)
     if container_type == 'cdms':
         # Solution in cdms2 variables.
         try:
