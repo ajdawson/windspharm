@@ -41,8 +41,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'windspharm'
-copyright = u'2012-2014, Andrew Dawson'
+project = 'windspharm'
+copyright = '2012-2014, Andrew Dawson'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -194,8 +194,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'windspharm.tex', u'windspharm Documentation',
-   u'Andrew Dawson', 'manual'),
+  ('index', 'windspharm.tex', 'windspharm Documentation',
+   'Andrew Dawson', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -224,8 +224,8 @@ latex_domain_indices = False
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'windspharm', u'windspharm Documentation',
-     [u'Andrew Dawson'], 1)
+    ('index', 'windspharm', 'windspharm Documentation',
+     ['Andrew Dawson'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -238,8 +238,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'windspharm', u'windspharm Documentation',
-   u'Andrew Dawson', 'windspharm', 'One line description of project.',
+  ('index', 'windspharm', 'windspharm Documentation',
+   'Andrew Dawson', 'windspharm', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -256,10 +256,10 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'windspharm'
-epub_author = u'Andrew Dawson'
-epub_publisher = u'Andrew Dawson'
-epub_copyright = u'2012, Andrew Dawson'
+epub_title = 'windspharm'
+epub_author = 'Andrew Dawson'
+epub_publisher = 'Andrew Dawson'
+epub_copyright = '2012, Andrew Dawson'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

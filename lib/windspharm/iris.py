@@ -137,7 +137,7 @@ class VectorWind(object):
 
         """
         # Remove the latitude and longitude dimensions from an initial list.
-        apiorder = range(cube.ndim)
+        apiorder = list(range(cube.ndim))
         apiorder.remove(latitude)
         apiorder.remove(longitude)
         # Insert latitude and longitude at the front.
@@ -149,8 +149,9 @@ class VectorWind(object):
     def _metadata(self, var, **attributes):
         """Re-shape outputs and add meta-data."""
         var = var.reshape(self._ishape)
-        var = Cube(var,
-                   dim_coords_and_dims=zip(self._coords, range(var.ndim)))
+        var = Cube(
+            var,
+            dim_coords_and_dims=list(zip(self._coords, range(var.ndim))))
         var.transpose(self._reorder)
         for attribute, value in attributes.items():
             setattr(var, attribute, value)
@@ -728,10 +729,12 @@ class VectorWind(object):
         uchi, vchi = self._api.gradient(chi, truncation=truncation)
         uchi = uchi.reshape(ishape)
         vchi = vchi.reshape(ishape)
-        uchi = Cube(uchi,
-                    dim_coords_and_dims=zip(coords, range(uchi.ndim)))
-        vchi = Cube(vchi,
-                    dim_coords_and_dims=zip(coords, range(vchi.ndim)))
+        uchi = Cube(
+            uchi,
+            dim_coords_and_dims=list(zip(coords, range(uchi.ndim))))
+        vchi = Cube(
+            vchi,
+            dim_coords_and_dims=list(zip(coords, range(vchi.ndim))))
         uchi.transpose(reorder)
         vchi.transpose(reorder)
         uchi.long_name = 'zonal_gradient_of_{!s}'.format(name)
@@ -803,7 +806,7 @@ def _dim_coord_and_dim(cube, coord):
     the dimension number it corresponds to.
 
     """
-    coords = filter(lambda c: coord in c.name(), cube.dim_coords)
+    coords = [c for c in cube.dim_coords if coord in c.name()]
     if len(coords) > 1:
         raise ValueError('multiple {!s} coordinates not '
                          'allowed: {!r}'.format(coord, cube))

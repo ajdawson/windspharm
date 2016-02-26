@@ -45,5 +45,4 @@ setup(name='windspharm',
       packages=packages,
       package_dir={'':'lib'},
       package_data=package_data,
-      use_2to3=True,
       install_requires=['numpy', 'pyspharm >= 1.0.8'],)

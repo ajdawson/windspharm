@@ -145,7 +145,7 @@ def recover_data(pdata, info):
     # Re-order dimensions correctly.
     rolldims = np.array([info['intermediate_order'].index(dim)
                          for dim in info['original_order'][::-1]])
-    for i in xrange(len(rolldims)):
+    for i in range(len(rolldims)):
         # Roll the axis to the front.
         data = np.rollaxis(data, rolldims[i])
         rolldims = np.where(rolldims < rolldims[i], rolldims + 1, rolldims)
