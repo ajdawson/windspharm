@@ -86,7 +86,7 @@ def reference_solutions(container_type, gridtype):
             latdim = DimCoord(lats,
                               standard_name='latitude',
                               units='degrees_north')
-            coords = zip((latdim, londim), (0, 1))
+            coords = list(zip((latdim, londim), (0, 1)))
             for name in reference.keys():
                 reference[name] = Cube(reference[name],
                                        dim_coords_and_dims=coords,
