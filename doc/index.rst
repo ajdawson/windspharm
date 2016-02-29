@@ -47,7 +47,7 @@ After downloading the source code archive, unzip it and change into the unzipped
 
    $ pip install windspharm
 
-Releases are also available via conda_ and binstar_, packages are built for both Python 2 and 3 on 32 and 64-bit Linux platforms:
+Releases are also available via conda_ and binstar_, packages are built for both Python 2 and 3 on Linux and OSX:
 
 .. code-block:: bash
 
@@ -65,25 +65,23 @@ You can also check out the source code for the development version from the `git
 Getting Started
 ---------------
 
-The `windspharm` package currently provides three interfaces for performing computations.
-The `windspharm.standard` interface is designed to work with `numpy` arrays; the `windspharm.iris` interface is designed to work with `iris` cubes; and the `windspharm.cdms` interface is designed to work with `cdms2` variables.
-Each interface supports exactly the same sets of operations, the only differences are that the `windspharm.iris` and `windspharm.cdms` interfaces also use the meta-data stored in input variables to construct outputs with meta-data.
+The `windspharm` package provides several interfaces for performing computations.
+The `windspharm.standard` interface is designed to work with `numpy` arrays; the `windspharm.iris` interface is designed to work with `iris` cubes; the `windspharm.cdms` interface is designed to work with `cdms2` variables; and the `windspharm.xarray` interface works with the `xarray` package.
+Each interface supports exactly the same sets of operations, the only differences are that the `windspharm.iris`, `windspharm.cdms`, and `windspharm.xarray` interfaces also use the meta-data stored in input variables to construct outputs with meta-data.
 
-Regardless of which interface you use, the basic usage is the same. All computation is handled by the `windspharm.standard.VectorWind`, `windspharm.iris.VectorWind` or `windspharm.cdms.VectorWind` classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.
+Regardless of which interface you use, the basic usage is the same. All computation is handled by the `windspharm.standard.VectorWind`, `windspharm.iris.VectorWind`, `windspharm.cdms.VectorWind` or `windspharm.xarray.VectorWind` classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.
 
-The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the `cdms` interface:
+The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the `iris` interface:
 
 .. code-block:: python
 
-   import cdms2
-   from windspharm.cdms import VectorWind
+   import iris
+   from windspharm.iris import VectorWind
 
 
    # Read u and v wind components from file.
-   ncin = cdms2.open('uv_components.nc')
-   u = ncin('u')
-   v = ncin('v')
-   ncin.close()
+   u = iris.load_cube('uwind_file.nc')
+   v = iris.load_cube('vwind_file.nc')
 
    # Create an instance of the VectorWind class to do the computations.
    w = VectorWind(u, v)
@@ -98,10 +96,10 @@ Requirements
 
 This package requires as a minimum that you have numpy_ and pyspharm_ available, and requires setuptools_ for installation.
 It is recommended that you use pyspharm version 1.0.8 or later, versions of pyspharm prior to 1.0.7 should not be used at all due to a serious bug.
-The `windspharm.iris` interface can only be used if the `iris` module is available (see the iris_ documentation).
-The `windspharm.cdms` interface can only be used if the `cdms2` module is available.
-This module is distributed as part of the CDAT_ project.
-It is also distributed as part of the cdat-lite_ package.
+The `windspharm.iris` interface can only be used if the `iris` package is available (see the iris_ documentation).
+The `windspharm.cdms` interface can only be used if the `cdms2` module is available. This module is distributed as part of the UVCDAT_ project.
+The `windspharm.xarray` interface can only be used if the `xarray` package is available (see the xarray_ documentation).
+
 
 .. warning::
 
@@ -131,9 +129,11 @@ Bug reports and feature requests should be filed using the Github issues_ system
 If you have code you would like to contribute, fork the `repository <http://github.com/ajdawson/windspharm>`_ on Github, do the work on a feature branch of your fork, push your feature branch to *your* Github fork, and send a pull request.
 
 
-.. _CDAT: http://uv-cdat.llnl.gov
+.. _UVCDAT: http://uvcdat.llnl.gov/
 
 .. _iris: http://scitools.org.uk/iris
+
+.. _xarray: http://xarray.pydata.org
 
 .. _numpy: http://numpy.scipy.org
 

@@ -9,7 +9,7 @@ env:
           PACKAGES="${PACKAGES_STANDARD}"
         - NAME="Python 2.7 (metadata)"
           PYTHON_VERSION=2.7
-          PACKAGES="${PACKAGES_STANDARD} cdat-lite iris"
+          PACKAGES="${PACKAGES_STANDARD} cdat-lite iris xarray"
         - NAME="Python 3.3 (standard)"
           PYTHON_VERSION=3.3
           PACKAGES="${PACKAGES_STANDARD}"
@@ -18,10 +18,13 @@ env:
           PACKAGES="${PACKAGES_STANDARD}"
         - NAME="Python 3.4 (metadata)"
           PYTHON_VERSION=3.4
-          PACKAGES="${PACKAGES_STANDARD} iris"
+          PACKAGES="${PACKAGES_STANDARD} iris xarray"
         - NAME="Python 3.5 (standard)"
           PYTHON_VERSION=3.5
           PACKAGES="${PACKAGES_STANDARD}"
+        - NAME="Python 3.5 (metadata)"
+          PYTHON_VERSION=3.5
+          PACKAGES="${PACKAGES_STANDARD} xarray"
 
 sudo: false
 

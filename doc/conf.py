@@ -175,6 +175,7 @@ htmlhelp_basename = 'windspharmdoc'
 intersphinx_mapping = {
         'iris': ('http://scitools.org.uk/iris/docs/latest', None),
         'numpy': ('http://docs.scipy.org/doc/numpy', None),
+        'xarray': ('http://xarray.pydata.org/en/stable', None)
 }
 
 
@@ -299,4 +300,3 @@ epub_copyright = '2012, Andrew Dawson'
 # -- Autodoc settings -- #
 autoclass_content = 'both'
 autodoc_member_order = 'bysource'
-

@@ -258,3 +258,92 @@ class TestIrisErrorHandlers(ErrorHandlersTest):
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         solution['chi'].coord('latitude').rename('unknown')
         uchi, vchi = vw.gradient(solution['chi'])
+
+
+# ----------------------------------------------------------------------------
+# Tests for the xarray interface
+
+
+class TestXarrayErrorHandlers(ErrorHandlersTest):
+    """xarray interface error handler tests."""
+    interface = 'xarray'
+    gridtype = 'regular'
+
+    @raises(TypeError)
+    def test_non_dataarray_input(self):
+        # input not an xarray.DataArray should raise an error
+        solution = reference_solutions('standard', self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+
+    @raises(ValueError)
+    def test_different_shape_components(self):
+        # inputs not the same shape should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        solution['vwnd'] = solution['vwnd'].transpose()
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+
+    @raises(ValueError)
+    def test_unknown_grid(self):
+        # inputs where a lat-lon grid cannot be identified should raise an
+        # error
+        solution = reference_solutions(self.interface, self.gridtype)
+        solution['vwnd'].coords.update(
+            {'unknown': ('latitude',
+                         solution['vwnd'].coords['latitude'].values)})
+        solution['vwnd'] = solution['vwnd'].swap_dims({'latitude': 'unknown'})
+        del solution['vwnd'].coords['latitude']
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+
+    @raises(TypeError)
+    def test_gradient_non_dataarray_input(self):
+        # input to gradient not an xarray.DataArray should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        dummy_solution = reference_solutions('standard', self.gridtype)
+        uchi, vchi = vw.gradient(dummy_solution['chi'])
+
+    @raises(ValueError)
+    def test_gradient_different_shape(self):
+        # input to gradient of different shape should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        uchi, vchi = vw.gradient(solution['chi'][:-1])
+
+    @raises(ValueError)
+    def test_gradient_unknown_grid(self):
+        # input to gradient with no identifiable grid should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        solution['chi'].coords.update(
+            {'unknown': ('latitude',
+                         solution['chi'].coords['latitude'].values)})
+        solution['chi'] = solution['chi'].swap_dims({'latitude': 'unknown'})
+        del solution['chi'].coords['latitude']
+        uchi, vchi = vw.gradient(solution['chi'])
+
+    @raises(TypeError)
+    def test_truncate_non_dataarray_input(self):
+        # input to truncate not an xarray.DataArray should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        dummy_solution = reference_solutions('standard', self.gridtype)
+        uchi, vchi = vw.truncate(dummy_solution['chi'])
+
+    @raises(ValueError)
+    def test_truncate_different_shape(self):
+        # input to truncate of different shape should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        uchi, vchi = vw.truncate(solution['chi'][:-1])
+
+    @raises(ValueError)
+    def test_truncate_unknown_grid(self):
+        # input to truncate with no identifiable grid should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        solution['chi'].coords.update(
+            {'unknown': ('latitude',
+                         solution['chi'].coords['latitude'].values)})
+        solution['chi'] = solution['chi'].swap_dims({'latitude': 'unknown'})
+        del solution['chi'].coords['latitude']
+        uchi, vchi = vw.truncate(solution['chi'])
