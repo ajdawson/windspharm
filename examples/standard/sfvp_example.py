@@ -5,12 +5,14 @@ flow.
 This example uses the standard interface.
 
 """
-import numpy as np
+import cartopy.crs as ccrs
+from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+from cartopy.util import add_cyclic_point
 import matplotlib as mpl
 mpl.rcParams['mathtext.default'] = 'regular'
 import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap, addcyclic
 from netCDF4 import Dataset
+import numpy as np
 
 from windspharm.standard import VectorWind
 from windspharm.tools import prep_data, recover_data, order_latdim
@@ -54,30 +56,43 @@ vp = recover_data(vp, uwnd_info)
 
 # Pick out the field for December and add a cyclic point (the cyclic point is
 # for plotting purposes).
-sf_dec, lons_c = addcyclic(sf[11], lons)
-vp_dec, lons_c = addcyclic(vp[11], lons)
+sf_dec, lons_c = add_cyclic_point(sf[11], lons)
+vp_dec, lons_c = add_cyclic_point(vp[11], lons)
 
 # Plot streamfunction.
-m = Basemap(projection='cyl', resolution='c', llcrnrlon=0, llcrnrlat=-90,
-            urcrnrlon=360.01, urcrnrlat=90)
-x, y = m(*np.meshgrid(lons_c, lats))
+ax1 = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
 clevs = [-120, -100, -80, -60, -40, -20, 0, 20, 40, 60, 80, 100, 120]
-m.contourf(x, y, sf_dec*1e-06, clevs, cmap=plt.cm.RdBu_r,
-           extend='both')
-m.drawcoastlines()
-m.drawparallels((-90, -60, -30, 0, 30, 60, 90), labels=[1,0,0,0])
-m.drawmeridians((0, 60, 120, 180, 240, 300, 360), labels=[0,0,0,1])
-plt.colorbar(orientation='horizontal')
+sf_fill = ax1.contourf(lons_c, lats, sf_dec * 1e-06, clevs,
+                       transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r,
+                       extend='both')
+ax1.coastlines()
+ax1.gridlines()
+ax1.set_xticks([0, 60, 120, 180, 240, 300, 359.99], crs=ccrs.PlateCarree())
+ax1.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs=ccrs.PlateCarree())
+lon_formatter = LongitudeFormatter(zero_direction_label=True,
+                                   number_format='.0f')
+lat_formatter = LatitudeFormatter()
+ax1.xaxis.set_major_formatter(lon_formatter)
+ax1.yaxis.set_major_formatter(lat_formatter)
+plt.colorbar(sf_fill, orientation='horizontal')
 plt.title('Streamfunction ($10^6$m$^2$s$^{-1}$)', fontsize=16)
 
 # Plot velocity potential.
 plt.figure()
+ax2 = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
 clevs = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10]
-m.contourf(x, y, vp_dec*1e-06, clevs, cmap=plt.cm.RdBu_r,
-           extend='both')
-m.drawcoastlines()
-m.drawparallels((-90, -60, -30, 0, 30, 60, 90), labels=[1,0,0,0])
-m.drawmeridians((0, 60, 120, 180, 240, 300, 360), labels=[0,0,0,1])
-plt.colorbar(orientation='horizontal')
+vp_fill = ax2.contourf(lons_c, lats, vp_dec * 1e-06, clevs,
+                       transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r,
+                       extend='both')
+ax2.coastlines()
+ax2.gridlines()
+ax2.set_xticks([0, 60, 120, 180, 240, 300, 359.99], crs=ccrs.PlateCarree())
+ax2.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs=ccrs.PlateCarree())
+lon_formatter = LongitudeFormatter(zero_direction_label=True,
+                                   number_format='.0f')
+lat_formatter = LatitudeFormatter()
+ax2.xaxis.set_major_formatter(lon_formatter)
+ax2.yaxis.set_major_formatter(lat_formatter)
+plt.colorbar(vp_fill, orientation='horizontal')
 plt.title('Velocity Potential ($10^6$m$^2$s$^{-1}$)', fontsize=16)
 plt.show()

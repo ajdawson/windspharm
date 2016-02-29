@@ -52,10 +52,9 @@ S_dec = S.extract(time_constraint)
 # Plot Rossby wave source.
 clevs = [-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30]
 ax = plt.subplot(111, projection=ccrs.PlateCarree(central_longitude=180))
-fill = iplt.contourf(S_dec*1e11, clevs, cmap=plt.cm.RdBu_r, extend='both')
+fill = iplt.contourf(S_dec * 1e11, clevs, cmap=plt.cm.RdBu_r, extend='both')
 ax.coastlines()
 ax.gridlines()
 plt.colorbar(fill, orientation='horizontal')
 plt.title('Rossby Wave Source ($10^{-11}$s$^{-1}$)', fontsize=16)
 plt.show()
-
