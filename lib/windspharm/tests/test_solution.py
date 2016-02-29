@@ -206,6 +206,12 @@ class CDMSSolutionTest(SolutionTest):
     """Base class for all CDMS interface solution test classes."""
     interface = 'cdms'
 
+    def test_truncate_reversed(self):
+        # vorticity truncated to T21 matches reference?
+        vrt_trunc = self.vw.truncate(self.solution['vrt'][::-1], truncation=21)
+        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
+                            0., places=5)
+
 
 class TestCDMSRegular(CDMSSolutionTest):
     """Regular grid."""
@@ -224,6 +230,13 @@ class TestCDMSGridTranspose(CDMSSolutionTest):
     def modify_solution(cls):
         for field_name in cls.solution:
             cls.solution[field_name] = cls.solution[field_name].reorder('xy')
+
+    def test_truncate_reversed(self):
+        # vorticity truncated to T21 matches reference?
+        vrt_trunc = self.vw.truncate(self.solution['vrt'][:, ::-1],
+                                     truncation=21)
+        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
+                            0., places=5)
 
 
 class TestCDMSInvertedLatitude(CDMSSolutionTest):
@@ -250,6 +263,11 @@ class IrisSolutionTest(SolutionTest):
     """Base class for all Iris interface solution test classes."""
     interface = 'iris'
 
+    def test_truncate_reversed(self):
+        vrt_trunc = self.vw.truncate(self.solution['vrt'][::-1], truncation=21)
+        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
+                            0., places=5)
+
 
 class TestIrisRegular(IrisSolutionTest):
     """Regular grid."""
@@ -268,6 +286,12 @@ class TestIrisGridTranspose(IrisSolutionTest):
     def modify_solution(cls):
         for field_name in cls.solution.keys():
             cls.solution[field_name].transpose([1, 0])
+
+    def test_truncate_reversed(self):
+        vrt_trunc = self.vw.truncate(self.solution['vrt'][:, ::-1],
+                                     truncation=21)
+        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
+                            0., places=5)
 
 
 class TestIrisInvertedLatitude(IrisSolutionTest):
@@ -292,6 +316,11 @@ class XarraySolutionTest(SolutionTest):
     """Base class for all Xarray interface solution test classes."""
     interface = 'xarray'
 
+    def test_truncate_reversed(self):
+        vrt_trunc = self.vw.truncate(self.solution['vrt'][::-1], truncation=21)
+        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
+                            0., places=5)
+
 
 class TestXarrayRegular(XarraySolutionTest):
     """Regular grid."""
@@ -309,7 +338,13 @@ class TestXarrayGridTranspose(XarraySolutionTest):
     @classmethod
     def modify_solution(cls):
         for field_name in cls.solution.keys():
-            cls.solution[field_name].transpose()
+            cls.solution[field_name] = cls.solution[field_name].transpose()
+
+    def test_truncate_reversed(self):
+        vrt_trunc = self.vw.truncate(self.solution['vrt'][:, ::-1],
+                                     truncation=21)
+        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
+                            0., places=5)
 
 
 class TestXarrayInvertedLatitude(XarraySolutionTest):

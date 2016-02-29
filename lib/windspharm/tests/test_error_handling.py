@@ -205,6 +205,31 @@ class TestCDMSErrorHandlers(ErrorHandlersTest):
         lat.id = 'unknown'
         uchi, vchi = vw.gradient(solution['chi'])
 
+    @raises(TypeError)
+    def test_truncate_non_variable_input(self):
+        # input to truncate not a cdms2 variable should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        dummy_solution = reference_solutions('standard', self.gridtype)
+        uchi, vchi = vw.truncate(dummy_solution['chi'])
+
+    @raises(ValueError)
+    def test_truncate_different_shape(self):
+        # input to truncate of different shape should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        uchi, vchi = vw.truncate(solution['chi'][:-1])
+
+    @raises(ValueError)
+    def test_truncate_unknown_grid(self):
+        # input to truncate with no identifiable grid should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        lat = solution['chi'].getLatitude()
+        delattr(lat, 'axis')
+        lat.id = 'unknown'
+        uchi, vchi = vw.truncate(solution['chi'])
+
 
 # ----------------------------------------------------------------------------
 # Tests for the iris interface
@@ -258,6 +283,29 @@ class TestIrisErrorHandlers(ErrorHandlersTest):
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         solution['chi'].coord('latitude').rename('unknown')
         uchi, vchi = vw.gradient(solution['chi'])
+
+    @raises(TypeError)
+    def test_truncate_non_cube_input(self):
+        # input to truncate not an iris cube should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        dummy_solution = reference_solutions('standard', self.gridtype)
+        uchi, vchi = vw.truncate(dummy_solution['chi'])
+
+    @raises(ValueError)
+    def test_truncate_different_shape(self):
+        # input to truncate of different shape should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        uchi, vchi = vw.truncate(solution['chi'][:-1])
+
+    @raises(ValueError)
+    def test_truncate_unknown_grid(self):
+        # input to truncate with no identifiable grid should raise an error
+        solution = reference_solutions(self.interface, self.gridtype)
+        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        solution['chi'].coord('latitude').rename('unknown')
+        uchi, vchi = vw.truncate(solution['chi'])
 
 
 # ----------------------------------------------------------------------------
