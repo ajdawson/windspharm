@@ -47,7 +47,8 @@ vp_dec = vp.extract(time_constraint)
 # Plot streamfunction.
 clevs = [-120, -100, -80, -60, -40, -20, 0, 20, 40, 60, 80, 100, 120]
 ax = plt.subplot(111, projection=ccrs.PlateCarree(central_longitude=180))
-fill_sf = iplt.contourf(sf_dec*1e-06, clevs, cmap=plt.cm.RdBu_r, extend='both')
+fill_sf = iplt.contourf(sf_dec * 1e-06, clevs, cmap=plt.cm.RdBu_r,
+                        extend='both')
 ax.coastlines()
 ax.gridlines()
 plt.colorbar(fill_sf, orientation='horizontal')
@@ -57,7 +58,8 @@ plt.title('Streamfunction ($10^6$m$^2$s$^{-1}$)', fontsize=16)
 plt.figure()
 clevs = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10]
 ax = plt.subplot(111, projection=ccrs.PlateCarree(central_longitude=180))
-fill_vp = iplt.contourf(vp_dec*1e-06, clevs, cmap=plt.cm.RdBu_r, extend='both')
+fill_vp = iplt.contourf(vp_dec * 1e-06, clevs, cmap=plt.cm.RdBu_r,
+                        extend='both')
 ax.coastlines()
 ax.gridlines()
 plt.colorbar(fill_vp, orientation='horizontal')

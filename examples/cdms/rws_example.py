@@ -3,12 +3,12 @@
 This example uses the cdms interface.
 
 """
-import numpy as np
+import cartopy.crs as ccrs
+import cdms2
 import matplotlib as mpl
 mpl.rcParams['mathtext.default'] = 'regular'
 import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap
-import cdms2
+import numpy as np
 
 from windspharm.cdms import VectorWind
 from windspharm.examples import example_data_path
@@ -38,19 +38,17 @@ S = -eta * div - (uchi * etax + vchi * etay)
 
 # Pick out the field for December and add a cyclic point (the cyclic point is
 # for plotting purposes).
-S_dec = S(time=slice(11,12), longitude=(0,360), squeeze=True)
+S_dec = S(time=slice(11, 12), longitude=(0, 360), squeeze=True)
 
 # Plot Rossby wave source.
-m = Basemap(projection='cyl', resolution='c', llcrnrlon=0, llcrnrlat=-90,
-            urcrnrlon=360.01, urcrnrlat=90)
 lons, lats = S_dec.getLongitude()[:], S_dec.getLatitude()[:]
-x, y = m(*np.meshgrid(lons, lats))
+ax = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
 clevs = [-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30]
-m.contourf(x, y, S_dec.asma()*1e11, clevs, cmap=plt.cm.RdBu_r,
-           extend='both')
-m.drawcoastlines()
-m.drawparallels((-90, -60, -30, 0, 30, 60, 90), labels=[1,0,0,0])
-m.drawmeridians((0, 60, 120, 180, 240, 300, 360), labels=[0,0,0,1])
-plt.colorbar(orientation='horizontal')
+fill = ax.contourf(lons, lats, S_dec.asma() * 1e11, clevs,
+                   transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r,
+                   extend='both')
+ax.coastlines()
+ax.gridlines()
+plt.colorbar(fill, orientation='horizontal')
 plt.title('Rossby Wave Source ($10^{-11}$s$^{-1}$)', fontsize=16)
 plt.show()
