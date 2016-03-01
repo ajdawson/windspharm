@@ -111,7 +111,7 @@ class VectorWind(object):
             u = w.u()
 
         """
-        u = self._metadata(u, 'u',
+        u = self._metadata(self._api.u, 'u',
                            units='m s**-1',
                            standard_name='eastward_wind',
                            long_name='eastward_component_of_wind')
@@ -132,7 +132,7 @@ class VectorWind(object):
             v = w.v()
 
         """
-        v = self._metadata(v, 'v',
+        v = self._metadata(self._api.v, 'v',
                            units='m s**-1',
                            standard_name='northward_wind',
                            long_name='northward_component_of_wind')

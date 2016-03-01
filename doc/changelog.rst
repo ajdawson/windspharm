@@ -2,6 +2,17 @@ Changelog
 =========
 
 
+v1.4.x
+------
+
+:Release: v1.4.0
+:Date: 1 March 2016
+
+* Added an `xarray <http://xarray.pydata.org>`_ interface allowing use of `windspharm` with `xarray.DataArray` objects.
+* Fixed a bug in the identification of Gaussian grids in the iris interface.
+* Fixed a bug where the `truncate` method would not work on inverted latitude grids in the iris interface.
+
+
 v1.3.x
 ------
 
