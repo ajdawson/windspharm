@@ -58,6 +58,7 @@ Method                      Description
  *nondivergentcomponent*  Non-divergent component of the vector wind (the
                           component associated with vorticity/streamfunction).
 
- *gradient*               The vector components of a scalar field.
+ *gradient*               The vector components of the gradient of a scalar
+                          field.
+ *truncate*               Apply triangular truncation to a scalar field.
 ========================  ====================================================
-

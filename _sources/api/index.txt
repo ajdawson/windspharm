@@ -12,4 +12,5 @@ Full documentation
    windspharm.standard
    windspharm.cdms
    windspharm.iris
+   windspharm.xarray
    windspharm.tools

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Introduction &mdash; windspharm 1.3.2 documentation</title>
+    <title>Introduction &mdash; windspharm 1.4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.3.2',
+        VERSION:     '1.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.3.2 documentation" href="#" />
+    <link rel="top" title="windspharm 1.4.0 documentation" href="#" />
     <link rel="next" title="User Guide" href="userguide/index.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
@@ -89,13 +89,14 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.3.2</h2>
+    <h2>windspharm v1.4.0</h2>
     <h3>Table of Contents</h3>
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="userguide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="downloads.html">Downloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide/index.html">Developer Guide</a></li>
 </ul>
 
 
@@ -142,12 +143,12 @@
 <li>velocity potential</li>
 <li>irrotational and non-divergent components of the wind (Helmholtz decomposition)</li>
 <li>vector gradient of a scalar function</li>
+<li>triangular truncation of a scalar field</li>
 <li>magnitude (wind speed)</li>
 </ul>
 <div class="section" id="download-installation">
 <h2>Download &amp; Installation<a class="headerlink" href="#download-installation" title="Permalink to this headline">¶</a></h2>
 <p>Released versions of <code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code> can be downloaded from the <a class="reference internal" href="downloads.html"><em>Downloads</em></a> page.
-You must have <a class="reference external" href="https://pypi.python.org/pypi/setuptools">setuptools</a> installed in order to install <code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code>.
 After downloading the source code archive, unzip it and change into the unzipped archive&#8217;s directory, then to install it:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python setup.py install
 </pre></div>
@@ -156,7 +157,7 @@ After downloading the source code archive, unzip it and change into the unzipped
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pip install windspharm
 </pre></div>
 </div>
-<p>Releases are also available via <a class="reference external" href="http://conda.pydata.org/docs/">conda</a> and <a class="reference external" href="https://binstar.org">binstar</a>, packages are built for both Python 2 and 3 on 32 and 64-bit Linux platforms:</p>
+<p>Releases are also available via <a class="reference external" href="http://conda.pydata.org/docs/">conda</a>, packages are built for both Python 2 and 3 on Linux and OSX:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>conda install -c ajdawson windspharm
 </pre></div>
 </div>
@@ -168,22 +169,33 @@ However, it is likely that pip is just trying to install the dependency pyspharm
 If you think your install has hung, try typing <em>yes</em> and pressing enter, the install should continue after a short pause (but know that in doing so you are accepting the terms of the Spherepack license: <a class="reference external" href="http://www2.cisl.ucar.edu/resources/legacy/spherepack/license">http://www2.cisl.ucar.edu/resources/legacy/spherepack/license</a>).</p>
 </div>
 </div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>This package requires as a minimum that you have <a class="reference external" href="http://numpy.scipy.org">numpy</a> and <a class="reference external" href="https://code.google.com/p/pyspharm">pyspharm</a> available, and requires <a class="reference external" href="https://pypi.python.org/pypi/setuptools">setuptools</a> for installation.
+The <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></code></a> interface can only be used if the <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> package is available (see the <a class="reference external" href="http://scitools.org.uk/iris">iris</a> documentation).
+The <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></code></a> interface can only be used if the <code class="xref py py-obj docutils literal"><span class="pre">cdms2</span></code> module is available. This module is distributed as part of the <a class="reference external" href="http://uvcdat.llnl.gov/">UVCDAT</a> project.
+The <a class="reference internal" href="api/windspharm.xarray.html#module-windspharm.xarray" title="windspharm.xarray"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.xarray</span></code></a> interface can only be used if the <code class="xref py py-obj docutils literal"><span class="pre">xarray</span></code> package is available (see the <a class="reference external" href="http://xarray.pydata.org">xarray</a> documentation).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is strongly recommended to use pyspharm 1.0.8 or later.
+There is a bug in versions prior to 1.0.7 that causes incorrect fields to be returned when there is more than one input field, and a small bug in version 1.0.7 that causes problems with fields with a singleton time dimension.</p>
+</div>
+</div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code> package currently provides three interfaces for performing computations.
-The <a class="reference internal" href="api/windspharm.standard.html#module-windspharm.standard" title="windspharm.standard"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.standard</span></code></a> interface is designed to work with <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/index.html#module-numpy" title="(in NumPy v1.10)"><code class="xref py py-obj docutils literal"><span class="pre">numpy</span></code></a> arrays; the <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></code></a> interface is designed to work with <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> cubes; and the <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></code></a> interface is designed to work with <code class="xref py py-obj docutils literal"><span class="pre">cdms2</span></code> variables.
-Each interface supports exactly the same sets of operations, the only differences are that the <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></code></a> and <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></code></a> interfaces also use the meta-data stored in input variables to construct outputs with meta-data.</p>
-<p>Regardless of which interface you use, the basic usage is the same. All computation is handled by the <a class="reference internal" href="api/windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.standard.VectorWind</span></code></a>, <a class="reference internal" href="api/windspharm.iris.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris.VectorWind</span></code></a> or <a class="reference internal" href="api/windspharm.cdms.html#windspharm.cdms.VectorWind" title="windspharm.cdms.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms.VectorWind</span></code></a> classes. These classes are initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
-<p>The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the <code class="xref py py-obj docutils literal"><span class="pre">cdms</span></code> interface:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cdms2</span>
-<span class="kn">from</span> <span class="nn">windspharm.cdms</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+<p>The <code class="xref py py-obj docutils literal"><span class="pre">windspharm</span></code> package provides several interfaces for performing computations.
+The <a class="reference internal" href="userguide/interfaces.html#standard-interface"><span>standard</span></a> interface is designed to work with <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/index.html#module-numpy" title="(in NumPy v1.10)"><code class="xref py py-obj docutils literal"><span class="pre">numpy</span></code></a> arrays.
+On top of this are layers desinged to work with more advanced data structures that also contain metadata.
+Currently there is support for <a class="reference internal" href="userguide/interfaces.html#iris-interface"><span>iris cubes</span></a>, <a class="reference internal" href="userguide/interfaces.html#xarray-interface"><span>xarray DataArrays</span></a>, and <a class="reference internal" href="userguide/interfaces.html#cdms-interface"><span>cdms2 variables</span></a>.</p>
+<p>Regardless of which interface you use, the basic usage is the same. All computation is handled by a <code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code> instance initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
+<p>The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">iris</span>
+<span class="kn">from</span> <span class="nn">windspharm.iris</span> <span class="kn">import</span> <span class="n">VectorWind</span>
 
 
 <span class="c"># Read u and v wind components from file.</span>
-<span class="n">ncin</span> <span class="o">=</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;uv_components.nc&#39;</span><span class="p">)</span>
-<span class="n">u</span> <span class="o">=</span> <span class="n">ncin</span><span class="p">(</span><span class="s">&#39;u&#39;</span><span class="p">)</span>
-<span class="n">v</span> <span class="o">=</span> <span class="n">ncin</span><span class="p">(</span><span class="s">&#39;v&#39;</span><span class="p">)</span>
-<span class="n">ncin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s">&#39;uwind_file.nc&#39;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s">&#39;vwind_file.nc&#39;</span><span class="p">)</span>
 
 <span class="c"># Create an instance of the VectorWind class to do the computations.</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -194,34 +206,11 @@ Each interface supports exactly the same sets of operations, the only difference
 </pre></div>
 </div>
 </div>
-<div class="section" id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>This package requires as a minimum that you have <a class="reference external" href="http://numpy.scipy.org">numpy</a> and <a class="reference external" href="https://code.google.com/p/pyspharm">pyspharm</a> available, and requires <a class="reference external" href="https://pypi.python.org/pypi/setuptools">setuptools</a> for installation.
-It is recommended that you use pyspharm version 1.0.8 or later, versions of pyspharm prior to 1.0.7 should not be used at all due to a serious bug.
-The <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></code></a> interface can only be used if the <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> module is available (see the <a class="reference external" href="http://scitools.org.uk/iris">iris</a> documentation).
-The <a class="reference internal" href="api/windspharm.cdms.html#module-windspharm.cdms" title="windspharm.cdms"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.cdms</span></code></a> interface can only be used if the <code class="xref py py-obj docutils literal"><span class="pre">cdms2</span></code> module is available.
-This module is distributed as part of the <a class="reference external" href="http://uv-cdat.llnl.gov">CDAT</a> project.
-It is also distributed as part of the <a class="reference external" href="http://proj.badc.rl.ac.uk/cedaservices/wiki/CdatLite">cdat-lite</a> package.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">It is strongly recommended to use pyspharm 1.0.8 or later.
-There is a bug in versions prior to 1.0.7 that causes incorrect fields to be returned when there is more than one input field, and a small bug in version 1.0.7 that causes problems with fields with a singleton time dimension.</p>
-</div>
-</div>
 <div class="section" id="developing-and-contributing">
 <h2>Developing and Contributing<a class="headerlink" href="#developing-and-contributing" title="Permalink to this headline">¶</a></h2>
-<p>All development is done through <a class="reference external" href="http://github.com/ajdawson/windspharm">Github</a>. To check out the latest sources run:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone git://github.com/ajdawson/windspharm.git
-</pre></div>
-</div>
-<p>It is always a good idea to run the tests during development, to do so:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>windspharm
-<span class="nv">$ </span>nosetests
-</pre></div>
-</div>
-<p>Running the tests requires <a class="reference external" href="https://nose.readthedocs.org/en/latest/">nose</a>.</p>
-<p>Bug reports and feature requests should be filed using the Github <a class="reference external" href="http://github.com/ajdawson/windspharm/issues?state=open">issues</a> system.
-If you have code you would like to contribute, fork the <a class="reference external" href="http://github.com/ajdawson/windspharm">repository</a> on Github, do the work on a feature branch of your fork, push your feature branch to <em>your</em> Github fork, and send a pull request.</p>
+<p>Contributions big or small are welcomed from anyone with an interest in the project.
+Bug reports and feature requests can be filed using the Github <a class="reference external" href="http://github.com/ajdawson/windspharm/issues?state=open">issues</a> system.
+If you would like to contribute code or documentation please see the <a class="reference internal" href="devguide/index.html"><em>Developer Guide</em></a>.</p>
 </div>
 </div>
 
@@ -246,7 +235,7 @@ If you have code you would like to contribute, fork the <a class="reference exte
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2013, Andrew Dawson.
+        &copy; Copyright 2012-2016, Andrew Dawson.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>

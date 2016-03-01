@@ -3,12 +3,14 @@
 This example uses the standard interface.
 
 """
-import numpy as np
+import cartopy.crs as ccrs
+from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+from cartopy.util import add_cyclic_point
 import matplotlib as mpl
 mpl.rcParams['mathtext.default'] = 'regular'
 import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap, addcyclic
 from netCDF4 import Dataset
+import numpy as np
 
 from windspharm.standard import VectorWind
 from windspharm.tools import prep_data, recover_data, order_latdim
@@ -57,18 +59,22 @@ S = recover_data(S, uwnd_info)
 
 # Pick out the field for December and add a cyclic point (the cyclic point is
 # for plotting purposes).
-S_dec, lons_c = addcyclic(S[11], lons)
+S_dec, lons_c = add_cyclic_point(S[11], lons)
 
 # Plot Rossby wave source.
-m = Basemap(projection='cyl', resolution='c', llcrnrlon=0, llcrnrlat=-90,
-            urcrnrlon=360.01, urcrnrlat=90)
-x, y = m(*np.meshgrid(lons_c, lats))
+ax = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
 clevs = [-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30]
-m.contourf(x, y, S_dec*1e11, clevs, cmap=plt.cm.RdBu_r,
-           extend='both')
-m.drawcoastlines()
-m.drawparallels((-90, -60, -30, 0, 30, 60, 90), labels=[1,0,0,0])
-m.drawmeridians((0, 60, 120, 180, 240, 300, 360), labels=[0,0,0,1])
-plt.colorbar(orientation='horizontal')
+fill = ax.contourf(lons_c, lats, S_dec * 1e11, clevs, cmap=plt.cm.RdBu_r,
+                   transform=ccrs.PlateCarree(), extend='both')
+ax.coastlines()
+ax.gridlines()
+ax.set_xticks([0, 60, 120, 180, 240, 300, 359.99], crs=ccrs.PlateCarree())
+ax.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs=ccrs.PlateCarree())
+lon_formatter = LongitudeFormatter(zero_direction_label=True,
+                                   number_format='.0f')
+lat_formatter = LatitudeFormatter()
+ax.xaxis.set_major_formatter(lon_formatter)
+ax.yaxis.set_major_formatter(lat_formatter)
+plt.colorbar(fill, orientation='horizontal')
 plt.title('Rossby Wave Source ($10^{-11}$s$^{-1}$)', fontsize=16)
 plt.show()
