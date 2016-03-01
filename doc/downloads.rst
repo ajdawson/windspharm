@@ -8,6 +8,7 @@ Source code downloads for released versions, see the :doc:`changelog` for detail
 ===========================================================================  ====================  =================
 Filename                                                                     Summary               Released
 ===========================================================================  ====================  =================
+:download:`windspharm-1.4.0.tar.gz </distribution/windspharm-1.4.0.tar.gz>`  version 1.4.0 source  1 March 2016
 :download:`windspharm-1.3.2.tar.gz </distribution/windspharm-1.3.2.tar.gz>`  version 1.3.2 source  18 May 2015
 :download:`windspharm-1.3.1.tar.gz </distribution/windspharm-1.3.1.tar.gz>`  version 1.3.1 source  1 June 2014
 :download:`windspharm-1.3.0.tar.gz </distribution/windspharm-1.3.0.tar.gz>`  version 1.3.0 source  2 May 2014
