@@ -32,7 +32,7 @@ from ._common import get_apiorder, inspect_gridtype
 class VectorWind(object):
     """Vector wind computations (`iris` interface)."""
 
-    def __init__(self, u, v):
+    def __init__(self, u, v, rsphere=6.3712e6):
         """Initialize a VectorWind instance.
 
         **Arguments:**
@@ -89,7 +89,8 @@ class VectorWind(object):
         u = u.data.reshape(u.shape[:2] + (np.prod(u.shape[2:]),))
         v = v.data.reshape(v.shape[:2] + (np.prod(v.shape[2:]),))
         # Create a base VectorWind instance to do the computations.
-        self._api = standard.VectorWind(u, v, gridtype=gridtype)
+        self._api = standard.VectorWind(u, v, gridtype=gridtype,
+                                        rsphere=rsphere)
 
     def _metadata(self, var, **attributes):
         """Re-shape outputs and add meta-data."""

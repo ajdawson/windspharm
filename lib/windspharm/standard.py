@@ -25,7 +25,7 @@ from spharm import Spharmt, gaussian_lats_wts
 class VectorWind(object):
     """Vector Wind computations (standard `numpy` interface)."""
 
-    def __init__(self, u, v, gridtype='regular'):
+    def __init__(self, u, v, gridtype='regular', rsphere=6.3712e6):
         """Initialize a VectorWind instance.
 
         **Arguments:**
@@ -96,7 +96,8 @@ class VectorWind(object):
         try:
             # Create a Spharmt object to do the computations.
             self.gridtype = gridtype.lower()
-            self.s = Spharmt(nlon, nlat, gridtype=self.gridtype)
+            self.s = Spharmt(nlon, nlat, gridtype=self.gridtype,
+                             rsphere=rsphere)
         except ValueError:
             if self.gridtype not in ('regular', 'gaussian'):
                 err = 'invalid grid type: {0:s}'.format(repr(gridtype))
