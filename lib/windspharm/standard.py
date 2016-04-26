@@ -42,12 +42,17 @@ class VectorWind(object):
             north-to-south. The longitude dimension should be
             oriented west-to-east.
 
-        **Optional argument:**
+        **Optional arguments:**
 
         *gridtype*
             Type of the input grid, either 'regular' for evenly-spaced
             grids, or 'gaussian' for Gaussian grids. Defaults to
             'regular'.
+
+        *rsphere*
+            The radius in metres of the sphere used in the spherical
+            harmonic computations. Default is 6371200 m, the approximate
+            mean spherical Earth radius.
 
         **See also:**
 
