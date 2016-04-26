@@ -34,6 +34,7 @@ class SolutionTest(VectorWindTest):
     """Base class for all solution test classes."""
     interface = None
     gridtype = None
+    radius = None
 
     @classmethod
     def setup_class(cls):
@@ -42,24 +43,26 @@ class SolutionTest(VectorWindTest):
             cls.solution = reference_solutions(cls.interface, cls.gridtype)
         except ValueError:
             raise SkipTest(skip_message.format(cls.interface))
-        cls.modify_solution()
+        cls.pre_modify_solution()
         try:
             # gridtype argument only available for the standard interface
             kwargs = {}
             if cls.interface == 'standard':
                 kwargs['gridtype'] = cls.gridtype
+            if cls.radius is not None:
+                kwargs['rsphere'] = cls.radius
             cls.vw = solvers[cls.interface](cls.solution['uwnd'],
                                             cls.solution['vwnd'], **kwargs)
         except KeyError:
             raise SkipTest(skip_message.format(cls.interface))
-        cls.unmodify_solution()
+        cls.post_modify_solution()
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         pass
 
     @classmethod
-    def unmodify_solution(cls):
+    def post_modify_solution(cls):
         pass
 
     def test_magnitude(self):
@@ -90,7 +93,7 @@ class SolutionTest(VectorWindTest):
         # computed velocity potential matches reference solution?
         vp1 = self.vw.velocitypotential()
         vp2 = self.solution['chi'].copy()
-        assert_almost_equal(error(vp2, vp2), 0., places=5)
+        assert_almost_equal(error(vp1, vp2), 0., places=5)
 
     def test_nondivergent(self):
         # computed non-divergent vector wind matches reference solution?
@@ -171,7 +174,7 @@ class TestStandardRegularSingleton(StandardSolutionTest):
     gridtype = 'regular'
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         for field_name in cls.solution:
             cls.solution[field_name] = \
                 cls.solution[field_name][..., np.newaxis]
@@ -182,7 +185,7 @@ class TestStandardGaussianSingleton(StandardSolutionTest):
     gridtype = 'gaussian'
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         for field_name in cls.solution:
             cls.solution[field_name] = \
                 cls.solution[field_name][..., np.newaxis]
@@ -192,10 +195,32 @@ class TestStandardMultiTime(StandardSolutionTest):
     gridtype = 'regular'
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         for field_name in cls.solution:
             cls.solution[field_name] = \
                 cls.solution[field_name][..., np.newaxis].repeat(5, axis=-1)
+
+
+class TestStandardRadiusDefaultExplicit(StandardSolutionTest):
+    gridtype = 'regular'
+    radius = 6.3712e6
+
+
+class TestStandardRadius(StandardSolutionTest):
+    gridtype = 'regular'
+    radius = 6.3712e6 / 16.
+
+    @classmethod
+    def post_modify_solution(cls):
+        # Divergence and vorticity should be scaled by the inverse of the
+        # radius factor.
+        cls.solution['vrt'] = cls.solution['vrt'] * 16.
+        cls.solution['div'] = cls.solution['div'] * 16.
+        cls.solution['vrt_trunc'] = cls.solution['vrt_trunc'] * 16
+        # Stream function and velocity potential should be scaled by the
+        # radius factor.
+        cls.solution['psi'] = cls.solution['psi'] / 16
+        cls.solution['chi'] = cls.solution['chi'] / 16
 
 
 # ----------------------------------------------------------------------------
@@ -227,7 +252,7 @@ class TestCDMSGridTranspose(CDMSSolutionTest):
     gridtype = 'regular'
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         for field_name in cls.solution:
             cls.solution[field_name] = cls.solution[field_name].reorder('xy')
 
@@ -243,17 +268,38 @@ class TestCDMSInvertedLatitude(CDMSSolutionTest):
     gridtype = 'regular'
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         for field_name in ('uwnd', 'vwnd'):
             cls.solution[field_name] = \
                 cls.solution[field_name](latitude=(-90, 90))
 
     @classmethod
-    def unmodify_solution(cls):
+    def post_modify_solution(cls):
         for field_name in ('uwnd', 'vwnd'):
             cls.solution[field_name] = \
                 cls.solution[field_name](latitude=(90, -90))
 
+
+class TestCDMSRadiusDefaultExplicit(CDMSSolutionTest):
+    gridtype = 'regular'
+    radius = 6.3712e6
+
+
+class TestCDMSRadius(CDMSSolutionTest):
+    gridtype = 'regular'
+    radius = 6.3712e6 / 16.
+
+    @classmethod
+    def post_modify_solution(cls):
+        # Divergence and vorticity should be scaled by the inverse of the
+        # radius factor.
+        cls.solution['vrt'] = cls.solution['vrt'] * 16.
+        cls.solution['div'] = cls.solution['div'] * 16.
+        cls.solution['vrt_trunc'] = cls.solution['vrt_trunc'] * 16
+        # Stream function and velocity potential should be scaled by the
+        # radius factor.
+        cls.solution['psi'] = cls.solution['psi'] / 16
+        cls.solution['chi'] = cls.solution['chi'] / 16
 
 # ----------------------------------------------------------------------------
 # Tests for the Iris interface
@@ -283,7 +329,7 @@ class TestIrisGridTranspose(IrisSolutionTest):
     gridtype = 'regular'
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         for field_name in cls.solution.keys():
             cls.solution[field_name].transpose([1, 0])
 
@@ -298,14 +344,36 @@ class TestIrisInvertedLatitude(IrisSolutionTest):
     gridtype = 'regular'
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         for field_name in ('uwnd', 'vwnd'):
             cls.solution[field_name] = cls.solution[field_name][::-1]
 
     @classmethod
-    def unmodify_solution(cls):
+    def post_modify_solution(cls):
         for field_name in ('uwnd', 'vwnd'):
             cls.solution[field_name] = cls.solution[field_name][::-1]
+
+
+class TestIrisRadiusDefaultExplicit(IrisSolutionTest):
+    gridtype = 'regular'
+    radius = 6.3712e6
+
+
+class TestIrisRadius(IrisSolutionTest):
+    gridtype = 'regular'
+    radius = 6.3712e6 / 16.
+
+    @classmethod
+    def post_modify_solution(cls):
+        # Divergence and vorticity should be scaled by the inverse of the
+        # radius factor.
+        cls.solution['vrt'] = cls.solution['vrt'] * 16.
+        cls.solution['div'] = cls.solution['div'] * 16.
+        cls.solution['vrt_trunc'] = cls.solution['vrt_trunc'] * 16
+        # Stream function and velocity potential should be scaled by the
+        # radius factor.
+        cls.solution['psi'] = cls.solution['psi'] / 16
+        cls.solution['chi'] = cls.solution['chi'] / 16
 
 
 # ----------------------------------------------------------------------------
@@ -336,7 +404,7 @@ class TestXarrayGridTranspose(XarraySolutionTest):
     gridtype = 'regular'
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         for field_name in cls.solution.keys():
             cls.solution[field_name] = cls.solution[field_name].transpose()
 
@@ -351,11 +419,33 @@ class TestXarrayInvertedLatitude(XarraySolutionTest):
     gridtype = 'regular'
 
     @classmethod
-    def modify_solution(cls):
+    def pre_modify_solution(cls):
         for field_name in ('uwnd', 'vwnd'):
             cls.solution[field_name] = cls.solution[field_name][::-1]
 
     @classmethod
-    def unmodify_solution(cls):
+    def post_modify_solution(cls):
         for field_name in ('uwnd', 'vwnd'):
             cls.solution[field_name] = cls.solution[field_name][::-1]
+
+
+class TestXarrayRadiusDefaultExplicit(XarraySolutionTest):
+    gridtype = 'regular'
+    radius = 6.3712e6
+
+
+class TestXarrayRadius(XarraySolutionTest):
+    gridtype = 'regular'
+    radius = 6.3712e6 / 16.
+
+    @classmethod
+    def post_modify_solution(cls):
+        # Divergence and vorticity should be scaled by the inverse of the
+        # radius factor.
+        cls.solution['vrt'] = cls.solution['vrt'] * 16.
+        cls.solution['div'] = cls.solution['div'] * 16.
+        cls.solution['vrt_trunc'] = cls.solution['vrt_trunc'] * 16
+        # Stream function and velocity potential should be scaled by the
+        # radius factor.
+        cls.solution['psi'] = cls.solution['psi'] / 16
+        cls.solution['chi'] = cls.solution['chi'] / 16

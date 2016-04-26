@@ -1,5 +1,5 @@
 """Spherical harmonic vector wind computations (`cdms2` interface)."""
-# Copyright (c) 2012-2014 Andrew Dawson
+# Copyright (c) 2012-2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ from . import standard
 class VectorWind(object):
     """Vector wind computations (`cdms2` interface)."""
 
-    def __init__(self, u, v):
+    def __init__(self, u, v, rsphere=6.3712e6):
         """Initialize a VectorWind instance.
 
         **Arguments:**
@@ -85,7 +85,8 @@ class VectorWind(object):
         u = u.reshape(u.shape[:2] + (np.prod(u.shape[2:]),))
         v = v.reshape(v.shape[:2] + (np.prod(v.shape[2:]),))
         # Instantiate a VectorWind object to do the computations.
-        self.api = standard.VectorWind(u, v, gridtype=gridtype)
+        self.api = standard.VectorWind(u, v, gridtype=gridtype,
+                                       rsphere=rsphere)
 
     def _gridtype(self, lat):
         """Determines the type of grid from the latitude dimension.
