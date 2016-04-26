@@ -4,6 +4,12 @@ flow.
 
 This example uses the xarray interface.
 
+Additional requirements for this example:
+
+* xarray (http://xarray.pydata.org)
+* matplotlib (http://matplotlib.org/)
+* cartopy (http://scitools.org.uk/cartopy/)
+
 """
 import cartopy.crs as ccrs
 import matplotlib as mpl
