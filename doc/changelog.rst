@@ -2,6 +2,15 @@ Changelog
 =========
 
 
+v1.5.x
+------
+
+:Release: v1.5.0
+:Date: 27 April 2016
+
+* Added a keyword argument to control the radius of the sphere used in the spherical harmonic computations. The `rsphere` keyword is available for all interfaces.
+
+
 v1.4.x
 ------
 
