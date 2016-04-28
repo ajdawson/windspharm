@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.iris &mdash; windspharm 1.4.0 documentation</title>
+    <title>windspharm.iris &mdash; windspharm 1.5.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.4.0',
+        VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.4.0 documentation" href="../index.html" />
+    <link rel="top" title="windspharm 1.5.0 documentation" href="../index.html" />
     <link rel="up" title="API reference" href="index.html" />
     <link rel="next" title="windspharm.xarray" href="windspharm.xarray.html" />
     <link rel="prev" title="windspharm.cdms" href="windspharm.cdms.html" />
@@ -95,7 +95,7 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.4.0</h2>
+    <h2>windspharm v1.5.0</h2>
     <h3>Table of Contents</h3>
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../userguide/index.html">User Guide</a></li>
@@ -148,7 +148,7 @@
 <p>Spherical harmonic vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> interface).</p>
 <dl class="class">
 <dt id="windspharm.iris.VectorWind">
-<em class="property">class </em><code class="descclassname">windspharm.iris.</code><code class="descname">VectorWind</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">windspharm.iris.</code><code class="descname">VectorWind</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>rsphere=6371200.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> interface).</p>
 <p>Initialize a VectorWind instance.</p>
 <p><strong>Arguments:</strong></p>
@@ -158,6 +158,13 @@
 respectively. Both components should be <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
 instances. The components must have the same dimension
 coordinates and contain no missing values.</dd>
+</dl>
+<p><strong>Optional argument:</strong></p>
+<dl class="docutils">
+<dt><em>rsphere</em></dt>
+<dd>The radius in metres of the sphere used in the spherical
+harmonic computations. Default is 6371200 m, the approximate
+mean spherical Earth radius.</dd>
 </dl>
 <p><strong>Example:</strong></p>
 <p>Initialize a <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a> instance with zonal and meridional

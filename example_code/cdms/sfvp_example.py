@@ -4,6 +4,12 @@ flow.
 
 This example uses the cdms interface.
 
+Additional requirements for this example:
+
+* cdms2 (http://uvcdat.llnl.gov/)
+* matplotlib (http://matplotlib.org/)
+* cartopy (http://scitools.org.uk/cartopy/)
+
 """
 import cartopy.crs as ccrs
 import cdms2

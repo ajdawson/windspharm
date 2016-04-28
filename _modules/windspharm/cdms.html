@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.cdms &mdash; windspharm 1.4.0 documentation</title>
+    <title>windspharm.cdms &mdash; windspharm 1.5.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.4.0',
+        VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.4.0 documentation" href="../../index.html" />
+    <link rel="top" title="windspharm 1.5.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
@@ -87,7 +87,7 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.4.0</h2>
+    <h2>windspharm v1.5.0</h2>
     <h3>Table of Contents</h3>
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../userguide/index.html">User Guide</a></li>
@@ -121,7 +121,7 @@
             
   <h1>Source code for windspharm.cdms</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Spherical harmonic vector wind computations (`cdms2` interface).&quot;&quot;&quot;</span>
-<span class="c"># Copyright (c) 2012-2014 Andrew Dawson</span>
+<span class="c"># Copyright (c) 2012-2016 Andrew Dawson</span>
 <span class="c">#</span>
 <span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
 <span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
@@ -151,7 +151,7 @@
 <div class="viewcode-block" id="VectorWind"><a class="viewcode-back" href="../../api/windspharm.cdms.html#windspharm.cdms.VectorWind">[docs]</a><span class="k">class</span> <span class="nc">VectorWind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Vector wind computations (`cdms2` interface).&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">rsphere</span><span class="o">=</span><span class="mf">6.3712e6</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize a VectorWind instance.</span>
 
 <span class="sd">        **Arguments:**</span>
@@ -161,6 +161,13 @@
 <span class="sd">            respectively. Both components should be `cdms2`</span>
 <span class="sd">            variables. The components must have the same shape and</span>
 <span class="sd">            contain no missing values.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *rsphere*</span>
+<span class="sd">            The radius in metres of the sphere used in the spherical</span>
+<span class="sd">            harmonic computations. Default is 6371200 m, the approximate</span>
+<span class="sd">            mean spherical Earth radius.</span>
 
 <span class="sd">        **Example:**</span>
 
@@ -207,7 +214,8 @@
         <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),))</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),))</span>
         <span class="c"># Instantiate a VectorWind object to do the computations.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">standard</span><span class="o">.</span><span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="n">gridtype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">standard</span><span class="o">.</span><span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="n">gridtype</span><span class="p">,</span>
+                                       <span class="n">rsphere</span><span class="o">=</span><span class="n">rsphere</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_gridtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines the type of grid from the latitude dimension.</span>

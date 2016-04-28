@@ -2,6 +2,12 @@
 
 This example uses the standard interface.
 
+Additional requirements for this example:
+
+* netCDF4 (http://unidata.github.io/netcdf4-python/)
+* matplotlib (http://matplotlib.org/)
+* cartopy (http://scitools.org.uk/cartopy/)
+
 """
 import cartopy.crs as ccrs
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
