@@ -1,6 +1,7 @@
 windspharm - spherical harmonic vector wind analysis in Python
 ==============================================================
 
+[![Build Status](https://api.travis-ci.org/repositories/ajdawson/windspharm.svg?branch=master)](https://travis-ci.org/ajdawson/windspharm) [![DOI (paper)](https://img.shields.io/badge/DOI%20%28paper%29-10.5334%2Fjors.129-blue.svg)](http://doi.org/10.5334/jors.129) [![DOI (latest release)](https://zenodo.org/badge/20448/ajdawson/windspharm.svg)](https://zenodo.org/badge/latestdoi/20448/ajdawson/windspharm)
 
 Overview
 --------
@@ -26,6 +27,13 @@ Documentation
 
 Documentation is available [online](http://ajdawson.github.io/windspharm).
 The package docstrings are also very complete and can be used as a source of reference when working interactively.
+
+
+Citation
+--------
+
+If you use windspharm in published research, please cite it by referencing the [peer-reviewed paper](http://doi.org/10.5334/jors.129).
+You can additionally cite the [Zenodo DOI](https://zenodo.org/badge/latestdoi/20448/ajdawson/windspharm) if you need to cite a particular version (but please also cite the paper, it helps me justify my time working on this and similar projects).
 
 
 Frequently asked questions
