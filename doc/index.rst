@@ -109,6 +109,13 @@ The following is a very simple illustrative example which computes the streamfun
    xi = w.vorticity()
 
 
+Citation
+--------
+
+If you use windspharm in published research, please cite it by referencing the `peer-reviewed paper <http://doi.org/10.5334/jors.129>`_.
+You can additionally cite the `Zenodo DOI <https://zenodo.org/badge/latestdoi/20448/ajdawson/windspharm>`_ if you need to cite a particular version (but please also cite the paper, it helps me justify my time working on this and similar projects).
+
+
 Developing and Contributing
 ---------------------------
 
