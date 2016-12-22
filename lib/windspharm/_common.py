@@ -80,7 +80,7 @@ def inspect_gridtype(latitudes):
     """
     # Define a tolerance value for differences, this value must be much
     # smaller than expected grid spacings.
-    tolerance = 0.0001
+    tolerance = 5e-4
     # Get the number of latitude points in the dimension.
     nlat = len(latitudes)
     diffs = np.abs(np.diff(latitudes))
