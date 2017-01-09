@@ -44,7 +44,7 @@ Installation
 
 The easiest way to install is via [conda](http://conda.pydata.org) or pip:
 
-    conda install -c ajdawson windspharm
+    conda install -c conda-forge windspharm
 
 or
 

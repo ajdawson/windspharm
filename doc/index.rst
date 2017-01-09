@@ -53,7 +53,7 @@ Releases are also available via conda_, packages are built for both Python 2 and
 
 .. code-block:: bash
 
-   $ conda install -c ajdawson windspharm
+   $ conda install -c conda-forge windspharm
 
 You can also check out the source code for the development version from the `github repository <https://github.com/ajdawson/windspharm>`_ to access features which are not yet in the released version.
 
