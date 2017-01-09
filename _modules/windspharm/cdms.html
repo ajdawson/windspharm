@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.cdms &mdash; windspharm 1.5.0 documentation</title>
+    <title>windspharm.cdms &mdash; windspharm 1.5.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.5.0',
+        VERSION:     '1.5.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.5.0 documentation" href="../../index.html" />
+    <link rel="top" title="windspharm 1.5.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
@@ -87,7 +87,7 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.5.0</h2>
+    <h2>windspharm v1.5.1</h2>
     <h3>Table of Contents</h3>
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../userguide/index.html">User Guide</a></li>
@@ -121,7 +121,7 @@
             
   <h1>Source code for windspharm.cdms</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Spherical harmonic vector wind computations (`cdms2` interface).&quot;&quot;&quot;</span>
-<span class="c"># Copyright (c) 2012-2016 Andrew Dawson</span>
+<span class="c"># Copyright (c) 2012-2017 Andrew Dawson</span>
 <span class="c">#</span>
 <span class="c"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
 <span class="c"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
@@ -146,6 +146,7 @@
 <span class="kn">import</span> <span class="nn">cdms2</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">standard</span>
+<span class="kn">from</span> <span class="nn">._common</span> <span class="kn">import</span> <span class="n">inspect_gridtype</span>
 
 
 <div class="viewcode-block" id="VectorWind"><a class="viewcode-back" href="../../api/windspharm.cdms.html#windspharm.cdms.VectorWind">[docs]</a><span class="k">class</span> <span class="nc">VectorWind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -206,7 +207,7 @@
         <span class="n">lat</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">getLatitude</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">lon</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">lat</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;a latitude-longitude grid is required&#39;</span><span class="p">)</span>
-        <span class="n">gridtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gridtype</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+        <span class="n">gridtype</span> <span class="o">=</span> <span class="n">inspect_gridtype</span><span class="p">(</span><span class="n">lat</span><span class="p">[:])</span>
         <span class="c"># Store the shape and axes when data is in the API order.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ishape</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">getAxisList</span><span class="p">()</span>
@@ -216,36 +217,6 @@
         <span class="c"># Instantiate a VectorWind object to do the computations.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">standard</span><span class="o">.</span><span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="n">gridtype</span><span class="p">,</span>
                                        <span class="n">rsphere</span><span class="o">=</span><span class="n">rsphere</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_gridtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Determines the type of grid from the latitude dimension.</span>
-
-<span class="sd">        Performs basic checks to make sure the axis is valid for</span>
-<span class="sd">        spherical harmonic computations.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">nlat</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">0.001</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-            <span class="c"># Might be a Gaussian axis, construct one and check.</span>
-            <span class="n">gax</span> <span class="o">=</span> <span class="n">cdms2</span><span class="o">.</span><span class="n">createGaussianAxis</span><span class="p">(</span><span class="n">nlat</span><span class="p">)</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gax</span><span class="p">))</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">&gt;</span> <span class="mf">0.001</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;non-evenly-spaced &#39;</span>
-                                 <span class="s">&#39;latitudes are not Gaussian&#39;</span><span class="p">)</span>
-            <span class="n">gridtype</span> <span class="o">=</span> <span class="s">&#39;gaussian&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c"># Grid is evenly spaced, does it match what we expect?</span>
-            <span class="k">if</span> <span class="n">nlat</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">eax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="n">nlat</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">dlat</span> <span class="o">=</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">nlat</span>
-                <span class="n">eax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">dlat</span><span class="p">,</span> <span class="mi">90</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">dlat</span><span class="p">,</span> <span class="n">nlat</span><span class="p">)</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eax</span><span class="p">))</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">&gt;</span> <span class="mf">0.001</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;evenly-spaced grid is invalid&#39;</span><span class="p">)</span>
-            <span class="n">gridtype</span> <span class="o">=</span> <span class="s">&#39;regular&#39;</span>
-        <span class="k">return</span> <span class="n">gridtype</span>
 
     <span class="k">def</span> <span class="nf">_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="o">**</span><span class="n">attributes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Re-shape and re-order raw results, and add meta-data.&quot;&quot;&quot;</span>
@@ -956,7 +927,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2016, Andrew Dawson.
+        &copy; Copyright 2012-2017, Andrew Dawson.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>

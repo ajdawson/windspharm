@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>windspharm.iris &mdash; windspharm 1.5.0 documentation</title>
+    <title>windspharm.iris &mdash; windspharm 1.5.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/sphinx13_mod.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.0',
+        VERSION:     '1.5.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="windspharm 1.5.0 documentation" href="../index.html" />
+    <link rel="top" title="windspharm 1.5.1 documentation" href="../index.html" />
     <link rel="up" title="API reference" href="index.html" />
     <link rel="next" title="windspharm.xarray" href="windspharm.xarray.html" />
     <link rel="prev" title="windspharm.cdms" href="windspharm.cdms.html" />
@@ -95,7 +95,7 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 
-    <h2>windspharm v1.5.0</h2>
+    <h2>windspharm v1.5.1</h2>
     <h3>Table of Contents</h3>
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../userguide/index.html">User Guide</a></li>
@@ -145,17 +145,17 @@
             
   <div class="section" id="module-windspharm.iris">
 <span id="windspharm-iris"></span><h1><a class="reference internal" href="#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal"><span class="pre">windspharm.iris</span></code></a><a class="headerlink" href="#module-windspharm.iris" title="Permalink to this headline">¶</a></h1>
-<p>Spherical harmonic vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> interface).</p>
+<p>Spherical harmonic vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> interface).</p>
 <dl class="class">
 <dt id="windspharm.iris.VectorWind">
 <em class="property">class </em><code class="descclassname">windspharm.iris.</code><code class="descname">VectorWind</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>rsphere=6371200.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/iris.html#VectorWind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#windspharm.iris.VectorWind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> interface).</p>
+<dd><p>Vector wind computations (<a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">iris</span></code></a> interface).</p>
 <p>Initialize a VectorWind instance.</p>
 <p><strong>Arguments:</strong></p>
 <dl class="docutils">
 <dt><em>u</em>, <em>v</em></dt>
 <dd>Zonal and meridional components of the vector wind
-respectively. Both components should be <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
+respectively. Both components should be <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
 instances. The components must have the same dimension
 coordinates and contain no missing values.</dd>
 </dl>
@@ -565,7 +565,7 @@ spectral truncation at triangular T13:</p>
 <p><strong>Argument:</strong></p>
 <dl class="docutils">
 <dt><em>chi</em></dt>
-<dd>A scalar field. It must be a <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
+<dd>A scalar field. It must be a <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
 with the same latitude and longitude dimensions as the
 vector wind components that initialized the <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a>
 instance.</dd>
@@ -605,7 +605,7 @@ with the output of other <a class="reference internal" href="#windspharm.iris.Ve
 <p><strong>Argument:</strong></p>
 <dl class="docutils">
 <dt><em>field</em></dt>
-<dd>A scalar field. It must be a <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.9)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
+<dd>A scalar field. It must be a <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">Cube</span></code></a>
 with the same latitude and longitude dimensions as the
 vector wind components that initialized the <a class="reference internal" href="#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal"><span class="pre">VectorWind</span></code></a>
 instance.</dd>
@@ -663,7 +663,7 @@ harmonic computation. If not specified it will default to
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2016, Andrew Dawson.
+        &copy; Copyright 2012-2017, Andrew Dawson.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
