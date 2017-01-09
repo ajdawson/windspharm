@@ -1,5 +1,5 @@
 """Spherical harmonic vector wind analysis."""
-# Copyright (c) 2012-2016 Andrew Dawson
+# Copyright (c) 2012-2017 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ from . import tools
 __all__ = []
 
 # Package version number.
-__version__ = '1.5.dev0'
+__version__ = '1.5.dev2'
 
 try:
     from . import cdms

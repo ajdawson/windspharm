@@ -2,6 +2,20 @@ Changelog
 =========
 
 
+v1.5.x
+------
+
+:Release: v1.5.1
+:Date: 9 January 2017
+
+* Improved recognition of Gaussian grids [`#78 <https://github.com/ajdawson/windspharm/issues/78>`_, `#76 <https://github.com/ajdawson/windspharm/pull/76>`_, `#79 <https://github.com/ajdawson/windspharm/pull/79>`_].
+
+:Release: v1.5.0
+:Date: 27 April 2016
+
+* Added a keyword argument to control the radius of the sphere used in the spherical harmonic computations. The `rsphere` keyword is available for all interfaces.
+
+
 v1.4.x
 ------
 

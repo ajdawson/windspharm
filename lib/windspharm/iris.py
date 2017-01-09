@@ -43,6 +43,13 @@ class VectorWind(object):
             instances. The components must have the same dimension
             coordinates and contain no missing values.
 
+        **Optional argument:**
+
+        *rsphere*
+            The radius in metres of the sphere used in the spherical
+            harmonic computations. Default is 6371200 m, the approximate
+            mean spherical Earth radius.
+
         **Example:**
 
         Initialize a `VectorWind` instance with zonal and meridional
