@@ -1,5 +1,5 @@
 """Spherical harmonic vector wind computations (`cdms2` interface)."""
-# Copyright (c) 2012-2016 Andrew Dawson
+# Copyright (c) 2012-2017 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@ import numpy as np
 import cdms2
 
 from . import standard
+from ._common import inspect_gridtype
 
 
 class VectorWind(object):
@@ -84,7 +85,7 @@ class VectorWind(object):
         lat = u.getLatitude()
         if lon is None or lat is None:
             raise ValueError('a latitude-longitude grid is required')
-        gridtype = self._gridtype(lat)
+        gridtype = inspect_gridtype(lat[:])
         # Store the shape and axes when data is in the API order.
         self.ishape = u.shape
         self.axes = u.getAxisList()
@@ -94,36 +95,6 @@ class VectorWind(object):
         # Instantiate a VectorWind object to do the computations.
         self.api = standard.VectorWind(u, v, gridtype=gridtype,
                                        rsphere=rsphere)
-
-    def _gridtype(self, lat):
-        """Determines the type of grid from the latitude dimension.
-
-        Performs basic checks to make sure the axis is valid for
-        spherical harmonic computations.
-
-        """
-        nlat = len(lat)
-        d = np.abs(np.diff(lat))
-        if (np.abs(d - d[0]) > 0.001).any():
-            # Might be a Gaussian axis, construct one and check.
-            gax = cdms2.createGaussianAxis(nlat)
-            d = np.abs(np.abs(lat) - np.abs(gax))
-            if (d > 0.001).any():
-                raise ValueError('non-evenly-spaced '
-                                 'latitudes are not Gaussian')
-            gridtype = 'gaussian'
-        else:
-            # Grid is evenly spaced, does it match what we expect?
-            if nlat % 2:
-                eax = np.linspace(-90, 90, nlat)
-            else:
-                dlat = 180. / nlat
-                eax = np.linspace(-90 + 0.5 * dlat, 90 - 0.5 * dlat, nlat)
-            d = np.abs(np.abs(lat) - np.abs(eax))
-            if (d > 0.001).any():
-                raise ValueError('evenly-spaced grid is invalid')
-            gridtype = 'regular'
-        return gridtype
 
     def _metadata(self, var, **attributes):
         """Re-shape and re-order raw results, and add meta-data."""
