@@ -43,7 +43,7 @@ def __order_dims(d, inorder):
 
 
 def __reshape(d):
-    out = d.reshape(d.shape[:2] + (np.prod(d.shape[2:]),))
+    out = d.reshape(d.shape[:2] + (np.prod(d.shape[2:], None, np.int),))
     return out, d.shape
 
 
