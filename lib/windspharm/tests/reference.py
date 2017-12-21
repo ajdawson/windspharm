@@ -22,15 +22,6 @@ from __future__ import absolute_import
 import os
 
 import numpy as np
-try:
-    import cdms2
-except ImportError:
-    pass
-try:
-    from iris.cube import Cube
-    from iris.coords import DimCoord
-except ImportError:
-    pass
 from spharm import gaussian_lats_wts
 
 

@@ -2,7 +2,7 @@ language: python
 
 env:
     global:
-        - PACKAGES_STANDARD="setuptools pytest pep8 numpy pyspharm"
+        - PACKAGES_STANDARD="setuptools pytest numpy pyspharm"
     matrix:
         - NAME="Python 2.7 (standard)"
           PYTHON_VERSION=2.7

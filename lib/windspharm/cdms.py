@@ -20,7 +20,6 @@
 # THE SOFTWARE.
 from __future__ import absolute_import
 
-import numpy as np
 import cdms2
 
 from . import standard
@@ -771,7 +770,6 @@ class VectorWind(object):
         field = field(latitude=(90, -90))
         # Record the shape and axes in the API order.
         ishape = field.shape
-        axes = field.getAxisList()
         # Extract the data from the field in the correct shape for the API.
         fielddata = to3d(field.asma())
         # Apply the truncation.

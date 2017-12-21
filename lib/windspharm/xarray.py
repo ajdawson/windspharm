@@ -20,7 +20,6 @@
 # THE SOFTWARE.
 from __future__ import absolute_import
 
-import numpy as np
 try:
     import xarray as xr
 except ImportError:
@@ -669,7 +668,7 @@ class VectorWind(object):
         reorder = chi.dims
         chi = chi.copy().transpose(*apiorder)
         ishape = chi.shape
-        coords = [chi.coords[name] for name in chi.dims]
+        coords = [chi.coords[n] for n in chi.dims]
         chi = to3d(chi.values)
         uchi, vchi = self._api.gradient(chi, truncation=truncation)
         uchi = uchi.reshape(ishape)
@@ -734,7 +733,6 @@ class VectorWind(object):
         reorder = field.dims
         field = field.copy().transpose(*apiorder)
         ishape = field.shape
-        coords = [field.coords[name] for name in field.dims]
         fielddata = to3d(field.values)
         fieldtrunc = self._api.truncate(fielddata, truncation=truncation)
         field.values = fieldtrunc.reshape(ishape)
@@ -756,7 +754,7 @@ def _find_coord_and_dim(array, predicate, name):
 
     """
     candidates = [coord
-                  for coord in [array.coords[name] for name in array.dims]
+                  for coord in [array.coords[n] for n in array.dims]
                   if predicate(coord)]
     if not candidates:
         raise ValueError('cannot find a {!s} coordinate'.format(name))

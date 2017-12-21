@@ -22,10 +22,6 @@ from __future__ import absolute_import
 
 import numpy as np
 try:
-    import cdms2
-except ImportError:
-    pass
-try:
     from iris.cube import Cube
 except ImportError:
     pass
