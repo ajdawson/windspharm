@@ -13,14 +13,14 @@ import cartopy.crs as ccrs
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 from cartopy.util import add_cyclic_point
 import matplotlib as mpl
-mpl.rcParams['mathtext.default'] = 'regular'
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
-import numpy as np
 
 from windspharm.standard import VectorWind
 from windspharm.tools import prep_data, recover_data, order_latdim
 from windspharm.examples import example_data_path
+
+mpl.rcParams['mathtext.default'] = 'regular'
 
 
 # Read zonal and meridional wind components from file using the cdms2 module

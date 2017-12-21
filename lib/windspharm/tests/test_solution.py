@@ -23,7 +23,6 @@ from __future__ import absolute_import
 import numpy as np
 import pytest
 
-import windspharm
 from windspharm.tests import VectorWindTest, solvers
 from .reference import reference_solutions
 

@@ -20,10 +20,8 @@
 # THE SOFTWARE.
 from __future__ import absolute_import
 
-import numpy as np
 from iris.cube import Cube
 from iris.util import reverse
-from spharm import gaussian_lats_wts
 
 from . import standard
 from ._common import get_apiorder, inspect_gridtype, to3d
@@ -744,7 +742,6 @@ class VectorWind(object):
         field = field.copy()
         field.transpose(apiorder)
         ishape = field.shape
-        coords = field.dim_coords
         fielddata = to3d(field.data)
         fieldtrunc = self._api.truncate(fielddata, truncation=truncation)
         field.data = fieldtrunc.reshape(ishape)
