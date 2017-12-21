@@ -20,12 +20,10 @@
 # THE SOFTWARE.
 from __future__ import absolute_import
 
-from nose import SkipTest
-from nose.tools import raises
+import pytest
 import numpy as np
 import numpy.ma as ma
 
-import windspharm
 from windspharm.tests import VectorWindTest, solvers
 from .reference import reference_solutions
 
@@ -37,9 +35,9 @@ class ErrorHandlersTest(VectorWindTest):
 
     @classmethod
     def setup_class(cls):
-        skip_message = 'library component not available for {!s} interface'
+        msg = 'missing dependencies required to test the {!s} interface'
         if cls.interface not in solvers:
-            raise SkipTest(skip_message.format(cls.interface))
+            pytest.skip(msg.format(cls.interface))
 
 
 # ----------------------------------------------------------------------------
@@ -51,7 +49,6 @@ class TestStandardErrorHandlers(ErrorHandlersTest):
     interface = 'standard'
     gridtype = 'regular'
 
-    @raises(ValueError)
     def test_masked_values(self):
         # masked values in inputs should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
@@ -60,57 +57,59 @@ class TestStandardErrorHandlers(ErrorHandlersTest):
         mask[1, 1] = True
         u = ma.array(solution['uwnd'], mask=mask, fill_value=1.e20)
         v = ma.array(solution['vwnd'], mask=mask, fill_value=1.e20)
-        vw = solvers[self.interface](u, v, gridtype=self.gridtype)
+        with pytest.raises(ValueError):
+            solvers[self.interface](u, v, gridtype=self.gridtype)
 
-    @raises(ValueError)
     def test_nan_values(self):
         # NaN values in inputs should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         solution['vwnd'][1, 1] = np.nan
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'],
-                                     gridtype=self.gridtype)
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'],
+                                    solution['vwnd'],
+                                    gridtype=self.gridtype)
 
-    @raises(ValueError)
     def test_invalid_shape_components(self):
         # invalid shape inputs should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
-        vw = solvers[self.interface](
-            solution['uwnd'][np.newaxis].repeat(2, axis=0),
-            solution['vwnd'][np.newaxis].repeat(2, axis=0),
-            gridtype=self.gridtype)
+        with pytest.raises(ValueError):
+            solvers[self.interface](
+                solution['uwnd'][np.newaxis].repeat(2, axis=0),
+                solution['vwnd'][np.newaxis].repeat(2, axis=0),
+                gridtype=self.gridtype)
 
-    @raises(ValueError)
     def test_different_shape_components(self):
         # different shape inputs should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'][:-1],
-                                     gridtype=self.gridtype)
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'],
+                                    solution['vwnd'][:-1],
+                                    gridtype=self.gridtype)
 
-    @raises(ValueError)
     def test_invalid_rank_components(self):
         # invalid rank inputs should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
-        vw = solvers[self.interface](
-            solution['uwnd'][..., np.newaxis, np.newaxis],
-            solution['vwnd'][..., np.newaxis, np.newaxis],
-            gridtype=self.gridtype)
+        with pytest.raises(ValueError):
+            solvers[self.interface](
+                solution['uwnd'][..., np.newaxis, np.newaxis],
+                solution['vwnd'][..., np.newaxis, np.newaxis],
+                gridtype=self.gridtype)
 
-    @raises(ValueError)
     def test_different_rank_components(self):
         # different rank inputs should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
-        vw = solvers[self.interface](solution['uwnd'][..., np.newaxis],
-                                     solution['vwnd'],
-                                     gridtype=self.gridtype)
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'][..., np.newaxis],
+                                    solution['vwnd'],
+                                    gridtype=self.gridtype)
 
-    @raises(ValueError)
     def test_invalid_gridtype(self):
         # invalid grid type specification should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'],
-                                     gridtype='curvilinear')
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'], solution['vwnd'],
+                                    gridtype='curvilinear')
 
-    @raises(ValueError)
     def test_gradient_masked_values(self):
         # masked values in gradient input should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
@@ -120,24 +119,25 @@ class TestStandardErrorHandlers(ErrorHandlersTest):
         mask[:] = False
         mask[1, 1] = True
         chi = ma.array(solution['chi'], mask=mask, fill_value=1.e20)
-        uchi, vchi = vw.gradient(chi)
+        with pytest.raises(ValueError):
+            vw.gradient(chi)
 
-    @raises(ValueError)
     def test_gradient_nan_values(self):
         # NaN values in gradient input should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'],
                                      gridtype=self.gridtype)
         solution['chi'][1, 1] = np.nan
-        uchi, vchi = vw.gradient(solution['chi'])
+        with pytest.raises(ValueError):
+            vw.gradient(solution['chi'])
 
-    @raises(ValueError)
     def test_gradient_invalid_shape(self):
         # input to gradient of different shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'],
                                      gridtype=self.gridtype)
-        uchi, vchi = vw.gradient(solution['chi'][:-1])
+        with pytest.raises(ValueError):
+            vw.gradient(solution['chi'][:-1])
 
 
 # ----------------------------------------------------------------------------
@@ -149,20 +149,19 @@ class TestCDMSErrorHandlers(ErrorHandlersTest):
     interface = 'cdms'
     gridtype = 'regular'
 
-    @raises(TypeError)
     def test_non_variable_input(self):
         # input not a cdms2 variable should raise an error
         solution = reference_solutions('standard', self.gridtype)
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        with pytest.raises(TypeError):
+            solvers[self.interface](solution['uwnd'], solution['vwnd'])
 
-    @raises(ValueError)
     def test_different_shape_components(self):
         # inputs not the same shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
-        vw = solvers[self.interface](solution['uwnd'],
-                                     solution['vwnd'].reorder('xy'))
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'],
+                                    solution['vwnd'].reorder('xy'))
 
-    @raises(ValueError)
     def test_unknown_grid(self):
         # inputs where a lat-lon grid cannot be identified should raise an
         # error
@@ -170,32 +169,32 @@ class TestCDMSErrorHandlers(ErrorHandlersTest):
         lat = solution['vwnd'].getLatitude()
         delattr(lat, 'axis')
         lat.id = 'unknown'
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'], solution['vwnd'])
 
-    @raises(TypeError)
     def test_non_variable_gradient_input(self):
         # input to gradient not a cdms2 variable should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         dummy_solution = reference_solutions('standard', self.gridtype)
-        uchi, vchi = vw.gradient(dummy_solution['chi'])
+        with pytest.raises(TypeError):
+            vw.gradient(dummy_solution['chi'])
 
-    @raises(TypeError)
     def test_gradient_non_variable_input(self):
         # input to gradient not a cdms2 variable should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         dummy_solution = reference_solutions('standard', self.gridtype)
-        uchi, vchi = vw.gradient(dummy_solution['chi'])
+        with pytest.raises(TypeError):
+            vw.gradient(dummy_solution['chi'])
 
-    @raises(ValueError)
     def test_gradient_different_shape(self):
         # input to gradient of different shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
-        uchi, vchi = vw.gradient(solution['chi'][:-1])
+        with pytest.raises(ValueError):
+            vw.gradient(solution['chi'][:-1])
 
-    @raises(ValueError)
     def test_gradient_unknown_grid(self):
         # input to gradient with no identifiable grid should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
@@ -203,24 +202,24 @@ class TestCDMSErrorHandlers(ErrorHandlersTest):
         lat = solution['chi'].getLatitude()
         delattr(lat, 'axis')
         lat.id = 'unknown'
-        uchi, vchi = vw.gradient(solution['chi'])
+        with pytest.raises(ValueError):
+            vw.gradient(solution['chi'])
 
-    @raises(TypeError)
     def test_truncate_non_variable_input(self):
         # input to truncate not a cdms2 variable should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         dummy_solution = reference_solutions('standard', self.gridtype)
-        uchi, vchi = vw.truncate(dummy_solution['chi'])
+        with pytest.raises(TypeError):
+            vw.truncate(dummy_solution['chi'])
 
-    @raises(ValueError)
     def test_truncate_different_shape(self):
         # input to truncate of different shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
-        uchi, vchi = vw.truncate(solution['chi'][:-1])
+        with pytest.raises(ValueError):
+            vw.truncate(solution['chi'][:-1])
 
-    @raises(ValueError)
     def test_truncate_unknown_grid(self):
         # input to truncate with no identifiable grid should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
@@ -228,7 +227,8 @@ class TestCDMSErrorHandlers(ErrorHandlersTest):
         lat = solution['chi'].getLatitude()
         delattr(lat, 'axis')
         lat.id = 'unknown'
-        uchi, vchi = vw.truncate(solution['chi'])
+        with pytest.raises(ValueError):
+            vw.truncate(solution['chi'])
 
 
 # ----------------------------------------------------------------------------
@@ -240,72 +240,72 @@ class TestIrisErrorHandlers(ErrorHandlersTest):
     interface = 'iris'
     gridtype = 'regular'
 
-    @raises(TypeError)
     def test_non_cube_input(self):
         # input not an iris cube should raise an error
         solution = reference_solutions('standard', self.gridtype)
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        with pytest.raises(TypeError):
+            solvers[self.interface](solution['uwnd'], solution['vwnd'])
 
-    @raises(ValueError)
     def test_different_shape_components(self):
         # inputs not the same shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         solution['vwnd'].transpose([1, 0])
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'], solution['vwnd'])
 
-    @raises(ValueError)
     def test_unknown_grid(self):
         # inputs where a lat-lon grid cannot be identified should raise an
         # error
         solution = reference_solutions(self.interface, self.gridtype)
         solution['vwnd'].coord('latitude').rename('unknown')
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'], solution['vwnd'])
 
-    @raises(TypeError)
     def test_gradient_non_cube_input(self):
         # input to gradient not an iris cube should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         dummy_solution = reference_solutions('standard', self.gridtype)
-        uchi, vchi = vw.gradient(dummy_solution['chi'])
+        with pytest.raises(TypeError):
+            vw.gradient(dummy_solution['chi'])
 
-    @raises(ValueError)
     def test_gradient_different_shape(self):
         # input to gradient of different shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
-        uchi, vchi = vw.gradient(solution['chi'][:-1])
+        with pytest.raises(ValueError):
+            vw.gradient(solution['chi'][:-1])
 
-    @raises(ValueError)
     def test_gradient_unknown_grid(self):
         # input to gradient with no identifiable grid should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         solution['chi'].coord('latitude').rename('unknown')
-        uchi, vchi = vw.gradient(solution['chi'])
+        with pytest.raises(ValueError):
+            vw.gradient(solution['chi'])
 
-    @raises(TypeError)
     def test_truncate_non_cube_input(self):
         # input to truncate not an iris cube should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         dummy_solution = reference_solutions('standard', self.gridtype)
-        uchi, vchi = vw.truncate(dummy_solution['chi'])
+        with pytest.raises(TypeError):
+            vw.truncate(dummy_solution['chi'])
 
-    @raises(ValueError)
     def test_truncate_different_shape(self):
         # input to truncate of different shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
-        uchi, vchi = vw.truncate(solution['chi'][:-1])
+        with pytest.raises(ValueError):
+            vw.truncate(solution['chi'][:-1])
 
-    @raises(ValueError)
     def test_truncate_unknown_grid(self):
         # input to truncate with no identifiable grid should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         solution['chi'].coord('latitude').rename('unknown')
-        uchi, vchi = vw.truncate(solution['chi'])
+        with pytest.raises(ValueError):
+            vw.truncate(solution['chi'])
 
 
 # ----------------------------------------------------------------------------
@@ -317,20 +317,19 @@ class TestXarrayErrorHandlers(ErrorHandlersTest):
     interface = 'xarray'
     gridtype = 'regular'
 
-    @raises(TypeError)
     def test_non_dataarray_input(self):
         # input not an xarray.DataArray should raise an error
         solution = reference_solutions('standard', self.gridtype)
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        with pytest.raises(TypeError):
+            solvers[self.interface](solution['uwnd'], solution['vwnd'])
 
-    @raises(ValueError)
     def test_different_shape_components(self):
         # inputs not the same shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         solution['vwnd'] = solution['vwnd'].transpose()
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'], solution['vwnd'])
 
-    @raises(ValueError)
     def test_unknown_grid(self):
         # inputs where a lat-lon grid cannot be identified should raise an
         # error
@@ -340,24 +339,24 @@ class TestXarrayErrorHandlers(ErrorHandlersTest):
                          solution['vwnd'].coords['latitude'].values)})
         solution['vwnd'] = solution['vwnd'].swap_dims({'latitude': 'unknown'})
         del solution['vwnd'].coords['latitude']
-        vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
+        with pytest.raises(ValueError):
+            solvers[self.interface](solution['uwnd'], solution['vwnd'])
 
-    @raises(TypeError)
     def test_gradient_non_dataarray_input(self):
         # input to gradient not an xarray.DataArray should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         dummy_solution = reference_solutions('standard', self.gridtype)
-        uchi, vchi = vw.gradient(dummy_solution['chi'])
+        with pytest.raises(TypeError):
+            vw.gradient(dummy_solution['chi'])
 
-    @raises(ValueError)
     def test_gradient_different_shape(self):
         # input to gradient of different shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
-        uchi, vchi = vw.gradient(solution['chi'][:-1])
+        with pytest.raises(ValueError):
+            vw.gradient(solution['chi'][:-1])
 
-    @raises(ValueError)
     def test_gradient_unknown_grid(self):
         # input to gradient with no identifiable grid should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
@@ -367,24 +366,24 @@ class TestXarrayErrorHandlers(ErrorHandlersTest):
                          solution['chi'].coords['latitude'].values)})
         solution['chi'] = solution['chi'].swap_dims({'latitude': 'unknown'})
         del solution['chi'].coords['latitude']
-        uchi, vchi = vw.gradient(solution['chi'])
+        with pytest.raises(ValueError):
+            vw.gradient(solution['chi'])
 
-    @raises(TypeError)
     def test_truncate_non_dataarray_input(self):
         # input to truncate not an xarray.DataArray should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
         dummy_solution = reference_solutions('standard', self.gridtype)
-        uchi, vchi = vw.truncate(dummy_solution['chi'])
+        with pytest.raises(TypeError):
+            vw.truncate(dummy_solution['chi'])
 
-    @raises(ValueError)
     def test_truncate_different_shape(self):
         # input to truncate of different shape should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'])
-        uchi, vchi = vw.truncate(solution['chi'][:-1])
+        with pytest.raises(ValueError):
+            vw.truncate(solution['chi'][:-1])
 
-    @raises(ValueError)
     def test_truncate_unknown_grid(self):
         # input to truncate with no identifiable grid should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
@@ -394,4 +393,5 @@ class TestXarrayErrorHandlers(ErrorHandlersTest):
                          solution['chi'].coords['latitude'].values)})
         solution['chi'] = solution['chi'].swap_dims({'latitude': 'unknown'})
         del solution['chi'].coords['latitude']
-        uchi, vchi = vw.truncate(solution['chi'])
+        with pytest.raises(ValueError):
+            vw.truncate(solution['chi'])

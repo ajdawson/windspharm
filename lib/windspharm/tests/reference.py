@@ -22,15 +22,6 @@ from __future__ import absolute_import
 import os
 
 import numpy as np
-try:
-    import cdms2
-except ImportError:
-    pass
-try:
-    from iris.cube import Cube
-    from iris.coords import DimCoord
-except ImportError:
-    pass
 from spharm import gaussian_lats_wts
 
 
@@ -96,12 +87,12 @@ def _wrap_xarray(reference, lats, lons):
             import xray as xr
         except ImportError:
             raise ValueError("cannot use container 'xarray' without xarray")
-    londim = xr.Coordinate('longitude', lons,
-                           attrs={'standard_name': 'longitude',
-                                  'units': 'degrees_east'})
-    latdim = xr.Coordinate('latitude', lats,
-                           attrs={'standard_name': 'latitude',
-                                  'units': 'degrees_north'})
+    londim = xr.IndexVariable('longitude', lons,
+                              attrs={'standard_name': 'longitude',
+                                     'units': 'degrees_east'})
+    latdim = xr.IndexVariable('latitude', lats,
+                              attrs={'standard_name': 'latitude',
+                                     'units': 'degrees_north'})
     for name in reference.keys():
         reference[name] = xr.DataArray(reference[name],
                                        coords=[latdim, londim],

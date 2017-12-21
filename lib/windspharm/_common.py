@@ -1,5 +1,5 @@
 """Common functionality shared across interfaces."""
-# Copyright (c) 2016 Andrew Dawson
+# Copyright (c) 2016-2017 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -113,3 +113,8 @@ def inspect_gridtype(latitudes):
                              '(they may be non-global)')
         gridtype = 'regular'
     return gridtype
+
+
+def to3d(array):
+    new_shape = array.shape[:2] + (np.prod(array.shape[2:], dtype=np.int),)
+    return array.reshape(new_shape)

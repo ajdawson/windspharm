@@ -18,12 +18,12 @@ import iris
 import iris.plot as iplt
 from iris.coord_categorisation import add_month
 import matplotlib as mpl
-mpl.rcParams['mathtext.default'] = 'regular'
 import matplotlib.pyplot as plt
-import numpy as np
 
 from windspharm.iris import VectorWind
 from windspharm.examples import example_data_path
+
+mpl.rcParams['mathtext.default'] = 'regular'
 
 
 # Read zonal and meridional wind components from file using the iris module.

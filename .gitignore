@@ -16,4 +16,4 @@ dist
 *.pyc
 *.pyo
 *.tmp*
-
+.cache/

@@ -1,5 +1,5 @@
 """Spherical harmonic vector wind computations (`xarray` interface)."""
-# Copyright (c) 2016 Andrew Dawson
+# Copyright (c) 2016-2017 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,14 +20,13 @@
 # THE SOFTWARE.
 from __future__ import absolute_import
 
-import numpy as np
 try:
     import xarray as xr
 except ImportError:
     import xray as xr
 
 from . import standard
-from ._common import get_apiorder, inspect_gridtype
+from ._common import get_apiorder, inspect_gridtype, to3d
 
 
 class VectorWind(object):
@@ -91,8 +90,8 @@ class VectorWind(object):
         # Reshape the raw data and input into the API.
         self._ishape = u.shape
         self._coords = [u.coords[name] for name in u.dims]
-        u = u.values.reshape(u.shape[:2] + (np.prod(u.shape[2:]),))
-        v = v.values.reshape(v.shape[:2] + (np.prod(v.shape[2:]),))
+        u = to3d(u.values)
+        v = to3d(v.values)
         self._api = standard.VectorWind(u, v, gridtype=gridtype,
                                         rsphere=rsphere)
 
@@ -669,8 +668,8 @@ class VectorWind(object):
         reorder = chi.dims
         chi = chi.copy().transpose(*apiorder)
         ishape = chi.shape
-        coords = [chi.coords[name] for name in chi.dims]
-        chi = chi.data.reshape(chi.shape[:2] + (np.prod(chi.shape[2:]),))
+        coords = [chi.coords[n] for n in chi.dims]
+        chi = to3d(chi.values)
         uchi, vchi = self._api.gradient(chi, truncation=truncation)
         uchi = uchi.reshape(ishape)
         vchi = vchi.reshape(ishape)
@@ -734,9 +733,7 @@ class VectorWind(object):
         reorder = field.dims
         field = field.copy().transpose(*apiorder)
         ishape = field.shape
-        coords = [field.coords[name] for name in field.dims]
-        fielddata = field.values.reshape(
-            field.shape[:2] + (np.prod(field.shape[2:]),))
+        fielddata = to3d(field.values)
         fieldtrunc = self._api.truncate(fielddata, truncation=truncation)
         field.values = fieldtrunc.reshape(ishape)
         field = field.transpose(*reorder)
@@ -757,7 +754,7 @@ def _find_coord_and_dim(array, predicate, name):
 
     """
     candidates = [coord
-                  for coord in [array.coords[name] for name in array.dims]
+                  for coord in [array.coords[n] for n in array.dims]
                   if predicate(coord)]
     if not candidates:
         raise ValueError('cannot find a {!s} coordinate'.format(name))

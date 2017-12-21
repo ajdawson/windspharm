@@ -12,12 +12,12 @@ Additional requirements for this example:
 import cartopy.crs as ccrs
 import cdms2
 import matplotlib as mpl
-mpl.rcParams['mathtext.default'] = 'regular'
 import matplotlib.pyplot as plt
-import numpy as np
 
 from windspharm.cdms import VectorWind
 from windspharm.examples import example_data_path
+
+mpl.rcParams['mathtext.default'] = 'regular'
 
 
 # Read zonal and meridional wind components from file using the cdms2 module

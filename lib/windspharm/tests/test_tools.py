@@ -20,14 +20,12 @@
 # THE SOFTWARE.
 from __future__ import absolute_import
 
-from nose.tools import assert_almost_equal
 import numpy as np
 from numpy.testing import assert_array_equal
 
 from windspharm.tools import (prep_data, recover_data, get_recovery,
                               reverse_latdim, order_latdim)
 from windspharm.tests import VectorWindTest
-from .utils import error
 
 
 class TestTools(VectorWindTest):
