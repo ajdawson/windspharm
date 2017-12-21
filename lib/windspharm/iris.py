@@ -1,5 +1,5 @@
 """Spherical harmonic vector wind computations (`iris` interface)."""
-# Copyright (c) 2012-2016 Andrew Dawson
+# Copyright (c) 2012-2017 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ from iris.util import reverse
 from spharm import gaussian_lats_wts
 
 from . import standard
-from ._common import get_apiorder, inspect_gridtype
+from ._common import get_apiorder, inspect_gridtype, to3d
 
 
 class VectorWind(object):
@@ -93,8 +93,8 @@ class VectorWind(object):
         self._ishape = u.shape
         self._coords = u.dim_coords
         # Reshape the inputs so they are compatible with pyspharm.
-        u = u.data.reshape(u.shape[:2] + (np.prod(u.shape[2:]),))
-        v = v.data.reshape(v.shape[:2] + (np.prod(v.shape[2:]),))
+        u = to3d(u.data)
+        v = to3d(v.data)
         # Create a base VectorWind instance to do the computations.
         self._api = standard.VectorWind(u, v, gridtype=gridtype,
                                         rsphere=rsphere)
@@ -678,7 +678,7 @@ class VectorWind(object):
         chi.transpose(apiorder)
         ishape = chi.shape
         coords = chi.dim_coords
-        chi = chi.data.reshape(chi.shape[:2] + (np.prod(chi.shape[2:]),))
+        chi = to3d(chi.data)
         uchi, vchi = self._api.gradient(chi, truncation=truncation)
         uchi = uchi.reshape(ishape)
         vchi = vchi.reshape(ishape)
@@ -745,8 +745,7 @@ class VectorWind(object):
         field.transpose(apiorder)
         ishape = field.shape
         coords = field.dim_coords
-        fielddata = field.data.reshape(
-            field.shape[:2] + (np.prod(field.shape[2:]),))
+        fielddata = to3d(field.data)
         fieldtrunc = self._api.truncate(fielddata, truncation=truncation)
         field.data = fieldtrunc.reshape(ishape)
         field.transpose(reorder)

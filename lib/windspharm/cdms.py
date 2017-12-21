@@ -24,7 +24,7 @@ import numpy as np
 import cdms2
 
 from . import standard
-from ._common import inspect_gridtype
+from ._common import inspect_gridtype, to3d
 
 
 class VectorWind(object):
@@ -90,8 +90,8 @@ class VectorWind(object):
         self.ishape = u.shape
         self.axes = u.getAxisList()
         # Re-shape to 3-dimensional (compatible with API)
-        u = u.reshape(u.shape[:2] + (np.prod(u.shape[2:]),))
-        v = v.reshape(v.shape[:2] + (np.prod(v.shape[2:]),))
+        u = to3d(u)
+        v = to3d(v)
         # Instantiate a VectorWind object to do the computations.
         self.api = standard.VectorWind(u, v, gridtype=gridtype,
                                        rsphere=rsphere)
@@ -698,7 +698,7 @@ class VectorWind(object):
         ishape = chi.shape
         axes = chi.getAxisList()
         # Re-order to the API order.
-        chi = chi.reshape(chi.shape[:2] + (np.prod(chi.shape[2:]),))
+        chi = to3d(chi)
         # Compute the gradient function.
         uchi, vchi = self.api.gradient(chi, truncation=truncation)
         uchi = uchi.reshape(ishape)
@@ -773,8 +773,7 @@ class VectorWind(object):
         ishape = field.shape
         axes = field.getAxisList()
         # Extract the data from the field in the correct shape for the API.
-        fielddata = field.asma().reshape(
-            field.shape[:2] + (np.prod(field.shape[2:]),))
+        fielddata = to3d(field.asma())
         # Apply the truncation.
         fieldtrunc = self.api.truncate(fielddata, truncation=truncation)
         # Set the data values of the field to the re-shaped truncated values.
