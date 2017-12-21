@@ -135,8 +135,6 @@ If you would like to contribute code or documentation please see the :doc:`devgu
 
 .. _pyspharm: https://code.google.com/p/pyspharm
 
-.. _cdat-lite: http://proj.badc.rl.ac.uk/cedaservices/wiki/CdatLite
-
 .. _setuptools: https://pypi.python.org/pypi/setuptools
 
 .. _issues: http://github.com/ajdawson/windspharm/issues?state=open
