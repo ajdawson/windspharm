@@ -20,14 +20,12 @@
 # THE SOFTWARE.
 from __future__ import absolute_import
 
-from nose import SkipTest
-from nose.tools import assert_almost_equal
 import numpy as np
+import pytest
 
 import windspharm
 from windspharm.tests import VectorWindTest, solvers
 from .reference import reference_solutions
-from .utils import error
 
 
 class SolutionTest(VectorWindTest):
@@ -38,11 +36,11 @@ class SolutionTest(VectorWindTest):
 
     @classmethod
     def setup_class(cls):
-        skip_message = 'library component not available for {!s} interface'
+        msg = 'missing dependencies required to test the {!s} interface'
         try:
             cls.solution = reference_solutions(cls.interface, cls.gridtype)
         except ValueError:
-            raise SkipTest(skip_message.format(cls.interface))
+            pytest.skip(msg.format(cls.interface))
         cls.pre_modify_solution()
         try:
             # gridtype argument only available for the standard interface
@@ -54,7 +52,7 @@ class SolutionTest(VectorWindTest):
             cls.vw = solvers[cls.interface](cls.solution['uwnd'],
                                             cls.solution['vwnd'], **kwargs)
         except KeyError:
-            raise SkipTest(skip_message.format(cls.interface))
+            pytest.skip(msg.format(cls.interface))
         cls.post_modify_solution()
 
     @classmethod
@@ -69,68 +67,68 @@ class SolutionTest(VectorWindTest):
         # computed magnitude matches magnitude of reference solution?
         mag1 = self.vw.magnitude()
         mag2 = (self.solution['uwnd'] ** 2 + self.solution['vwnd'] ** 2) ** 0.5
-        assert_almost_equal(error(mag1, mag2), 0., places=5)
+        self.assert_error_is_zero(mag1, mag2)
 
     def test_vorticity(self):
         # computed vorticity matches reference solution?
         vrt1 = self.vw.vorticity()
         vrt2 = self.solution['vrt']
-        assert_almost_equal(error(vrt1, vrt2), 0., places=5)
+        self.assert_error_is_zero(vrt1, vrt2)
 
     def test_divergence(self):
         # computed divergence matches reference solution?
         div1 = self.vw.divergence()
         div2 = self.solution['div']
-        assert_almost_equal(error(div1, div2), 0., places=5)
+        self.assert_error_is_zero(div1, div2)
 
     def test_streamfunction(self):
         # computed streamfunction matches reference solution?
         sf1 = self.vw.streamfunction()
         sf2 = self.solution['psi'].copy()
-        assert_almost_equal(error(sf1, sf2), 0., places=5)
+        self.assert_error_is_zero(sf1, sf2)
 
     def test_velocitypotential(self):
         # computed velocity potential matches reference solution?
         vp1 = self.vw.velocitypotential()
         vp2 = self.solution['chi'].copy()
-        assert_almost_equal(error(vp1, vp2), 0., places=5)
+        self.assert_error_is_zero(vp1, vp2)
 
     def test_nondivergent(self):
         # computed non-divergent vector wind matches reference solution?
         upsi1, vpsi1 = self.vw.nondivergentcomponent()
         upsi2, vpsi2 = self.solution['upsi'], self.solution['vpsi']
-        assert_almost_equal(error(upsi1, upsi2), 0., places=5)
-        assert_almost_equal(error(upsi1, upsi2), 0., places=5)
+        self.assert_error_is_zero(upsi1, upsi2)
+        self.assert_error_is_zero(vpsi1, vpsi2)
 
     def test_irrotational(self):
         # computed irrotational vector wind matches reference solution?
         uchi1, vchi1 = self.vw.irrotationalcomponent()
         uchi2, vchi2 = self.solution['uchi'], self.solution['vchi']
-        assert_almost_equal(error(uchi1, uchi2), 0., places=5)
-        assert_almost_equal(error(vchi1, vchi2), 0., places=5)
+        self.assert_error_is_zero(uchi1, uchi2)
+        self.assert_error_is_zero(vchi1, vchi2)
 
     def test_gradient(self):
         # computed gradient matches reference solution?
         uchi1, vchi1 = self.vw.gradient(self.solution['chi'])
         uchi2, vchi2 = self.solution['chigradu'], self.solution['chigradv']
-        assert_almost_equal(error(uchi1, uchi2), 0., places=5)
-        assert_almost_equal(error(vchi1, vchi2), 0., places=5)
+        self.assert_error_is_zero(uchi1, uchi2)
+        self.assert_error_is_zero(vchi1, vchi2)
 
     def test_vrtdiv(self):
         # vrtdiv() matches vorticity()/divergence()?
         vrt1, div1 = self.vw.vrtdiv()
         vrt2 = self.vw.vorticity()
         div2 = self.vw.divergence()
-        assert_almost_equal(error(vrt1, vrt2), 0., places=5)
-        assert_almost_equal(error(div1, div2), 0., places=5)
+        self.assert_error_is_zero(vrt1, vrt2)
+        self.assert_error_is_zero(div1, div2)
 
     def test_sfvp(self):
         # sfvp() matches streamfunction()/velocitypotential()?
         sf1, vp1 = self.vw.sfvp()
         sf2 = self.vw.streamfunction()
         vp2 = self.vw.velocitypotential()
-        assert_almost_equal(error(sf1, sf2), 0., places=5)
-        assert_almost_equal(error(vp1, vp2), 0., places=5)
+        self.assert_error_is_zero(sf1, sf2)
+        self.assert_error_is_zero(vp1, vp2)
 
     def test_helmholtz(self):
         # helmholtz() matches irrotationalcomponent()/nondivergentcomponent()?
@@ -138,16 +136,15 @@ class SolutionTest(VectorWindTest):
         uchi2, vchi2 = self.vw.irrotationalcomponent()
         upsi2, vpsi2 = self.vw.nondivergentcomponent()
         uchi, vchi, upsi2, vpsi2 = self.vw.helmholtz()
-        assert_almost_equal(error(uchi1, uchi2), 0., places=5)
-        assert_almost_equal(error(vchi1, vchi2), 0., places=5)
-        assert_almost_equal(error(upsi1, upsi2), 0., places=5)
-        assert_almost_equal(error(vpsi1, vpsi2), 0., places=5)
+        self.assert_error_is_zero(uchi1, uchi2)
+        self.assert_error_is_zero(vchi1, vchi2)
+        self.assert_error_is_zero(upsi1, upsi2)
+        self.assert_error_is_zero(vpsi1, vpsi2)
 
     def test_truncate(self):
         # vorticity truncated to T21 matches reference?
-        div_trunc = self.vw.truncate(self.solution['vrt'], truncation=21)
-        assert_almost_equal(error(div_trunc, self.solution['vrt_trunc']),
-                            0., places=5)
+        vrt_trunc = self.vw.truncate(self.solution['vrt'], truncation=21)
+        self.assert_error_is_zero(vrt_trunc, self.solution['vrt_trunc'])
 
 
 # ----------------------------------------------------------------------------
@@ -234,8 +231,7 @@ class CDMSSolutionTest(SolutionTest):
     def test_truncate_reversed(self):
         # vorticity truncated to T21 matches reference?
         vrt_trunc = self.vw.truncate(self.solution['vrt'][::-1], truncation=21)
-        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
-                            0., places=5)
+        self.assert_error_is_zero(vrt_trunc, self.solution['vrt_trunc'])
 
 
 class TestCDMSRegular(CDMSSolutionTest):
@@ -260,8 +256,7 @@ class TestCDMSGridTranspose(CDMSSolutionTest):
         # vorticity truncated to T21 matches reference?
         vrt_trunc = self.vw.truncate(self.solution['vrt'][:, ::-1],
                                      truncation=21)
-        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
-                            0., places=5)
+        self.assert_error_is_zero(vrt_trunc, self.solution['vrt_trunc'])
 
 
 class TestCDMSInvertedLatitude(CDMSSolutionTest):
@@ -311,8 +306,7 @@ class IrisSolutionTest(SolutionTest):
 
     def test_truncate_reversed(self):
         vrt_trunc = self.vw.truncate(self.solution['vrt'][::-1], truncation=21)
-        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
-                            0., places=5)
+        self.assert_error_is_zero(vrt_trunc, self.solution['vrt_trunc'])
 
 
 class TestIrisRegular(IrisSolutionTest):
@@ -336,8 +330,7 @@ class TestIrisGridTranspose(IrisSolutionTest):
     def test_truncate_reversed(self):
         vrt_trunc = self.vw.truncate(self.solution['vrt'][:, ::-1],
                                      truncation=21)
-        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
-                            0., places=5)
+        self.assert_error_is_zero(vrt_trunc, self.solution['vrt_trunc'])
 
 
 class TestIrisInvertedLatitude(IrisSolutionTest):
@@ -386,8 +379,7 @@ class XarraySolutionTest(SolutionTest):
 
     def test_truncate_reversed(self):
         vrt_trunc = self.vw.truncate(self.solution['vrt'][::-1], truncation=21)
-        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
-                            0., places=5)
+        self.assert_error_is_zero(vrt_trunc, self.solution['vrt_trunc'])
 
 
 class TestXarrayRegular(XarraySolutionTest):
@@ -411,8 +403,7 @@ class TestXarrayGridTranspose(XarraySolutionTest):
     def test_truncate_reversed(self):
         vrt_trunc = self.vw.truncate(self.solution['vrt'][:, ::-1],
                                      truncation=21)
-        assert_almost_equal(error(vrt_trunc, self.solution['vrt_trunc']),
-                            0., places=5)
+        self.assert_error_is_zero(vrt_trunc, self.solution['vrt_trunc'])
 
 
 class TestXarrayInvertedLatitude(XarraySolutionTest):
