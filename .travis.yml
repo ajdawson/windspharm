@@ -2,7 +2,7 @@ language: python
 
 env:
     global:
-        - PACKAGES_STANDARD="setuptools nose coverage pep8 numpy pyspharm"
+        - PACKAGES_STANDARD="setuptools pytest pep8 numpy pyspharm"
     matrix:
         - NAME="Python 2.7 (standard)"
           PYTHON_VERSION=2.7
@@ -57,7 +57,7 @@ script:
     # installed package rather than the source, which won't work on Python3:
     - mkdir ../test_directory
     - cd ../test_directory
-    - nosetests windspharm --verbosity=2 --with-coverage --cover-package=windspharm
+    - pytest -vrsx --pyargs windspharm
 
 notifications:
     email: false

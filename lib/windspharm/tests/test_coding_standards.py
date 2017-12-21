@@ -22,7 +22,6 @@ from __future__ import absolute_import
 
 import os
 
-from nose.tools import assert_equal
 import pep8
 
 import windspharm
@@ -35,4 +34,4 @@ class TestCodingStandards(VectorWindTest):
         pep8style = pep8.StyleGuide(quiet=False)
         base_paths = [os.path.dirname(windspharm.__file__)]
         result = pep8style.check_files(base_paths)
-        assert_equal(result.total_errors, 0, "Found PEP8 style issues.")
+        assert result.total_errors == 0, "Found PEP8 style issues."
