@@ -11,7 +11,7 @@ v1.6.x
 This release has no major user-facing changes, its main purpose is to modernise the test suite and fix problems with NumPy compatibility, although the modifications to the test suite may have knock-on effects for package maintainers.
 
 * Fixes for NumPy compatibility [`#89 <https://github.com/ajdawson/windspharm/issues/89>`_, `#90 <https://github.com/ajdawson/windspharm/pull/90>`_].
-* Switch from `nose` to `pytest <http://pytest.org>_` for the test suite [`#91 <https://github.com/ajdawson/windspharm/pull/91>`_, `#94 <https://github.com/ajdawson/windspharm/pull/94>`_].
+* Switch from `nose` to `pytest <http://pytest.org>`_ for the test suite [`#91 <https://github.com/ajdawson/windspharm/pull/91>`_, `#94 <https://github.com/ajdawson/windspharm/pull/94>`_].
 
 
 v1.5.x
