@@ -2,26 +2,27 @@ language: python
 
 env:
     global:
-        - PACKAGES_STANDARD="setuptools pytest 'numpy<1.12' pyspharm"
+        - PACKAGES_STANDARD="setuptools pytest numpy pyspharm"
+        - PACKAGES_METADATA="${PACKAGES_STANDARD} cdms2 genutil iris xarray"
     matrix:
         - NAME="Python 2.7 (standard)"
           PYTHON_VERSION=2.7
           PACKAGES="${PACKAGES_STANDARD}"
         - NAME="Python 2.7 (metadata)"
           PYTHON_VERSION=2.7
-          PACKAGES="${PACKAGES_STANDARD} cdms2 genutil iris xarray"
+          PACKAGES="${PACKAGES_METADATA}"
         - NAME="Python 3.5 (standard)"
           PYTHON_VERSION=3.5
           PACKAGES="${PACKAGES_STANDARD}"
         - NAME="Python 3.5 (metadata)"
           PYTHON_VERSION=3.5
-          PACKAGES="${PACKAGES_STANDARD} iris xarray"
+          PACKAGES="${PACKAGES_METADATA}"
         - NAME="Python 3.6 (standard)"
           PYTHON_VERSION=3.6
           PACKAGES="${PACKAGES_STANDARD}"
         - NAME="Python 3.6 (metadata)"
           PYTHON_VERSION=3.6
-          PACKAGES="${PACKAGES_STANDARD} iris xarray"
+          PACKAGES="${PACKAGES_METADATA}"
 
 sudo: false
 
