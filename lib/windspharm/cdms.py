@@ -1,5 +1,5 @@
 """Spherical harmonic vector wind computations (`cdms2` interface)."""
-# Copyright (c) 2012-2017 Andrew Dawson
+# Copyright (c) 2012-2018 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ from ._common import inspect_gridtype, to3d
 class VectorWind(object):
     """Vector wind computations (`cdms2` interface)."""
 
-    def __init__(self, u, v, rsphere=6.3712e6):
+    def __init__(self, u, v, rsphere=6.3712e6, legfunc='stored'):
         """Initialize a VectorWind instance.
 
         **Arguments:**
@@ -46,6 +46,14 @@ class VectorWind(object):
             The radius in metres of the sphere used in the spherical
             harmonic computations. Default is 6371200 m, the approximate
             mean spherical Earth radius.
+
+        *legfunc*
+            'stored' (default) or 'computed'.  If 'stored', associated legendre
+            functions are precomputed and stored when the class instance is
+            created.  This uses O(nlat**3) memory, but speeds up the spectral
+            transforms.  If 'computed', associated legendre functions are
+            computed on the fly when transforms are requested.  This uses
+            O(nlat**2) memory, but slows down the spectral transforms a bit.
 
         **Example:**
 
@@ -93,7 +101,7 @@ class VectorWind(object):
         v = to3d(v)
         # Instantiate a VectorWind object to do the computations.
         self.api = standard.VectorWind(u, v, gridtype=gridtype,
-                                       rsphere=rsphere)
+                                       rsphere=rsphere, legfunc=legfunc)
 
     def _metadata(self, var, **attributes):
         """Re-shape and re-order raw results, and add meta-data."""

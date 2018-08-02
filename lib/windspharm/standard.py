@@ -1,5 +1,5 @@
 """Spherical harmonic vector wind computations."""
-# Copyright (c) 2012-2016 Andrew Dawson
+# Copyright (c) 2012-2018 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,8 @@ from spharm import Spharmt, gaussian_lats_wts
 class VectorWind(object):
     """Vector Wind computations (standard `numpy` interface)."""
 
-    def __init__(self, u, v, gridtype='regular', rsphere=6.3712e6):
+    def __init__(self, u, v, gridtype='regular', rsphere=6.3712e6,
+                 legfunc='stored'):
         """Initialize a VectorWind instance.
 
         **Arguments:**
@@ -53,6 +54,14 @@ class VectorWind(object):
             The radius in metres of the sphere used in the spherical
             harmonic computations. Default is 6371200 m, the approximate
             mean spherical Earth radius.
+
+        *legfunc*
+            'stored' (default) or 'computed'.  If 'stored', associated legendre
+            functions are precomputed and stored when the class instance is
+            created.  This uses O(nlat**3) memory, but speeds up the spectral
+            transforms.  If 'computed', associated legendre functions are
+            computed on the fly when transforms are requested.  This uses
+            O(nlat**2) memory, but slows down the spectral transforms a bit.
 
         **See also:**
 
@@ -102,7 +111,7 @@ class VectorWind(object):
             # Create a Spharmt object to do the computations.
             self.gridtype = gridtype.lower()
             self.s = Spharmt(nlon, nlat, gridtype=self.gridtype,
-                             rsphere=rsphere)
+                             rsphere=rsphere, legfunc=legfunc)
         except ValueError:
             if self.gridtype not in ('regular', 'gaussian'):
                 err = 'invalid grid type: {0:s}'.format(repr(gridtype))
