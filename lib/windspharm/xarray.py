@@ -32,7 +32,7 @@ from ._common import get_apiorder, inspect_gridtype, to3d
 class VectorWind(object):
     """Vector wind computations (`xarray` interface)."""
 
-    def __init__(self, u, v, rsphere=6.3712e6):
+    def __init__(self, u, v, rsphere=6.3712e6, legfunc='stored'):
         """Initialize a VectorWind instance.
 
         **Arguments:**
@@ -49,6 +49,14 @@ class VectorWind(object):
             The radius in metres of the sphere used in the spherical
             harmonic computations. Default is 6371200 m, the approximate
             mean spherical Earth radius.
+
+        *legfunc*
+            'stored' (default) or 'computed'.  If 'stored', associated legendre
+            functions are precomputed and stored when the class instance is
+            created.  This uses O(nlat**3) memory, but speeds up the spectral
+            transforms.  If 'computed', associated legendre functions are
+            computed on the fly when transforms are requested.  This uses
+            O(nlat**2) memory, but slows down the spectral transforms a bit.
 
         **Example:**
 
@@ -93,7 +101,7 @@ class VectorWind(object):
         u = to3d(u.values)
         v = to3d(v.values)
         self._api = standard.VectorWind(u, v, gridtype=gridtype,
-                                        rsphere=rsphere)
+                                        rsphere=rsphere, legfunc=legfunc)
 
     def _metadata(self, var, name, **attributes):
         var = var.reshape(self._ishape)
