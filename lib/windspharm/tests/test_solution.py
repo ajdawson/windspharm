@@ -32,6 +32,7 @@ class SolutionTest(VectorWindTest):
     interface = None
     gridtype = None
     radius = None
+    legfunc = None
 
     @classmethod
     def setup_class(cls):
@@ -48,6 +49,8 @@ class SolutionTest(VectorWindTest):
                 kwargs['gridtype'] = cls.gridtype
             if cls.radius is not None:
                 kwargs['rsphere'] = cls.radius
+            if cls.legfunc is not None:
+                kwargs['legfunc'] = cls.legfunc
             cls.vw = solvers[cls.interface](cls.solution['uwnd'],
                                             cls.solution['vwnd'], **kwargs)
         except KeyError:
@@ -219,6 +222,12 @@ class TestStandardRadius(StandardSolutionTest):
         cls.solution['chi'] = cls.solution['chi'] / 16
 
 
+class TestStandardLegfuncComputed(StandardSolutionTest):
+    """Computed Legendre functions."""
+    gridtype = 'regular'
+    legfunc = 'computed'
+
+
 # ----------------------------------------------------------------------------
 # Tests for the CDMS interface
 
@@ -295,6 +304,13 @@ class TestCDMSRadius(CDMSSolutionTest):
         cls.solution['psi'] = cls.solution['psi'] / 16
         cls.solution['chi'] = cls.solution['chi'] / 16
 
+
+class TestCDMSLegfuncComputed(CDMSSolutionTest):
+    """Computed Legendre functions."""
+    gridtype = 'regular'
+    legfunc = 'computed'
+
+
 # ----------------------------------------------------------------------------
 # Tests for the Iris interface
 
@@ -368,6 +384,12 @@ class TestIrisRadius(IrisSolutionTest):
         cls.solution['chi'] = cls.solution['chi'] / 16
 
 
+class TestIrisLegfuncComputed(IrisSolutionTest):
+    """Computed Legendre functions."""
+    gridtype = 'regular'
+    legfunc = 'computed'
+
+
 # ----------------------------------------------------------------------------
 # Tests for the Xarray interface
 
@@ -439,3 +461,9 @@ class TestXarrayRadius(XarraySolutionTest):
         # radius factor.
         cls.solution['psi'] = cls.solution['psi'] / 16
         cls.solution['chi'] = cls.solution['chi'] / 16
+
+
+class TestXarrayLegfuncComputed(XarraySolutionTest):
+    """Computed Legendre functions."""
+    gridtype = 'regular'
+    legfunc = 'computed'
