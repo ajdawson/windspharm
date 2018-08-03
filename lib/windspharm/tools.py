@@ -249,8 +249,8 @@ def reverse_latdim(u, v, axis=0):
     """
     slicelist = [slice(0, None)] * u.ndim
     slicelist[axis] = slice(None, None, -1)
-    u = u.copy()[slicelist]
-    v = v.copy()[slicelist]
+    u = u.copy()[tuple(slicelist)]
+    v = v.copy()[tuple(slicelist)]
     return u, v
 
 
