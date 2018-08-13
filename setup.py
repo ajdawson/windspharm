@@ -19,10 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 from setuptools import setup
-
-for line in open('lib/windspharm/__init__.py').readlines():
-    if line.startswith('__version__'):
-        exec(line)
+import versioneer
 
 packages = ['windspharm',
             'windspharm.examples',
@@ -33,7 +30,8 @@ package_data = {
     'windspharm.tests': ['data/regular/*.npy', 'data/gaussian/*.npy']}
 
 setup(name='windspharm',
-      version=__version__,
+      version=versioneer.get_version(),
+      cmdclass=versioneer.get_cmdclass(),
       description='vector wind analysis in spherical coordinates',
       author='Andrew Dawson',
       author_email='dawson@atm.ox.ac.uk',
