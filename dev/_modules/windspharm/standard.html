@@ -1,0 +1,794 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>windspharm.standard &#8212; windspharm 1.7.dev0 documentation</title>
+    <link rel="stylesheet" href="../../_static/sphinx13_mod.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+     
+        <style type="text/css">
+            table.right { float: right; margin-left: 20px; }
+            table.right td { border: 1px solid #ccc; }
+        </style>
+        <script type="text/javascript">
+            // intelligent scrolling of the sidebar content
+            $(window).scroll(function() {
+                var sb = $('.sphinxsidebarwrapper');
+                var win = $(window);
+                var sbh = sb.height();
+                var offset = $('.sphinxsidebar').position()['top'];
+                var wintop = win.scrollTop();
+                var winbot = wintop + win.innerHeight();
+                var curtop = sb.position()['top'];
+                var curbot = curtop + sbh;
+                // does sidebar fit in window?
+                if (sbh < win.innerHeight()) {
+                    // yes: easy case -- always keep at the top
+                    sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                         $(document).height() - sbh - 200]));
+                } else {
+                    // no: only scroll if top/bottom edge of sidebar is at
+                    // top/bottom edge of window
+                    if (curtop > wintop && curbot > winbot) {
+                        sb.css('top', $u.max([wintop - offset - 10, 0]));
+                    } else if (curtop < wintop && curbot < winbot) {
+                        sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                             $(document).height() - sbh - 200]));
+                    }
+                }
+            });
+        </script>
+
+  </head><body>
+<div class="pageheader">
+  <div>
+    <a href="../../index.html">
+      <img src="../../_static/headerimage.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+    <li><a href="../../index.html">home</a>|&nbsp;</li>
+    <li><a href="../../search.html">search</a>|&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+
+    <h2>windspharm v1.7.dev0</h2>
+    <h3>Table of Contents</h3>
+    <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../userguide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../downloads.html">Downloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devguide/index.html">Developer Guide</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for windspharm.standard</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Spherical harmonic vector wind computations.&quot;&quot;&quot;</span>
+<span class="c1"># Copyright (c) 2012-2018 Andrew Dawson</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1"># in the Software without restriction, including without limitation the rights</span>
+<span class="c1"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1"># copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1"># furnished to do so, subject to the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included in</span>
+<span class="c1"># all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="c1"># THE SOFTWARE.</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">spharm</span> <span class="k">import</span> <span class="n">Spharmt</span><span class="p">,</span> <span class="n">gaussian_lats_wts</span>
+
+
+<div class="viewcode-block" id="VectorWind"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind">[docs]</a><span class="k">class</span> <span class="nc">VectorWind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Vector Wind computations (standard `numpy` interface).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="s1">&#39;regular&#39;</span><span class="p">,</span> <span class="n">rsphere</span><span class="o">=</span><span class="mf">6.3712e6</span><span class="p">,</span>
+                 <span class="n">legfunc</span><span class="o">=</span><span class="s1">&#39;stored&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a VectorWind instance.</span>
+
+<span class="sd">        **Arguments:**</span>
+
+<span class="sd">        *u*, *v*</span>
+<span class="sd">            Zonal and meridional wind components respectively. Their</span>
+<span class="sd">            types should be either `numpy.ndarray` or</span>
+<span class="sd">            `numpy.ma.MaskedArray`. *u* and *v* must have matching</span>
+<span class="sd">            shapes and contain no missing values. *u* and *v* may be 2</span>
+<span class="sd">            or 3-dimensional with shape (nlat, nlon) or</span>
+<span class="sd">            (nlat, nlon, nt), where nlat and nlon are the number of</span>
+<span class="sd">            latitudes and longitudes respectively and nt is the number</span>
+<span class="sd">            of fields. The latitude dimension must be oriented</span>
+<span class="sd">            north-to-south. The longitude dimension should be</span>
+<span class="sd">            oriented west-to-east.</span>
+
+<span class="sd">        **Optional arguments:**</span>
+
+<span class="sd">        *gridtype*</span>
+<span class="sd">            Type of the input grid, either &#39;regular&#39; for evenly-spaced</span>
+<span class="sd">            grids, or &#39;gaussian&#39; for Gaussian grids. Defaults to</span>
+<span class="sd">            &#39;regular&#39;.</span>
+
+<span class="sd">        *rsphere*</span>
+<span class="sd">            The radius in metres of the sphere used in the spherical</span>
+<span class="sd">            harmonic computations. Default is 6371200 m, the approximate</span>
+<span class="sd">            mean spherical Earth radius.</span>
+
+<span class="sd">        *legfunc*</span>
+<span class="sd">            &#39;stored&#39; (default) or &#39;computed&#39;.  If &#39;stored&#39;, associated legendre</span>
+<span class="sd">            functions are precomputed and stored when the class instance is</span>
+<span class="sd">            created.  This uses O(nlat**3) memory, but speeds up the spectral</span>
+<span class="sd">            transforms.  If &#39;computed&#39;, associated legendre functions are</span>
+<span class="sd">            computed on the fly when transforms are requested.  This uses</span>
+<span class="sd">            O(nlat**2) memory, but slows down the spectral transforms a bit.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~windspharm.tools.prep_data`,</span>
+<span class="sd">        `~windspharm.tools.recover_data`,</span>
+<span class="sd">        `~windspharm.tools.get_recovery`,</span>
+<span class="sd">        `~windspharm.tools.reverse_latdim`,</span>
+<span class="sd">        `~windspharm.tools.order_latdim`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Initialize a `VectorWind` instance with zonal and meridional</span>
+<span class="sd">        components of the vector wind on the default regular</span>
+<span class="sd">        (evenly-spaced) grid:</span>
+
+<span class="sd">            from windspharm.standard import VectorWind</span>
+<span class="sd">            w = VectorWind(u, v)</span>
+
+<span class="sd">        Initialize a `VectorWind` instance with zonal and meridional</span>
+<span class="sd">        components of the vector wind specified on a Gaussian grid:</span>
+
+<span class="sd">            from windspharm.standard import VectorWind</span>
+<span class="sd">            w = VectorWind(u, v, gridtype=&#39;gaussian&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># For both the input components check if there are missing values by</span>
+        <span class="c1"># attempting to fill missing values with NaN and detect them. If the</span>
+        <span class="c1"># inputs are not masked arrays then take copies and check for NaN.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;u and v cannot contain missing values&#39;</span><span class="p">)</span>
+        <span class="c1"># Make sure the shapes of the two components match.</span>
+        <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;u and v must be the same shape&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;u and v must be rank 2 or 3 arrays&#39;</span><span class="p">)</span>
+        <span class="n">nlat</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">nlon</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Create a Spharmt object to do the computations.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridtype</span> <span class="o">=</span> <span class="n">gridtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">Spharmt</span><span class="p">(</span><span class="n">nlon</span><span class="p">,</span> <span class="n">nlat</span><span class="p">,</span> <span class="n">gridtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gridtype</span><span class="p">,</span>
+                             <span class="n">rsphere</span><span class="o">=</span><span class="n">rsphere</span><span class="p">,</span> <span class="n">legfunc</span><span class="o">=</span><span class="n">legfunc</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;regular&#39;</span><span class="p">,</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
+                <span class="n">err</span> <span class="o">=</span> <span class="s1">&#39;invalid grid type: </span><span class="si">{0:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">gridtype</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">err</span> <span class="o">=</span> <span class="s1">&#39;invalid input dimensions&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="c1"># Method aliases.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotationalcomponent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nondivergentcomponent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">divergentcomponent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">irrotationalcomponent</span>
+
+<div class="viewcode-block" id="VectorWind.magnitude"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.magnitude">[docs]</a>    <span class="k">def</span> <span class="nf">magnitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wind speed (magnitude of vector wind).</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *speed*</span>
+<span class="sd">            The wind speed.</span>
+
+<span class="sd">        **Example:**</span>
+
+<span class="sd">        Magnitude of the vector wind::</span>
+
+<span class="sd">            spd = w.magnitude()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span></div>
+
+<div class="viewcode-block" id="VectorWind.vrtdiv"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.vrtdiv">[docs]</a>    <span class="k">def</span> <span class="nf">vrtdiv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Relative vorticity and horizontal divergence.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *vrt*, *div*</span>
+<span class="sd">            The relative vorticity and divergence respectively.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.vorticity`, `~VectorWind.divergence`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the relative vorticity and divergence::</span>
+
+<span class="sd">            vrt, div = w.vrtdiv()</span>
+
+<span class="sd">        Compute the relative vorticity and divergence and apply spectral</span>
+<span class="sd">        truncation at triangular T13::</span>
+
+<span class="sd">            vrtT13, divT13 = w.vrtdiv(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vrtspec</span><span class="p">,</span> <span class="n">divspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getvrtdivspec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span>
+                                                <span class="n">ntrunc</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">vrtgrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">spectogrd</span><span class="p">(</span><span class="n">vrtspec</span><span class="p">)</span>
+        <span class="n">divgrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">spectogrd</span><span class="p">(</span><span class="n">divspec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vrtgrid</span><span class="p">,</span> <span class="n">divgrid</span></div>
+
+<div class="viewcode-block" id="VectorWind.vorticity"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.vorticity">[docs]</a>    <span class="k">def</span> <span class="nf">vorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Relative vorticity.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *vrt*</span>
+<span class="sd">            The relative vorticity.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.vrtdiv`, `~VectorWind.absolutevorticity`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the relative vorticity::</span>
+
+<span class="sd">            vrt = w.vorticity()</span>
+
+<span class="sd">        Compute the relative vorticity and apply spectral truncation at</span>
+<span class="sd">        triangular T13::</span>
+
+<span class="sd">            vrtT13 = w.vorticity(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vrtspec</span><span class="p">,</span> <span class="n">divspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getvrtdivspec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span>
+                                                <span class="n">ntrunc</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">vrtgrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">spectogrd</span><span class="p">(</span><span class="n">vrtspec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vrtgrid</span></div>
+
+<div class="viewcode-block" id="VectorWind.divergence"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.divergence">[docs]</a>    <span class="k">def</span> <span class="nf">divergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Horizontal divergence.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *div*</span>
+<span class="sd">            The divergence.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.vrtdiv`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the divergence::</span>
+
+<span class="sd">            div = w.divergence()</span>
+
+<span class="sd">        Compute the divergence and apply spectral truncation at</span>
+<span class="sd">        triangular T13::</span>
+
+<span class="sd">            divT13 = w.divergence(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vrtspec</span><span class="p">,</span> <span class="n">divspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getvrtdivspec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span>
+                                                <span class="n">ntrunc</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">divgrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">spectogrd</span><span class="p">(</span><span class="n">divspec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">divgrid</span></div>
+
+<div class="viewcode-block" id="VectorWind.planetaryvorticity"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.planetaryvorticity">[docs]</a>    <span class="k">def</span> <span class="nf">planetaryvorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Planetary vorticity (Coriolis parameter).</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *omega*</span>
+<span class="sd">            Earth&#39;s angular velocity. The default value if not specified</span>
+<span class="sd">            is 7.292x10**-5 s**-1.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *pvorticity*</span>
+<span class="sd">            The planetary vorticity.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.absolutevorticity`.</span>
+
+<span class="sd">        **Example:**</span>
+
+<span class="sd">        Compute planetary vorticity using default values::</span>
+
+<span class="sd">            pvrt = w.planetaryvorticity()</span>
+
+<span class="sd">        Override the default value for Earth&#39;s angular velocity::</span>
+
+<span class="sd">            pvrt = w.planetaryvorticity(omega=7.2921150)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">omega</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Define the Earth&#39;s angular velocity.</span>
+            <span class="n">omega</span> <span class="o">=</span> <span class="mf">7.292e-05</span>
+        <span class="n">nlat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">nlat</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridtype</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
+            <span class="n">lat</span><span class="p">,</span> <span class="n">wts</span> <span class="o">=</span> <span class="n">gaussian_lats_wts</span><span class="p">(</span><span class="n">nlat</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nlat</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="n">nlat</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dlat</span> <span class="o">=</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">nlat</span>
+                <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">dlat</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="n">dlat</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cp</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;invalid value for omega: </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">omega</span><span class="p">))</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">cp</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span></div>
+
+<div class="viewcode-block" id="VectorWind.absolutevorticity"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.absolutevorticity">[docs]</a>    <span class="k">def</span> <span class="nf">absolutevorticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Absolute vorticity (sum of relative and planetary vorticity).</span>
+
+<span class="sd">        **Optional arguments:**</span>
+
+<span class="sd">        *omega*</span>
+<span class="sd">            Earth&#39;s angular velocity. The default value if not specified</span>
+<span class="sd">            is 7.292x10**-5 s**-1.</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *avorticity*</span>
+<span class="sd">            The absolute (relative + planetary) vorticity.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.vorticity`, `~VectorWind.planetaryvorticity`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute absolute vorticity::</span>
+
+<span class="sd">            avrt = w.absolutevorticity()</span>
+
+<span class="sd">        Compute absolute vorticity and apply spectral truncation at</span>
+<span class="sd">        triangular T13, also override the default value for Earth&#39;s</span>
+<span class="sd">        angular velocity::</span>
+
+<span class="sd">            avrt = w.absolutevorticity(omega=7.2921150, truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pvrt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">planetaryvorticity</span><span class="p">(</span><span class="n">omega</span><span class="o">=</span><span class="n">omega</span><span class="p">)</span>
+        <span class="n">rvrt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vorticity</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pvrt</span> <span class="o">+</span> <span class="n">rvrt</span></div>
+
+<div class="viewcode-block" id="VectorWind.sfvp"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.sfvp">[docs]</a>    <span class="k">def</span> <span class="nf">sfvp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Streamfunction and velocity potential.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *sf*, *vp*</span>
+<span class="sd">            The streamfunction and velocity potential respectively.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.streamfunction`, `~VectorWind.velocitypotential`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute streamfunction and velocity potential::</span>
+
+<span class="sd">            sf, vp = w.sfvp()</span>
+
+<span class="sd">        Compute streamfunction and velocity potential and apply spectral</span>
+<span class="sd">        truncation at triangular T13::</span>
+
+<span class="sd">            sfT13, vpT13 = w.sfvp(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">psigrid</span><span class="p">,</span> <span class="n">chigrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getpsichi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">ntrunc</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">psigrid</span><span class="p">,</span> <span class="n">chigrid</span></div>
+
+<div class="viewcode-block" id="VectorWind.streamfunction"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.streamfunction">[docs]</a>    <span class="k">def</span> <span class="nf">streamfunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Streamfunction.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *sf*</span>
+<span class="sd">            The streamfunction.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.sfvp`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute streamfunction::</span>
+
+<span class="sd">            sf = w.streamfunction()</span>
+
+<span class="sd">        Compute streamfunction and apply spectral truncation at</span>
+<span class="sd">        triangular T13::</span>
+
+<span class="sd">            sfT13 = w.streamfunction(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">psigrid</span><span class="p">,</span> <span class="n">chigrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sfvp</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">psigrid</span></div>
+
+<div class="viewcode-block" id="VectorWind.velocitypotential"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.velocitypotential">[docs]</a>    <span class="k">def</span> <span class="nf">velocitypotential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Velocity potential.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *vp*</span>
+<span class="sd">            The velocity potential.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.sfvp`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute velocity potential::</span>
+
+<span class="sd">            vp = w.velocity potential()</span>
+
+<span class="sd">        Compute velocity potential and apply spectral truncation at</span>
+<span class="sd">        triangular T13::</span>
+
+<span class="sd">            vpT13 = w.velocity potential(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">psigrid</span><span class="p">,</span> <span class="n">chigrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sfvp</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">chigrid</span></div>
+
+<div class="viewcode-block" id="VectorWind.helmholtz"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.helmholtz">[docs]</a>    <span class="k">def</span> <span class="nf">helmholtz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Irrotational and non-divergent components of the vector wind.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *uchi*, *vchi*, *upsi*, *vpsi*</span>
+<span class="sd">            Zonal and meridional components of irrotational and</span>
+<span class="sd">            non-divergent wind components respectively.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.irrotationalcomponent`,</span>
+<span class="sd">        `~VectorWind.nondivergentcomponent`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the irrotational and non-divergent components of the</span>
+<span class="sd">        vector wind::</span>
+
+<span class="sd">            uchi, vchi, upsi, vpsi = w.helmholtz()</span>
+
+<span class="sd">        Compute the irrotational and non-divergent components of the</span>
+<span class="sd">        vector wind and apply spectral truncation at triangular T13::</span>
+
+<span class="sd">            uchiT13, vchiT13, upsiT13, vpsiT13 = w.helmholtz(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">psigrid</span><span class="p">,</span> <span class="n">chigrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getpsichi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">ntrunc</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">psispec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">grdtospec</span><span class="p">(</span><span class="n">psigrid</span><span class="p">)</span>
+        <span class="n">chispec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">grdtospec</span><span class="p">(</span><span class="n">chigrid</span><span class="p">)</span>
+        <span class="n">vpsi</span><span class="p">,</span> <span class="n">upsi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getgrad</span><span class="p">(</span><span class="n">psispec</span><span class="p">)</span>
+        <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getgrad</span><span class="p">(</span><span class="n">chispec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span><span class="p">,</span> <span class="o">-</span><span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span></div>
+
+<div class="viewcode-block" id="VectorWind.irrotationalcomponent"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.irrotationalcomponent">[docs]</a>    <span class="k">def</span> <span class="nf">irrotationalcomponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Irrotational (divergent) component of the vector wind.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           If both the irrotational and non-divergent components are</span>
+<span class="sd">           required then `~VectorWind.helmholtz` should be used instead.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *uchi*, *vchi*</span>
+<span class="sd">            The zonal and meridional components of the irrotational wind</span>
+<span class="sd">            respectively.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.helmholtz`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the irrotational component of the vector wind::</span>
+
+<span class="sd">            uchi, vchi = w.irrotationalcomponent()</span>
+
+<span class="sd">        Compute the irrotational component of the vector wind and apply</span>
+<span class="sd">        spectral truncation at triangular T13::</span>
+
+<span class="sd">            uchiT13, vchiT13 = w.irrotationalcomponent(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">psigrid</span><span class="p">,</span> <span class="n">chigrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getpsichi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">ntrunc</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">chispec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">grdtospec</span><span class="p">(</span><span class="n">chigrid</span><span class="p">)</span>
+        <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getgrad</span><span class="p">(</span><span class="n">chispec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span></div>
+
+<div class="viewcode-block" id="VectorWind.nondivergentcomponent"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.nondivergentcomponent">[docs]</a>    <span class="k">def</span> <span class="nf">nondivergentcomponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Non-divergent (rotational) component of the vector wind.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           If both the non-divergent and irrotational components are</span>
+<span class="sd">           required then `~VectorWind.helmholtz` should be used instead.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *upsi*, *vpsi*</span>
+<span class="sd">            The zonal and meridional components of the non-divergent</span>
+<span class="sd">            wind respectively.</span>
+
+<span class="sd">        **See also:**</span>
+
+<span class="sd">        `~VectorWind.helmholtz`.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the non-divergent component of the vector wind::</span>
+
+<span class="sd">            upsi, vpsi = w.nondivergentcomponent()</span>
+
+<span class="sd">        Compute the non-divergent component of the vector wind and apply</span>
+<span class="sd">        spectral truncation at triangular T13::</span>
+
+<span class="sd">            upsiT13, vpsiT13 = w.nondivergentcomponent(truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">psigrid</span><span class="p">,</span> <span class="n">chigrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getpsichi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">ntrunc</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="n">psispec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">grdtospec</span><span class="p">(</span><span class="n">psigrid</span><span class="p">)</span>
+        <span class="n">vpsi</span><span class="p">,</span> <span class="n">upsi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getgrad</span><span class="p">(</span><span class="n">psispec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span></div>
+
+<div class="viewcode-block" id="VectorWind.gradient"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.gradient">[docs]</a>    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the vector gradient of a scalar field on the sphere.</span>
+
+<span class="sd">        **Argument:**</span>
+
+<span class="sd">        *chi*</span>
+<span class="sd">            A scalar field. Its shape must be either (nlat, nlon) or</span>
+<span class="sd">            (nlat, nlon, nfields) where nlat and nlon are the same</span>
+<span class="sd">            as those for the vector wind components that initialized the</span>
+<span class="sd">            `VectorWind` instance.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *uchi*, *vchi*</span>
+<span class="sd">            The zonal and meridional components of the vector gradient</span>
+<span class="sd">            respectively.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Compute the vector gradient of absolute vorticity::</span>
+
+<span class="sd">            avrt = w.absolutevorticity()</span>
+<span class="sd">            avrt_zonal, avrt_meridional = w.gradient(avrt)</span>
+
+<span class="sd">        Compute the vector gradient of absolute vorticity and apply</span>
+<span class="sd">        spectral truncation at triangular T13::</span>
+
+<span class="sd">            avrt = w.absolutevorticity()</span>
+<span class="sd">            avrt_zonalT13, avrt_meridionalT13 = w.gradient(avrt, truncation=13)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">chi</span> <span class="o">=</span> <span class="n">chi</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">chi</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;chi cannot contain missing values&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">chispec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">grdtospec</span><span class="p">(</span><span class="n">chi</span><span class="p">,</span> <span class="n">ntrunc</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;input field is not compatitble&#39;</span><span class="p">)</span>
+        <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getgrad</span><span class="p">(</span><span class="n">chispec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span></div>
+
+<div class="viewcode-block" id="VectorWind.truncate"><a class="viewcode-back" href="../../api/windspharm.standard.html#windspharm.standard.VectorWind.truncate">[docs]</a>    <span class="k">def</span> <span class="nf">truncate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply spectral truncation to a scalar field.</span>
+
+<span class="sd">        This is useful to represent other fields in a way consistent</span>
+<span class="sd">        with the output of other `VectorWind` methods.</span>
+
+<span class="sd">        **Argument:**</span>
+
+<span class="sd">        *field*</span>
+<span class="sd">            A scalar field. Its shape must be either (nlat, nlon) or</span>
+<span class="sd">            (nlat, nlon, nfields) where nlat and nlon are the same</span>
+<span class="sd">            as those for the vector wind components that initialized the</span>
+<span class="sd">            `VectorWind` instance.</span>
+
+<span class="sd">        **Optional argument:**</span>
+
+<span class="sd">        *truncation*</span>
+<span class="sd">            Truncation limit (triangular truncation) for the spherical</span>
+<span class="sd">            harmonic computation. If not specified it will default to</span>
+<span class="sd">            *nlats - 1* where *nlats* is the number of latitudes.</span>
+
+<span class="sd">        **Returns:**</span>
+
+<span class="sd">        *truncated_field*</span>
+<span class="sd">            The field with spectral truncation applied.</span>
+
+<span class="sd">        **Examples:**</span>
+
+<span class="sd">        Truncate a scalar field to the computational resolution of the</span>
+<span class="sd">        `VectorWind` instance::</span>
+
+<span class="sd">            scalar_field_truncated = w.truncate(scalar_field)</span>
+
+<span class="sd">        Truncate a scalar field to T21::</span>
+
+<span class="sd">            scalar_field_T21 = w.truncate(scalar_field, truncation=21)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">field</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;field cannot contain missing values&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fieldspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">grdtospec</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">ntrunc</span><span class="o">=</span><span class="n">truncation</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;field is not compatible&#39;</span><span class="p">)</span>
+        <span class="n">fieldtrunc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">spectogrd</span><span class="p">(</span><span class="n">fieldspec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fieldtrunc</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+    <li><a href="../../index.html">home</a>|&nbsp;</li>
+    <li><a href="../../search.html">search</a>|&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012-2018, Andrew Dawson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>
