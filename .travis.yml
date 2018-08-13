@@ -2,6 +2,9 @@ language: python
 
 env:
     global:
+        # Doctr deploy key for ajdawson/windspharm
+        - secure: "YtW1oz+/BsU65WkBEUYxL3vWV5Kym+ND7y7lNgdHzqD5jQHELoP/EwjqvvEceY1ABO9obDt0hSTjPx1C+nquLaYc+0v2JUTJwOcHnwzZvvd14e/L/jSLFRJ5Q3yphkZFcdqVi6XX8KDCkioSsyMyD3fl7PhZWY+ZHshMLc7HBDw="
+        # Package lists for different test set-ups
         - PACKAGES_STANDARD="setuptools pytest numpy pyspharm"
         - PACKAGES_METADATA="${PACKAGES_STANDARD} cdms2 genutil iris xarray"
     matrix:
