@@ -1,60 +1,74 @@
 language: python
 
 env:
-    global:
-        # Doctr deploy key for ajdawson/windspharm
-        - secure: "YtW1oz+/BsU65WkBEUYxL3vWV5Kym+ND7y7lNgdHzqD5jQHELoP/EwjqvvEceY1ABO9obDt0hSTjPx1C+nquLaYc+0v2JUTJwOcHnwzZvvd14e/L/jSLFRJ5Q3yphkZFcdqVi6XX8KDCkioSsyMyD3fl7PhZWY+ZHshMLc7HBDw="
-        # Package lists for different test set-ups
-        - PACKAGES_STANDARD="setuptools pytest numpy pyspharm"
-        - PACKAGES_METADATA="${PACKAGES_STANDARD} cdms2 genutil iris xarray"
-    matrix:
-        - NAME="Python 2.7 (standard)"
-          PYTHON_VERSION=2.7
-          PACKAGES="${PACKAGES_STANDARD}"
-        - NAME="Python 2.7 (metadata)"
-          PYTHON_VERSION=2.7
-          PACKAGES="${PACKAGES_METADATA}"
-        - NAME="Python 3.5 (standard)"
-          PYTHON_VERSION=3.5
-          PACKAGES="${PACKAGES_STANDARD}"
-        - NAME="Python 3.5 (metadata)"
-          PYTHON_VERSION=3.5
-          PACKAGES="${PACKAGES_METADATA}"
-        - NAME="Python 3.6 (standard)"
-          PYTHON_VERSION=3.6
-          PACKAGES="${PACKAGES_STANDARD}"
-        - NAME="Python 3.6 (metadata)"
-          PYTHON_VERSION=3.6
-          PACKAGES="${PACKAGES_METADATA}"
+  global:
+    # Doctr deploy key for ajdawson/windspharm
+    - secure:"YtW1oz+/BsU65WkBEUYxL3vWV5Kym+ND7y7lNgdHzqD5jQHELoP/EwjqvvEceY1ABO9obDt0hSTjPx1C+nquLaYc+0v2JUTJwOcHnwzZvvd14e/L/jSLFRJ5Q3yphkZFcdqVi6XX8KDCkioSsyMyD3fl7PhZWY+ZHshMLc7HBDw="
+    - UVCDAT_ANONYMOUS_LOG=no
+    - PACKAGES_DEFAULT="setuptools pytest numpy pyspharm"
+    - PACKAGES_EXTRA="cdms2 genutil iris xarray"
+
+matrix:
+  include:
+    - python: 2.7
+      env:
+        - SUITE_TYPE=test_standard
+    - python: 2.7
+      env:
+        - SUITE_TYPE=test_extras
+    - python: 3.6
+      env:
+        - SUITE_TYPE=test_standard
+    - python: 3.6
+      env:
+        - SUITE_TYPE=test_extras
+    - python: 3.6
+      env:
+        - SUITE_TYPE=docs
 
 sudo: false
 
+before_install:
+  - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda config --add channels conda-forge
+  - conda update conda
+  - conda info -a
+
 install:
-    # Install Miniconda so we can use it to manage dependencies:
-    - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-    - bash miniconda.sh -b -p $HOME/miniconda
-    - export PATH="$HOME/miniconda/bin:$PATH"
-    - hash -r
-    # Setup conda to use extra channels for dependencies:
-    - conda config --set always_yes yes --set changeps1 no
-    - conda config --add channels conda-forge
-    - conda update conda
-    - conda info -a
-    # Create a conda environment with the required Python version:
-    - conda create -n test-environment python=$PYTHON_VERSION
-    - source activate test-environment
-    # Install required packages:
-    - conda install ${PACKAGES}
-    # Install the package:
-    - python setup.py install
+  - conda create -n test python=$TRAVIS_PYTHON_VERSION
+  - source activate test
+  - if [[ $SUITE_TYPE = test_standard ]]; then
+      conda install $PACKAGES_DEFAULT;
+    elif [[ $SUITE_TYPE = test_extras ]]; then
+      conda install $PACKAGES_DEFAULT $PACKAGES_EXTRA;
+    else
+      conda install $PACKAGES_DEFAULT $PACKAGES_EXTRA sphinx doctr;
+    fi
+  - python setup.py install
 
 script:
-    # Create an isolated test directory to make sure we test against the
-    # installed package rather than the source, which won't work on Python3:
-    - mkdir ../test_directory
-    - cd ../test_directory
-    - export UVCDAT_ANONYMOUS_LOG=no
-    - pytest -vrsx --pyargs windspharm
+  # Fail on error to avoid building documentation when the tests don't pass
+  - set -e
+
+  # Run the test suite
+  - pytest -vrsx
+
+  # Deploy the documentation. By default doctr only works on the master
+  # branch. We also want to deploy when building a tag, which requires
+  # post-processing to update the "latest" symlink.
+  - if [[ $SUITE_TYPE = "docs" ]]; then
+      cd doc && make html && cd ..;
+      doctr -V;
+      if [[ -n "$TRAVIS_TAG" ]]; then
+        doctr deploy --build-tags --command './update_links.py && git add latest' "${TRAVIS_TAG%.*}";
+      else
+        doctr deploy dev;
+      fi;
+    fi
 
 notifications:
     email: false
