@@ -1,6 +1,7 @@
 Changelog
 =========
 
+Source code downloads for released versions can be downloaded from `Github <https://github.com/ajdawson/windspharm/releases>`_.
 
 v1.6.x
 ------

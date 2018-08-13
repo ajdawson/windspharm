@@ -7,7 +7,7 @@
    userguide/index
    examples/index
    api/index
-   downloads
+   changelog
    devguide/index
 
 
@@ -36,7 +36,7 @@ Introduction
 Download & Installation
 -----------------------
 
-Released versions of `windspharm` can be downloaded from the :doc:`downloads` page.
+Released versions of `windspharm` can be downloaded from `Github <https://github.com/ajdawson/windspharm/releases>`_.
 After downloading the source code archive, unzip it and change into the unzipped archive's directory, then to install it:
 
 .. code-block:: bash

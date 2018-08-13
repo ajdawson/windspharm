@@ -23,13 +23,14 @@ from __future__ import absolute_import
 from . import standard
 from . import tools
 
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
+
 
 # List to define the behaviour of imports of the form:
 #     from windspharm import *
 __all__ = []
-
-# Package version number.
-__version__ = '1.7.dev0'
 
 try:
     from . import cdms
