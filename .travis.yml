@@ -3,7 +3,7 @@ language: python
 env:
   global:
     # Doctr deploy key for ajdawson/windspharm
-    - secure:"YtW1oz+/BsU65WkBEUYxL3vWV5Kym+ND7y7lNgdHzqD5jQHELoP/EwjqvvEceY1ABO9obDt0hSTjPx1C+nquLaYc+0v2JUTJwOcHnwzZvvd14e/L/jSLFRJ5Q3yphkZFcdqVi6XX8KDCkioSsyMyD3fl7PhZWY+ZHshMLc7HBDw="
+    - secure: "gRWSAM7JnHeIFx6QldIPvQf9XBWzm9lLjjGYvmCez6MDTGxtlEhF5yvNmX9m/f/WtoqLcw+/w7L198GUT8FUwZZ2wsHPhwePJalqdbIatN3QW2q0KHHj36Ob9UZDf9I7ni4XtPZsmm8eSx/f818PJktgGLbmKipNfWyRwkr7tXY="
     - UVCDAT_ANONYMOUS_LOG=no
     - PACKAGES_DEFAULT="setuptools pytest numpy pyspharm"
     - PACKAGES_EXTRA="cdms2 genutil iris xarray"
