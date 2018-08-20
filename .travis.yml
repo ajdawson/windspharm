@@ -24,7 +24,7 @@ matrix:
         - SUITE_TYPE=test_extras
     - python: 3.6
       env:
-        - SUITE_TYPE=docs
+        - SUITE_TYPE=deploy
 
 sudo: false
 
@@ -60,7 +60,7 @@ script:
   # Deploy the documentation. By default doctr only works on the master
   # branch. We also want to deploy when building a tag, which requires
   # post-processing to update the "latest" symlink.
-  - if [[ $SUITE_TYPE = "docs" ]]; then
+  - if [[ $SUITE_TYPE = "deploy" ]]; then
       cd doc && make html && cd ..;
       doctr -V;
       if [[ -n "$TRAVIS_TAG" ]]; then
@@ -69,6 +69,17 @@ script:
         doctr deploy dev;
       fi;
     fi
+
+deploy:
+  provider: pypi
+  user: ajdawson
+  password:
+    secure: "kPR7n+oFtdOi1SoEsg0hDu9bmgBwyNDELhIBs+FqmStszF+N3WVME35n4skrb6L1/NtjmACnV3BZZkJTCALGX7IX4tO08SCyS4IlPPOOGukgQ54/5hTYpxU4q2dON7AVFQ/VEe56mxPd5shR+sxkdLJ6tZRzQuc5eN9/Uu2p1Mk="
+  upload_docs: no
+  on:
+    repo: ajdawson/windspharm
+    tags: true
+    condition: '$SUITE_TYPE == "deploy"'
 
 notifications:
     email: false
