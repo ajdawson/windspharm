@@ -36,24 +36,24 @@ Introduction
 Download & Installation
 -----------------------
 
+The easiest way to install is via conda_:
+
+.. code-block:: bash
+
+   $ conda install -c conda-forge windspharm
+
+You can also install from PyPI via pip:
+
+.. code-block:: bash
+
+   $ pip install windspharm
+
 Released versions of `windspharm` can be downloaded from `Github <https://github.com/ajdawson/windspharm/releases>`_.
 After downloading the source code archive, unzip it and change into the unzipped archive's directory, then to install it:
 
 .. code-block:: bash
 
    $ python setup.py install
-
-`windspharm` can also be installed from PyPI using pip:
-
-.. code-block:: bash
-
-   $ pip install windspharm
-
-Releases are also available via conda_, packages are built for both Python 2 and 3 on Linux and OSX:
-
-.. code-block:: bash
-
-   $ conda install -c conda-forge windspharm
 
 You can also check out the source code for the development version from the `github repository <https://github.com/ajdawson/windspharm>`_ to access features which are not yet in the released version.
 
