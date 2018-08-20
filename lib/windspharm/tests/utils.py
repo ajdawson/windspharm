@@ -71,7 +71,8 @@ def error(a, b):
 
     """
     a, b = __tomasked(a, b)
-    return (np.sqrt((a - b)**2).mean()) / (np.max(b) - np.min(b))
+
+    return np.sqrt(((a - b)**2).mean()) / (np.max(b) - np.min(b))
 
 
 if __name__ == '__main__':
