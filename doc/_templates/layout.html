@@ -12,4 +12,7 @@
 </div>
 {% endblock %}
 
-
+{% block document %}
+  {{ super() }}
+  <script type=text/javascript src="/windspharm/version_switch.js" async></script>
+{% endblock %}
