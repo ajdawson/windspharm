@@ -129,6 +129,7 @@
       </div>
 
     <div class="document">
+  
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -149,29 +150,29 @@ Descriptions of each interface are below, and are summarised in the following ta
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>iris</td>
-<td>Data contained in an <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iris</span></code></a> cube.</td>
+<td>Data contained in an <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris.html#module-iris" title="(in Iris v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iris</span></code></a> cube.</td>
 </tr>
 <tr class="row-odd"><td>xarray</td>
-<td>Data contained in an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</td>
+<td>Data contained in an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</td>
 </tr>
 <tr class="row-even"><td>cdms</td>
 <td>Data stored in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">cdms2</span></code> variable.</td>
 </tr>
 <tr class="row-odd"><td>standard</td>
-<td>Other data, stored in a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</td>
+<td>Other data, stored in a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="iris-interface">
 <span id="id1"></span><h2>Iris interface<a class="headerlink" href="#iris-interface" title="Permalink to this headline">¶</a></h2>
-<p>The iris interface works with <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cube</span></code></a> objects, which are the data containers used by the iris data analysis package.
+<p>The iris interface works with <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cube</span></code></a> objects, which are the data containers used by the iris data analysis package.
 The meta-data, including coordinate dimensions, associated with iris Cube objects is understood by the <a class="reference internal" href="../api/windspharm.iris.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.iris.VectorWind</span></code></a> interface.
-The outputs of <a class="reference internal" href="../api/windspharm.iris.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.iris.VectorWind</span></code></a> methods are also contained in <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cube</span></code></a> objects, meaning they can be used with tools in the iris package, and easily written to a file.</p>
+The outputs of <a class="reference internal" href="../api/windspharm.iris.html#windspharm.iris.VectorWind" title="windspharm.iris.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.iris.VectorWind</span></code></a> methods are also contained in <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cube</span></code></a> objects, meaning they can be used with tools in the iris package, and easily written to a file.</p>
 </div>
 <div class="section" id="xarray-interface">
 <span id="id2"></span><h2>xarray interface<a class="headerlink" href="#xarray-interface" title="Permalink to this headline">¶</a></h2>
-<p>The xarray interface works with <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a> objects.
-The coordinate metadata of <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a> is interpreted by the <a class="reference internal" href="../api/windspharm.xarray.html#windspharm.xarray.VectorWind" title="windspharm.xarray.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.xarray.VectorWind</span></code></a> interface, and the outputs of the <a class="reference internal" href="../api/windspharm.xarray.html#windspharm.xarray.VectorWind" title="windspharm.xarray.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.xarray.VectorWind</span></code></a> methods are contained in <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a> objects allowing their use with othe tools from the <code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray</span></code> package.</p>
+<p>The xarray interface works with <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a> objects.
+The coordinate metadata of <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a> is interpreted by the <a class="reference internal" href="../api/windspharm.xarray.html#windspharm.xarray.VectorWind" title="windspharm.xarray.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.xarray.VectorWind</span></code></a> interface, and the outputs of the <a class="reference internal" href="../api/windspharm.xarray.html#windspharm.xarray.VectorWind" title="windspharm.xarray.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.xarray.VectorWind</span></code></a> methods are contained in <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a> objects allowing their use with othe tools from the <code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray</span></code> package.</p>
 </div>
 <div class="section" id="cdms-interface">
 <span id="id3"></span><h2>cdms interface<a class="headerlink" href="#cdms-interface" title="Permalink to this headline">¶</a></h2>
@@ -179,7 +180,7 @@ The coordinate metadata of <a class="reference external" href="http://xarray.pyd
 </div>
 <div class="section" id="standard-interface">
 <span id="id4"></span><h2>standard interface<a class="headerlink" href="#standard-interface" title="Permalink to this headline">¶</a></h2>
-<p>The standard interface works with <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/index.html#module-numpy" title="(in NumPy v1.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy</span></code></a> arrays, which makes the standard interface the general purpose interface. Any data that can be stored in a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> can be analysed with the <a class="reference internal" href="../api/windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.standard.VectorWind</span></code></a> interface.</p>
+<p>The standard interface works with <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/index.html#module-numpy" title="(in NumPy v1.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy</span></code></a> arrays, which makes the standard interface the general purpose interface. Any data that can be stored in a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> can be analysed with the <a class="reference internal" href="../api/windspharm.standard.html#windspharm.standard.VectorWind" title="windspharm.standard.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.standard.VectorWind</span></code></a> interface.</p>
 </div>
 </div>
 
@@ -187,6 +188,8 @@ The coordinate metadata of <a class="reference external" href="http://xarray.pyd
           </div>
         </div>
       </div>
+  <script type=text/javascript src="/windspharm/version_switch.js" async></script>
+
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
