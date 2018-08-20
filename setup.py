@@ -42,6 +42,5 @@ setup(name='windspharm',
       geometry using spherical harmonics
       """,
       packages=packages,
-      package_dir={'': 'lib'},
       package_data=package_data,
       install_requires=['numpy', 'pyspharm >= 1.0.8'],)

@@ -61,7 +61,7 @@ script:
   # branch. We also want to deploy when building a tag, which requires
   # post-processing to update the "latest" symlink.
   - if [[ $SUITE_TYPE = "deploy" ]]; then
-      cd doc && make html && cd ..;
+      cd docs && make html && cd ..;
       doctr -V;
       if [[ -n "$TRAVIS_TAG" ]]; then
         doctr deploy --build-tags --command './update_links.py && git add latest' "${TRAVIS_TAG%.*}";
