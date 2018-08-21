@@ -50,15 +50,11 @@ Frequently asked questions
 Installation
 ------------
 
-The easiest way to install is via [conda](http://conda.pydata.org) or pip:
+The easiest way to install is via [conda](http://conda.pydata.org):
 
     conda install -c conda-forge windspharm
 
-or
-
-    pip install windspharm
-
 You can also install from the source distribution.
-Just download the archive, unpack it, then enter the source directory and use:
+Download the archive, unpack it, then enter the source directory and use:
 
     python setup.py install
