@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # Write a json version file
     numbered_versions = [
         f"v{version.release[0]}.{version.release[1]}"
-        for version in sorted(all_versions)
+        for version in sorted(all_versions, reverse=True)
     ]
     version_dirs = ["latest"] + numbered_versions + ["dev"]
     with open("versions.json", "w") as f:
