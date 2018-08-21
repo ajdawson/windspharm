@@ -1,5 +1,5 @@
 """Build and install the windspharm package."""
-# Copyright (c) 2012-2016 Andrew Dawson
+# Copyright (c) 2012-2018 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -18,6 +18,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+import os.path
+
 from setuptools import setup
 import versioneer
 
@@ -29,6 +31,9 @@ package_data = {
     'windspharm.examples': ['example_data/*'],
     'windspharm.tests': ['data/regular/*.npy', 'data/gaussian/*.npy']}
 
+with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
+    long_description = f.read()
+
 setup(name='windspharm',
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
@@ -36,11 +41,8 @@ setup(name='windspharm',
       author='Andrew Dawson',
       author_email='dawson@atm.ox.ac.uk',
       url='http://ajdawson.github.com/windspharm/',
-      long_description="""
-      windspharm provides a simple interface for doing calculations on
-      vector wind fields (e.g., computing streamfunction) in spherical
-      geometry using spherical harmonics
-      """,
+      long_description=long_description,
+      long_description_content_type='text/markdown',
       packages=packages,
       package_data=package_data,
       install_requires=['numpy', 'pyspharm >= 1.0.8'],)

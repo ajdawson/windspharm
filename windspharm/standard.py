@@ -294,7 +294,7 @@ class VectorWind(object):
         except (TypeError, ValueError):
             raise ValueError('invalid value for omega: {!r}'.format(omega))
         indices = [slice(0, None)] + [np.newaxis] * (len(self.u.shape) - 1)
-        f = cp[indices] * np.ones(self.u.shape, dtype=np.float32)
+        f = cp[tuple(indices)] * np.ones(self.u.shape, dtype=np.float32)
         return f
 
     def absolutevorticity(self, omega=None, truncation=None):
