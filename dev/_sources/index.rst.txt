@@ -36,6 +36,12 @@ Introduction
 Download & Installation
 -----------------------
 
+The easiest way to install is via conda_:
+
+.. code-block:: bash
+
+   $ conda install -c conda-forge windspharm
+
 Released versions of `windspharm` can be downloaded from `Github <https://github.com/ajdawson/windspharm/releases>`_.
 After downloading the source code archive, unzip it and change into the unzipped archive's directory, then to install it:
 
@@ -43,25 +49,7 @@ After downloading the source code archive, unzip it and change into the unzipped
 
    $ python setup.py install
 
-`windspharm` can also be installed from PyPI using pip:
-
-.. code-block:: bash
-
-   $ pip install windspharm
-
-Releases are also available via conda_, packages are built for both Python 2 and 3 on Linux and OSX:
-
-.. code-block:: bash
-
-   $ conda install -c conda-forge windspharm
-
 You can also check out the source code for the development version from the `github repository <https://github.com/ajdawson/windspharm>`_ to access features which are not yet in the released version.
-
-.. note::
-
-   When installing via pip it may appear that the installation has hung.
-   However, it is likely that pip is just trying to install the dependency pyspharm, whose setup process requires the user to accept a license.
-   If you think your install has hung, try typing *yes* and pressing enter, the install should continue after a short pause (but know that in doing so you are accepting the terms of the Spherepack license: http://www2.cisl.ucar.edu/resources/legacy/spherepack/license).
 
 
 Requirements
