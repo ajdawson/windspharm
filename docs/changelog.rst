@@ -3,25 +3,40 @@ Changelog
 
 Source code downloads for released versions can be downloaded from `Github <https://github.com/ajdawson/windspharm/releases>`_.
 
-v1.6.x
-------
+v1.7
+----
+
+:Release: v1.7.0
+:Date: 21 August 2018
+
+The v1.7.0 release makes further progress on the road to more modern tooling and processes. The significant changes for users/contributors are:
+
+* Support for using Legendre functions computed on-the-fly or stored, implemented by `@rcomer <https://github.com/rcomer>`_ [:issue:`97`, :pr:`98`].
+* The source code directories have been reorganised, the ``lib/windspharm`` directory has been moved to ``windspharm/`` (``lib/`` is removed) and the ``doc/`` directory has been renamed ``docs/`` [:pr:`105`].
+* The package version is now controlled by `versioneer <https://github.com/warner/python-versioneer>`_.
+
+In addition, this is the first release where documentation and PyPI packages will be built automatically as part of the continuous integration system.
+
+
+v1.6
+----
 
 :Release: v1.6.0
 :Date: 9 May 2018
 
 This release has no major user-facing changes, its main purpose is to modernise the test suite and fix problems with NumPy compatibility, although the modifications to the test suite may have knock-on effects for package maintainers.
 
-* Fixes for NumPy compatibility [`#89 <https://github.com/ajdawson/windspharm/issues/89>`_, `#90 <https://github.com/ajdawson/windspharm/pull/90>`_].
-* Switch from `nose` to `pytest <http://pytest.org>`_ for the test suite [`#91 <https://github.com/ajdawson/windspharm/pull/91>`_, `#94 <https://github.com/ajdawson/windspharm/pull/94>`_].
+* Fixes for NumPy compatibility [:issue:`89`, :pr:`90`].
+* Switch from `nose` to `pytest <http://pytest.org>`_ for the test suite [:pr:`91`, :pr:`94`].
 
 
-v1.5.x
-------
+v1.5
+----
 
 :Release: v1.5.1
 :Date: 9 January 2017
 
-* Improved recognition of Gaussian grids [`#78 <https://github.com/ajdawson/windspharm/issues/78>`_, `#76 <https://github.com/ajdawson/windspharm/pull/76>`_, `#79 <https://github.com/ajdawson/windspharm/pull/79>`_].
+* Improved recognition of Gaussian grids [:issue:`78`, :pr:`76`, :pr:`79`].
 
 :Release: v1.5.0
 :Date: 27 April 2016
@@ -29,8 +44,8 @@ v1.5.x
 * Added a keyword argument to control the radius of the sphere used in the spherical harmonic computations. The `rsphere` keyword is available for all interfaces.
 
 
-v1.4.x
-------
+v1.4
+----
 
 :Release: v1.4.0
 :Date: 1 March 2016
@@ -40,8 +55,8 @@ v1.4.x
 * Fixed a bug where the `truncate` method would not work on inverted latitude grids in the iris interface.
 
 
-v1.3.x
-------
+v1.3
+----
 
 :Release: v1.3.2
 :Date: 18 May 2015
@@ -61,25 +76,25 @@ v1.3.x
 * Basic Python3 compatibility using 2to3 (pyspharm does not yet have Python3 support but some Linux distros provide a patched package).
 
 
-v1.2.x
-------
+v1.2
+----
 
 :Release: v1.2.1
 :Date: 8 August 2013
 
 * Fixed error in the iris interface where cubes with a south-north latitude dimension
-  could not be used [`#22 <https://github.com/ajdawson/windspharm/pull/22>`_].
+  could not be used [:pr:`22`].
 
 :Release: v1.2.0
 :Date: 20 May 2013
 
-* Prevented possible double copying of data in `order_latdim` [`#16 <https://github.com/ajdawson/windspharm/pull/16>`_].
-* Refactored test suite and added more test coverage [`#14 <https://github.com/ajdawson/windspharm/pull/14>`_].
-* Fixed bug in calculation of the magnitude of a vector wind [`#13 <https://github.com/ajdawson/windspharm/pull/13>`_, `#11 <https://github.com/ajdawson/windspharm/issues/11>`_].
+* Prevented possible double copying of data in `order_latdim` [:pr:`16`].
+* Refactored test suite and added more test coverage [:pr:`14`].
+* Fixed bug in calculation of the magnitude of a vector wind [:pr:`13`, :issue:`11`].
 
 
-v1.1.x
-------
+v1.1
+----
 
 :Release: v1.1.0
 :Date: 10 January 2013

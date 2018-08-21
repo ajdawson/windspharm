@@ -30,6 +30,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.mathjax',
               'sphinx.ext.viewcode',
               'sphinx.ext.intersphinx',
+              'sphinx.ext.extlinks',
               'matplotlib.sphinxext.plot_directive',
              ]
 
@@ -92,6 +93,13 @@ pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
+
+
+# -- extlinks configuration ----------------------------------------------------
+
+# Allow e.g. :issue:`42` and :pr:`42` roles:
+extlinks = {'issue': ('https://github.com/ajdawson/windspharm/issues/%s', '#'),
+            'pr': ('https://github.com/ajdawson/windspharm/pull/%s', '#')}
 
 
 # -- Options for HTML output ---------------------------------------------------
