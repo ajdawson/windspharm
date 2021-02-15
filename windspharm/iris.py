@@ -757,38 +757,51 @@ class VectorWind(object):
         return field
 
     def getuv(self, vorticity, divergence):
-        def clean_array(chi):
-            if type(chi) is not Cube:
+        """Compute vector winds from vorticity and divergence fields.
+
+        **Argument:**
+
+        *vorticity*
+            A scalar field of vorticity. It must be a `~iris.cube.Cube`
+            with the same latitude and longitude dimensions as the
+            vector wind components that initialized the `VectorWind`
+            instance.
+
+        *divergence*
+            A scalar field of divergence. It must be a `~iris.cube.Cube`
+            with the same latitude and longitude dimensions as the
+            vector wind components that initialized the `VectorWind`
+            instance.
+
+        **Returns:**
+
+        *u*, *v*
+            Zonal and meridional wind components respectively. Their types might 
+            match input types to passed to `VectorWind` instance. 
+        """
+
+        def clean_array(field):
+            if type(field) is not Cube:
                 raise TypeError('scalar field must be an iris cube')
-            name = chi.name()
-            lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
-            lon, lon_dim = _dim_coord_and_dim(chi, 'longitude')
+            name = field.name()
+            lat, lat_dim = _dim_coord_and_dim(field, 'latitude')
+            lon, lon_dim = _dim_coord_and_dim(field, 'longitude')
             if (lat.points[0] < lat.points[1]):
                 # need to reverse latitude dimension
-                chi = reverse(chi, lat_dim)
-                lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
-            apiorder, reorder = get_apiorder(chi.ndim, lat_dim, lon_dim)
-            chi = chi.copy()
-            chi.transpose(apiorder)
-            ishape = chi.shape
-            coords = chi.dim_coords
-            chi = to3d(chi.data)
-            return chi, name, coords, ishape, reorder
+                field = reverse(field, lat_dim)
+                lat, lat_dim = _dim_coord_and_dim(field, 'latitude')
+            apiorder, reorder = get_apiorder(field.ndim, lat_dim, lon_dim)
+            field = field.copy()
+            field.transpose(apiorder)
+            ishape = field.shape
+            coords = field.dim_coords
+            field = to3d(field.data)
+            return field
         
-        vortic, vr_name, coords, ishape, reorder = clean_array(vorticity)
-        diverg, dv_name, coords, ishape, reorder = clean_array(divergence)
+        vortic = clean_array(vorticity)
+        diverg = clean_array(divergence)
 
         ugrd, vgrd = self._api.getuv(vortic, diverg)
-        ugrd = ugrd.reshape(ishape)
-        vgrd = vgrd.reshape(ishape)
-
-        ugrd = Cube(
-            ugrd,
-            dim_coords_and_dims=list(zip(coords, range(ugrd.ndim))))
-        vgrd = Cube(
-            vgrd,
-            dim_coords_and_dims=list(zip(coords, range(vgrd.ndim))))
-
         ugrd = self._metadata(ugrd, 
                     units='m s**-1',
                     standard_name='eastward_wind',
@@ -797,8 +810,6 @@ class VectorWind(object):
                     units='m s**-1',
                     standard_name='northward_wind',
                     long_name='northward')
-        ugrd = ugrd.transpose(*reorder)
-        vgrd = vgrd.transpose(*reorder)
         return ugrd, vgrd
 
 

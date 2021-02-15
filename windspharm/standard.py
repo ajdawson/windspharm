@@ -661,7 +661,6 @@ class VectorWind(object):
     def getuv(self, vorticity, divergence):
         """Compute vector winds from vorticity and divergence fields.
 
-
         **Argument:**
 
         *vorticity*

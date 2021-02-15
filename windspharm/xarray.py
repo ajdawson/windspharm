@@ -750,7 +750,6 @@ class VectorWind(object):
     def getuv(self, vorticity, divergence):
         """Compute vector winds from vorticity and divergence fields.
 
-
         **Argument:**
 
         *vorticity*
@@ -765,39 +764,35 @@ class VectorWind(object):
             as those for the vector wind components that initialized the
             `VectorWind` instance.
 
-        **Optional argument:**
-
         **Returns:**
 
         *u*, *v*
             Zonal and meridional wind components respectively. Their types might 
             match input types to passed to `VectorWind` instance. 
         """
-        def clean_array(chi):
-            if not isinstance(chi, xr.DataArray):
+        def clean_array(field):
+            if not isinstance(field, xr.DataArray):
                 raise TypeError('scalar field must be an xarray.DataArray')
-            name = chi.name
-            lat, lat_dim = _find_latitude_coordinate(chi)
-            lon, lon_dim = _find_longitude_coordinate(chi)
+            name = field.name
+            lat, lat_dim = _find_latitude_coordinate(field)
+            lon, lon_dim = _find_longitude_coordinate(field)
             if (lat.values[0] < lat.values[1]):
                 # need to reverse latitude dimension
-                chi = _reverse(chi, lat_dim)
-                lat, lat_dim = _find_latitude_coordinate(chi)
-            apiorder, _ = get_apiorder(chi.ndim, lat_dim, lon_dim)
-            apiorder = [chi.dims[i] for i in apiorder]
-            reorder = chi.dims
-            chi = chi.copy().transpose(*apiorder)
-            ishape = chi.shape
-            coords = [chi.coords[n] for n in chi.dims]
-            chi = to3d(chi.values)
-            return chi, name, coords, ishape, reorder
+                field = _reverse(field, lat_dim)
+                lat, lat_dim = _find_latitude_coordinate(field)
+            apiorder, _ = get_apiorder(field.ndim, lat_dim, lon_dim)
+            apiorder = [field.dims[i] for i in apiorder]
+            reorder = field.dims
+            field = field.copy().transpose(*apiorder)
+            ishape = field.shape
+            coords = [field.coords[n] for n in field.dims]
+            field = to3d(field.values)
+            return field, name, coords, ishape, reorder
 
         vortic, vr_name, coords, ishape, reorder = clean_array(vorticity)
         diverg, dv_name, coords, ishape, reorder = clean_array(divergence)
 
         ugrd, vgrd = self._api.getuv(vortic, diverg)
-        ugrd = ugrd.reshape(ishape)
-        vgrd = vgrd.reshape(ishape)
         ugrd = self._metadata(ugrd, 'u',
                     units='m s**-1',
                     standard_name='eastward_wind',
@@ -806,8 +801,6 @@ class VectorWind(object):
                     units='m s**-1',
                     standard_name='northward_wind',
                     long_name='northward')
-        ugrd = ugrd.transpose(*reorder)
-        vgrd = vgrd.transpose(*reorder)
         return ugrd, vgrd
 
 def _reverse(array, dim):

@@ -792,22 +792,43 @@ class VectorWind(object):
         return field
 
     def getuv(self, vorticity, divergence):
-        def clean_input(chi):
-            if not cdms2.isVariable(chi):
+        """Compute vector winds from vorticity and divergence fields.
+
+        **Argument:**
+
+        *vorticity*
+            A scalar field of vorticity. It must be a `cdms2` variable with the same
+            latitude and longitude dimensions as the vector wind
+            components that initialized the `VectorWind` instance.
+
+        *divergence*
+            A scalar field of divergence. It must be a `cdms2` variable with the same
+            latitude and longitude dimensions as the vector wind
+            components that initialized the `VectorWind` instance.
+
+        **Returns:**
+
+        *u*, *v*
+            Zonal and meridional wind components respectively. Their types might 
+            match input types to passed to `VectorWind` instance. 
+        """
+
+        def clean_array(field):
+            if not cdms2.isVariable(field):
                 raise TypeError('scalar field must be a cdms2 variable')
-            order = chi.getOrder()
+            order = field.getOrder()
             if 'x' not in order or 'y' not in order:
                 raise ValueError('a latitude-longitude grid is required')
             # Assess how to re-order the inputs to be compatible with the
             # computation API.
             apiorder = 'yx' + ''.join([a for a in order if a not in 'xy'])
-            chi = chi.reorder(apiorder)
+            field = field.reorder(apiorder)
             # Do a region selection on the input to ensure the latitude dimension
             # is north-to-south.
-            chi = chi(latitude=(90, -90))
+            field = field(latitude=(90, -90))
             # Re-order to the API order.
-            chi = to3d(chi)
-            return chi
+            field = to3d(field)
+            return field
 
         vortic  = clean_input(vorticity)
         diverg = clean_input(divergence)
