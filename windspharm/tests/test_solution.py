@@ -159,7 +159,6 @@ class SolutionTest(VectorWindTest):
         assert error(ugrd, self.solution['uwnd']) == pytest.approx(0., abs=1e-4)
         assert error(vgrd, self.solution['vwnd']) == pytest.approx(0., abs=1e-4)
 
-
 # ----------------------------------------------------------------------------
 # Tests for the standard interface
 
