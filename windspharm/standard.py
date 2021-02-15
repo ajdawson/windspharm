@@ -664,13 +664,13 @@ class VectorWind(object):
         **Argument:**
 
         *vorticity*
-            A scalar field. Its shape must be either (nlat, nlon) or
+            A scalar field of vorticity. Its shape must be either (nlat, nlon) or
             (nlat, nlon, nfields) where nlat and nlon are the same
             as those for the vector wind components that initialized the
             `VectorWind` instance.
 
         *divergence*
-            A scalar field. Its shape must be either (nlat, nlon) or
+            A scalar field of divergence. Its shape must be either (nlat, nlon) or
             (nlat, nlon, nfields) where nlat and nlon are the same
             as those for the vector wind components that initialized the
             `VectorWind` instance.
@@ -680,7 +680,7 @@ class VectorWind(object):
         **Returns:**
 
         *u*, *v*
-            Zonal and meridional wind components respectively. Their types might 
+            Zonal and meridional wind components respectively. Their types will 
             match input types to passed to `VectorWind` instance. 
         """
         vrspec = self.s.grdtospec(vorticity)

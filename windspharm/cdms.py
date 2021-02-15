@@ -809,7 +809,7 @@ class VectorWind(object):
         **Returns:**
 
         *u*, *v*
-            Zonal and meridional wind components respectively. Their types might 
+            Zonal and meridional wind components respectively. Their types will 
             match input types to passed to `VectorWind` instance. 
         """
 
