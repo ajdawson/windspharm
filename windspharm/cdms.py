@@ -790,3 +790,37 @@ class VectorWind(object):
         tnumber = truncation or fieldtrunc.shape[0] - 1
         field.id = '{}_T{}'.format(name, tnumber)
         return field
+
+    def getuv(self, vorticity, divergence):
+        def clean_input(chi):
+            if not cdms2.isVariable(chi):
+                raise TypeError('scalar field must be a cdms2 variable')
+            order = chi.getOrder()
+            if 'x' not in order or 'y' not in order:
+                raise ValueError('a latitude-longitude grid is required')
+            # Assess how to re-order the inputs to be compatible with the
+            # computation API.
+            apiorder = 'yx' + ''.join([a for a in order if a not in 'xy'])
+            chi = chi.reorder(apiorder)
+            # Do a region selection on the input to ensure the latitude dimension
+            # is north-to-south.
+            chi = chi(latitude=(90, -90))
+            # Re-order to the API order.
+            chi = to3d(chi)
+            return chi
+
+        vortic  = clean_input(vorticity)
+        diverg = clean_input(divergence)
+
+        ugrd, vgrd = self.api.getuv(vortic, diverg)
+        ugrd = self._metadata(ugrd,
+                            id='u',
+                            standard_name='eastward_wind',
+                            units='m s**-1',
+                            long_name='eastward component of wind')
+        vgrd = self._metadata(vgrd,
+                           id='v',
+                           standard_name='northward_wind',
+                           units='m s**-1',
+                           long_name='northward component of wind')
+        return ugrd, vgrd

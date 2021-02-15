@@ -148,6 +148,17 @@ class SolutionTest(VectorWindTest):
         vrt_trunc = self.vw.truncate(self.solution['vrt'], truncation=21)
         self.assert_error_is_zero(vrt_trunc, self.solution['vrt_trunc'])
 
+    def test_getuv(self):
+        from .utils import error
+
+        div1 = self.vw.divergence()
+        vrt1 = self.vw.vorticity()
+
+        ugrd, vgrd = self.vw.getuv(vrt1, div1)
+        # this isn't a perfect 1-1 function so some error is introduced
+        assert error(ugrd, self.solution['uwnd']) == pytest.approx(0., abs=1e-4)
+        assert error(vgrd, self.solution['vwnd']) == pytest.approx(0., abs=1e-4)
+
 
 # ----------------------------------------------------------------------------
 # Tests for the standard interface

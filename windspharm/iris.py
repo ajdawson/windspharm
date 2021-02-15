@@ -756,6 +756,51 @@ class VectorWind(object):
         field.transpose(reorder)
         return field
 
+    def getuv(self, vorticity, divergence):
+        def clean_array(chi):
+            if type(chi) is not Cube:
+                raise TypeError('scalar field must be an iris cube')
+            name = chi.name()
+            lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
+            lon, lon_dim = _dim_coord_and_dim(chi, 'longitude')
+            if (lat.points[0] < lat.points[1]):
+                # need to reverse latitude dimension
+                chi = reverse(chi, lat_dim)
+                lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
+            apiorder, reorder = get_apiorder(chi.ndim, lat_dim, lon_dim)
+            chi = chi.copy()
+            chi.transpose(apiorder)
+            ishape = chi.shape
+            coords = chi.dim_coords
+            chi = to3d(chi.data)
+            return chi, name, coords, ishape, reorder
+        
+        vortic, vr_name, coords, ishape, reorder = clean_array(vorticity)
+        diverg, dv_name, coords, ishape, reorder = clean_array(divergence)
+
+        ugrd, vgrd = self._api.getuv(vortic, diverg)
+        ugrd = ugrd.reshape(ishape)
+        vgrd = vgrd.reshape(ishape)
+
+        ugrd = Cube(
+            ugrd,
+            dim_coords_and_dims=list(zip(coords, range(ugrd.ndim))))
+        vgrd = Cube(
+            vgrd,
+            dim_coords_and_dims=list(zip(coords, range(vgrd.ndim))))
+
+        ugrd = self._metadata(ugrd, 
+                    units='m s**-1',
+                    standard_name='eastward_wind',
+                    long_name='eastward_component_of_wind')
+        vgrd = self._metadata(vgrd, 
+                    units='m s**-1',
+                    standard_name='northward_wind',
+                    long_name='northward')
+        ugrd = ugrd.transpose(*reorder)
+        vgrd = vgrd.transpose(*reorder)
+        return ugrd, vgrd
+
 
 def _dim_coord_and_dim(cube, coord):
     """
