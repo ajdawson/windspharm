@@ -787,10 +787,10 @@ class VectorWind(object):
             ishape = field.shape
             coords = [field.coords[n] for n in field.dims]
             field = to3d(field.values)
-            return field, name, coords, ishape, reorder
+            return field
 
-        vortic, vr_name, coords, ishape, reorder = clean_array(vorticity)
-        diverg, dv_name, coords, ishape, reorder = clean_array(divergence)
+        vortic = clean_array(vorticity)
+        diverg = clean_array(divergence)
 
         ugrd, vgrd = self._api.getuv(vortic, diverg)
         ugrd = self._metadata(ugrd, 'u',

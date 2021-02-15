@@ -830,8 +830,8 @@ class VectorWind(object):
             field = to3d(field)
             return field
 
-        vortic  = clean_input(vorticity)
-        diverg = clean_input(divergence)
+        vortic  = clean_array(vorticity)
+        diverg = clean_array(divergence)
 
         ugrd, vgrd = self.api.getuv(vortic, diverg)
         ugrd = self._metadata(ugrd,
