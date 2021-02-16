@@ -800,7 +800,7 @@ class VectorWind(object):
         vgrd = self._metadata(vgrd, 'v',
                     units='m s**-1',
                     standard_name='northward_wind',
-                    long_name='northward')
+                    long_name='northward_component_of_wind')
         return ugrd, vgrd
 
 def _reverse(array, dim):
