@@ -63,7 +63,7 @@ class VectorWind(object):
         Initialize a `VectorWind` instance with zonal and meridional
         components of the vector wind::
 
-            from windspharm.xray import VectorWind
+            from windspharm.xarray import VectorWind
             w = VectorWind(u, v)
 
         """
