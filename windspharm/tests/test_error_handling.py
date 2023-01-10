@@ -52,7 +52,7 @@ class TestStandardErrorHandlers(ErrorHandlersTest):
     def test_masked_values(self):
         # masked values in inputs should raise an error
         solution = reference_solutions(self.interface, self.gridtype)
-        mask = np.empty(solution['uwnd'].shape, dtype=np.bool)
+        mask = np.empty(solution['uwnd'].shape, dtype=np.bool_)
         mask[:] = False
         mask[1, 1] = True
         u = ma.array(solution['uwnd'], mask=mask, fill_value=1.e20)
@@ -115,7 +115,7 @@ class TestStandardErrorHandlers(ErrorHandlersTest):
         solution = reference_solutions(self.interface, self.gridtype)
         vw = solvers[self.interface](solution['uwnd'], solution['vwnd'],
                                      gridtype=self.gridtype)
-        mask = np.empty(solution['uwnd'].shape, dtype=np.bool)
+        mask = np.empty(solution['uwnd'].shape, dtype=np.bool_)
         mask[:] = False
         mask[1, 1] = True
         chi = ma.array(solution['chi'], mask=mask, fill_value=1.e20)

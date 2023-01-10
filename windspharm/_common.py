@@ -116,5 +116,5 @@ def inspect_gridtype(latitudes):
 
 
 def to3d(array):
-    new_shape = array.shape[:2] + (np.prod(array.shape[2:], dtype=np.int),)
+    new_shape = array.shape[:2] + (np.prod(array.shape[2:], dtype=np.int_),)
     return array.reshape(new_shape)
