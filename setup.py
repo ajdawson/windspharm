@@ -45,4 +45,4 @@ setup(name='windspharm',
       long_description_content_type='text/markdown',
       packages=packages,
       package_data=package_data,
-      install_requires=['numpy', 'pyspharm >= 1.0.8'],)
+      )
