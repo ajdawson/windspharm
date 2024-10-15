@@ -657,3 +657,33 @@ class VectorWind(object):
             raise ValueError('field is not compatible')
         fieldtrunc = self.s.spectogrd(fieldspec)
         return fieldtrunc
+
+    def getuv(self, vorticity, divergence):
+        """Compute vector winds from vorticity and divergence fields.
+
+        **Argument:**
+
+        *vorticity*
+            A scalar field of vorticity. Its shape must be either (nlat, nlon) or
+            (nlat, nlon, nfields) where nlat and nlon are the same
+            as those for the vector wind components that initialized the
+            `VectorWind` instance.
+
+        *divergence*
+            A scalar field of divergence. Its shape must be either (nlat, nlon) or
+            (nlat, nlon, nfields) where nlat and nlon are the same
+            as those for the vector wind components that initialized the
+            `VectorWind` instance.
+
+        **Optional argument:**
+
+        **Returns:**
+
+        *u*, *v*
+            Zonal and meridional wind components respectively. Their types will 
+            match input types to passed to `VectorWind` instance. 
+        """
+        vrspec = self.s.grdtospec(vorticity)
+        dvspec = self.s.grdtospec(divergence)
+        ugrd, vgrid = self.s.getuv(vrspec, dvspec)
+        return ugrd, vgrid
