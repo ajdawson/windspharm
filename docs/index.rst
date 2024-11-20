@@ -57,14 +57,7 @@ Requirements
 
 This package requires as a minimum that you have numpy_ and pyspharm_ available, and requires setuptools_ for installation.
 The `windspharm.iris` interface can only be used if the `iris` package is available (see the iris_ documentation).
-The `windspharm.cdms` interface can only be used if the `cdms2` module is available. This module is distributed as part of the UVCDAT_ project.
 The `windspharm.xarray` interface can only be used if the `xarray` package is available (see the xarray_ documentation).
-
-
-.. warning::
-
-  It is strongly recommended to use pyspharm 1.0.8 or later.
-  There is a bug in versions prior to 1.0.7 that causes incorrect fields to be returned when there is more than one input field, and a small bug in version 1.0.7 that causes problems with fields with a singleton time dimension.
 
 
 Getting Started
@@ -73,7 +66,7 @@ Getting Started
 The `windspharm` package provides several interfaces for performing computations.
 The :ref:`standard <standard-interface>` interface is designed to work with `numpy` arrays.
 On top of this are layers desinged to work with more advanced data structures that also contain metadata.
-Currently there is support for :ref:`iris cubes <iris-interface>`, :ref:`xarray DataArrays <xarray-interface>`, and :ref:`cdms2 variables <cdms-interface>`.
+Currently there is support for :ref:`iris cubes <iris-interface>` and :ref:`xarray DataArrays <xarray-interface>`.
 
 Regardless of which interface you use, the basic usage is the same. All computation is handled by a `VectorWind` instance initialized with global vector wind components. Method calls are then used to return quantities of interest.
 

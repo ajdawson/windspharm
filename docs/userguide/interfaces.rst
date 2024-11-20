@@ -13,7 +13,6 @@ Interface  Description
 =========  ========================================
 iris       Data contained in an `iris` cube.
 xarray     Data contained in an `xarray.DataArray`.
-cdms       Data stored in a `cdms2` variable.
 standard   Other data, stored in a `numpy.ndarray`.
 =========  ========================================
 
@@ -34,18 +33,9 @@ xarray interface
 The xarray interface works with `~xarray.DataArray` objects.
 The coordinate metadata of `~xarray.DataArray` is interpreted by the `windspharm.xarray.VectorWind` interface, and the outputs of the `windspharm.xarray.VectorWind` methods are contained in `~xarray.DataArray` objects allowing their use with othe tools from the `xarray` package.
 
-.. _cdms-interface:
-
-cdms interface
---------------
-
-The `windspharm.cdms.VectorWind` interface works with `cdms2` variables, which are the core data container used by UVCDAT_. A `cdms2` variable has meta-data associated with it, including dimensions, which are understood by the `windspharm.cdms.VectorWind` interface. The outputs of `windspharm.cdms.VectorWind` methods are `cdms2` variables with meta-data, which can be written straight to a netCDF file using `cdms2`, or used with other parts of the UVCDAT_ framework.
-
 .. _standard-interface:
 
 standard interface
 ------------------
 
 The standard interface works with `numpy` arrays, which makes the standard interface the general purpose interface. Any data that can be stored in a `numpy.ndarray` can be analysed with the `windspharm.standard.VectorWind` interface.
-
-.. _UVCDAT: http://uvcdat.llnl.gov
