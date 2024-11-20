@@ -1,4 +1,15 @@
+includ pyproject.toml
 include README.md
 include license.txt
-include versioneer.py
-include lib/windspharm/_version.py
+
+graft windspharm
+
+recursive-include examples *.py
+recursive-include  windspharm *.nc
+
+prune .github
+prune *.egg-info
+prune docs
+
+exclude *.yaml
+exclude windspharm/_version.py

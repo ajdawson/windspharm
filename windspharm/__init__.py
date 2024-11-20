@@ -23,21 +23,14 @@ from __future__ import absolute_import
 from . import standard
 from . import tools
 
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
-
+try:
+    from ._version import __version__
+except ImportError:
+    __version__ = "unknown"
 
 # List to define the behaviour of imports of the form:
 #     from windspharm import *
 __all__ = []
-
-try:
-    from . import cdms
-    __all__.append('cdms')
-    metadata = cdms
-except ImportError:
-    pass
 
 try:
     from . import iris
