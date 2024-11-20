@@ -55,7 +55,7 @@ You can also check out the source code for the development version from the `git
 Requirements
 ------------
 
-This package requires as a minimum that you have numpy_ and pyspharm_ available, and requires setuptools_ for installation.
+This package requires as a minimum that you have numpy_ and pyspharm_ available.
 The `windspharm.iris` interface can only be used if the `iris` package is available (see the iris_ documentation).
 The `windspharm.xarray` interface can only be used if the `xarray` package is available (see the xarray_ documentation).
 
@@ -94,7 +94,7 @@ Citation
 --------
 
 If you use windspharm in published research, please cite it by referencing the `peer-reviewed paper <http://doi.org/10.5334/jors.129>`_.
-You can additionally cite the `Zenodo DOI <https://zenodo.org/badge/latestdoi/20448/ajdawson/windspharm>`_ if you need to cite a particular version (but please also cite the paper, it helps me justify my time working on this and similar projects).
+You can additionally cite the `Zenodo DOI <https://zenodo.org/records/1401190>`_ if you need to cite a particular version (but please also cite the paper, it helps me justify my time working on this and similar projects).
 
 
 Developing and Contributing
@@ -106,22 +106,16 @@ Bug reports and feature requests can be filed using the Github issues_ system.
 If you would like to contribute code or documentation please see the :doc:`devguide/index`.
 
 
-.. _UVCDAT: http://uvcdat.llnl.gov/
+.. _iris: https://scitools-iris.readthedocs.io/en/stable
 
-.. _iris: http://scitools.org.uk/iris
+.. _xarray: https://xarray.dev
 
-.. _xarray: http://xarray.pydata.org
+.. _numpy: https://numpy.org
 
-.. _numpy: http://numpy.scipy.org
+.. _pyspharm: https://github.com/jswhit/pyspharm
 
-.. _pyspharm: https://code.google.com/p/pyspharm
+.. _issues: https://github.com/ajdawson/windspharm/issues
 
-.. _setuptools: https://pypi.python.org/pypi/setuptools
+.. _windspharm: https://ajdawson.github.io/windspharm
 
-.. _issues: http://github.com/ajdawson/windspharm/issues?state=open
-
-.. _windspharm: http://ajdawson.github.com/windspharm
-
-.. _conda: http://conda.pydata.org/docs/
-
-.. _binstar: https://binstar.org
+.. _conda: https://github.com/conda-forge/miniforge

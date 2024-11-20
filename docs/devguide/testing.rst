@@ -35,8 +35,8 @@ Then create a directory somewhere else without any Python code in it and run ``p
 This will run the tests on the version of `windspharm` you just installed.
 This also applies when `windspharm` has been installed by another method (e.g., pip or conda).
 
-.. _pytest: https://docs.pytest.org
+.. _pytest: https://docs.pytest.org/en/stable/
 
-.. _iris: http://scitools.org.uk/iris
+.. _iris: https://scitools-iris.readthedocs.io/en/stable
 
-.. _xarray: http://xarray.pydata.org
+.. _xarray: https://xarray.dev

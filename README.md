@@ -1,7 +1,7 @@
 windspharm - spherical harmonic vector wind analysis in Python
 ==============================================================
 
-[![DOI (paper)](https://img.shields.io/badge/DOI%20%28paper%29-10.5334%2Fjors.129-blue.svg)](http://doi.org/10.5334/jors.129) [![DOI (latest release)](https://zenodo.org/badge/20448/ajdawson/windspharm.svg)](https://zenodo.org/badge/latestdoi/20448/ajdawson/windspharm)
+[![DOI (paper)](https://img.shields.io/badge/DOI%20%28paper%29-10.5334%2Fjors.129-blue.svg)](http://doi.org/10.5334/jors.129) [![DOI (latest release)](https://zenodo.org/badge/4715033.svg)](https://zenodo.org/records/1401190)
 
 Overview
 --------
