@@ -1,1 +1,224 @@
-<meta http-equiv="Refresh" content="0;url=latest/"/>
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introduction &#8212; windspharm 2.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx13_mod.css?v=a616932e" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <script src="_static/documentation_options.js?v=51b770b3"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User Guide" href="userguide/index.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+     
+        <style type="text/css">
+            table.right { float: right; margin-left: 20px; }
+            table.right td { border: 1px solid #ccc; }
+        </style>
+        <script type="text/javascript">
+            // intelligent scrolling of the sidebar content
+            $(window).scroll(function() {
+                var sb = $('.sphinxsidebarwrapper');
+                var win = $(window);
+                var sbh = sb.height();
+                var offset = $('.sphinxsidebar').position()['top'];
+                var wintop = win.scrollTop();
+                var winbot = wintop + win.innerHeight();
+                var curtop = sb.position()['top'];
+                var curbot = curtop + sbh;
+                // does sidebar fit in window?
+                if (sbh < win.innerHeight()) {
+                    // yes: easy case -- always keep at the top
+                    sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                         $(document).height() - sbh - 200]));
+                } else {
+                    // no: only scroll if top/bottom edge of sidebar is at
+                    // top/bottom edge of window
+                    if (curtop > wintop && curbot > winbot) {
+                        sb.css('top', $u.max([wintop - offset - 10, 0]));
+                    } else if (curtop < wintop && curbot < winbot) {
+                        sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                             $(document).height() - sbh - 200]));
+                    }
+                }
+            });
+        </script>
+
+  </head><body>
+<div class="pageheader">
+  <div>
+    <a href="#">
+      <img src="_static/headerimage.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="userguide/index.html" title="User Guide"
+             accesskey="N">next</a> |</li>
+    <li><a href="#">home</a>|&nbsp;</li>
+    <li><a href="search.html">search</a>|&nbsp;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Introduction</a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+
+    <h2>windspharm v2.0.0</h2>
+    <h3>Table of Contents</h3>
+    <ul>
+<li class="toctree-l1"><a class="reference internal" href="userguide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide/index.html">Developer Guide</a></li>
+</ul>
+
+
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="userguide/index.html"
+                          title="next chapter">User Guide</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+
+    <div class="document">
+  
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h1>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm</span></code> is a Python package for performing computations on global wind fields in spherical geometry. It provides a high level interface for computations using spherical harmonics. <code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm</span></code> is capable of computing the following quantities from an input vector wind:</p>
+<ul class="simple">
+<li><p>divergence</p></li>
+<li><p>vorticity (relative and absolute)</p></li>
+<li><p>streamfunction</p></li>
+<li><p>velocity potential</p></li>
+<li><p>irrotational and non-divergent components of the wind (Helmholtz decomposition)</p></li>
+<li><p>vector gradient of a scalar function</p></li>
+<li><p>triangular truncation of a scalar field</p></li>
+<li><p>magnitude (wind speed)</p></li>
+</ul>
+<section id="download-installation">
+<h2>Download &amp; Installation<a class="headerlink" href="#download-installation" title="Link to this heading">¶</a></h2>
+<p>The easiest way to install is via <a class="reference external" href="https://github.com/conda-forge/miniforge">conda</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>windspharm
+</pre></div>
+</div>
+<p>Released versions of <code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm</span></code> can be downloaded from <a class="reference external" href="https://github.com/ajdawson/windspharm/releases">Github</a>.
+After downloading the source code archive, unzip it and change into the unzipped archive’s directory, then to install it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>setup.py<span class="w"> </span>install
+</pre></div>
+</div>
+<p>You can also check out the source code for the development version from the <a class="reference external" href="https://github.com/ajdawson/windspharm">github repository</a> to access features which are not yet in the released version.</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<p>This package requires as a minimum that you have <a class="reference external" href="https://numpy.org">numpy</a> and <a class="reference external" href="https://github.com/jswhit/pyspharm">pyspharm</a> available.
+The <a class="reference internal" href="api/windspharm.iris.html#module-windspharm.iris" title="windspharm.iris"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.iris</span></code></a> interface can only be used if the <a class="reference external" href="https://scitools-iris.readthedocs.io/en/latest/generated/api/iris.html#module-iris" title="(in Iris v3.12.0.dev15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iris</span></code></a> package is available (see the <a class="reference external" href="https://scitools-iris.readthedocs.io/en/stable">iris</a> documentation).
+The <a class="reference internal" href="api/windspharm.xarray.html#module-windspharm.xarray" title="windspharm.xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.xarray</span></code></a> interface can only be used if the <a class="reference external" href="https://docs.xarray.dev/en/stable/index.html#module-xarray" title="(in xarray v2024.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray</span></code></a> package is available (see the <a class="reference external" href="https://xarray.dev">xarray</a> documentation).</p>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h2>
+<p>The <code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm</span></code> package provides several interfaces for performing computations.
+The <a class="reference internal" href="userguide/interfaces.html#standard-interface"><span class="std std-ref">standard</span></a> interface is designed to work with <a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy</span></code></a> arrays.
+On top of this are layers desinged to work with more advanced data structures that also contain metadata.
+Currently there is support for <a class="reference internal" href="userguide/interfaces.html#iris-interface"><span class="std std-ref">iris cubes</span></a> and <a class="reference internal" href="userguide/interfaces.html#xarray-interface"><span class="std std-ref">xarray DataArrays</span></a>.</p>
+<p>Regardless of which interface you use, the basic usage is the same. All computation is handled by a <code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorWind</span></code> instance initialized with global vector wind components. Method calls are then used to return quantities of interest.</p>
+<p>The following is a very simple illustrative example which computes the streamfunction and vorticity associated with a global vector wind field using the <a class="reference external" href="https://scitools-iris.readthedocs.io/en/latest/generated/api/iris.html#module-iris" title="(in Iris v3.12.0.dev15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iris</span></code></a> interface:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">iris</span>
+<span class="kn">from</span> <span class="nn">windspharm.iris</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+
+
+<span class="c1"># Read u and v wind components from file.</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;uwind_file.nc&#39;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;vwind_file.nc&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create an instance of the VectorWind class to do the computations.</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+<span class="c1"># Call methods to compute streamfunction and relative vorticity.</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">streamfunction</span><span class="p">()</span>
+<span class="n">xi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">vorticity</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Link to this heading">¶</a></h2>
+<p>If you use windspharm in published research, please cite it by referencing the <a class="reference external" href="http://doi.org/10.5334/jors.129">peer-reviewed paper</a>.
+You can additionally cite the <a class="reference external" href="https://zenodo.org/records/1401190">Zenodo DOI</a> if you need to cite a particular version (but please also cite the paper, it helps me justify my time working on this and similar projects).</p>
+</section>
+<section id="developing-and-contributing">
+<h2>Developing and Contributing<a class="headerlink" href="#developing-and-contributing" title="Link to this heading">¶</a></h2>
+<p>Contributions big or small are welcomed from anyone with an interest in the project.
+Bug reports and feature requests can be filed using the Github <a class="reference external" href="https://github.com/ajdawson/windspharm/issues">issues</a> system.
+If you would like to contribute code or documentation please see the <a class="reference internal" href="devguide/index.html"><span class="doc">Developer Guide</span></a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <script type=text/javascript src="/windspharm/version_switch.js" async></script>
+
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="userguide/index.html" title="User Guide"
+             >next</a> |</li>
+    <li><a href="#">home</a>|&nbsp;</li>
+    <li><a href="search.html">search</a>|&nbsp;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Introduction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2012-2024, Andrew Dawson.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

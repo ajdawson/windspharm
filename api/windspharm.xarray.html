@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>windspharm.xarray &#8212; windspharm 2.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx13_mod.css?v=a616932e" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <script src="../_static/documentation_options.js?v=51b770b3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="windspharm.tools" href="windspharm.tools.html" />
+    <link rel="prev" title="windspharm.iris" href="windspharm.iris.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+     
+        <style type="text/css">
+            table.right { float: right; margin-left: 20px; }
+            table.right td { border: 1px solid #ccc; }
+        </style>
+        <script type="text/javascript">
+            // intelligent scrolling of the sidebar content
+            $(window).scroll(function() {
+                var sb = $('.sphinxsidebarwrapper');
+                var win = $(window);
+                var sbh = sb.height();
+                var offset = $('.sphinxsidebar').position()['top'];
+                var wintop = win.scrollTop();
+                var winbot = wintop + win.innerHeight();
+                var curtop = sb.position()['top'];
+                var curbot = curtop + sbh;
+                // does sidebar fit in window?
+                if (sbh < win.innerHeight()) {
+                    // yes: easy case -- always keep at the top
+                    sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                         $(document).height() - sbh - 200]));
+                } else {
+                    // no: only scroll if top/bottom edge of sidebar is at
+                    // top/bottom edge of window
+                    if (curtop > wintop && curbot > winbot) {
+                        sb.css('top', $u.max([wintop - offset - 10, 0]));
+                    } else if (curtop < wintop && curbot < winbot) {
+                        sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                             $(document).height() - sbh - 200]));
+                    }
+                }
+            });
+        </script>
+
+  </head><body>
+<div class="pageheader">
+  <div>
+    <a href="../index.html">
+      <img src="../_static/headerimage.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="windspharm.tools.html" title="windspharm.tools"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="windspharm.iris.html" title="windspharm.iris"
+             accesskey="P">previous</a> |</li>
+    <li><a href="../index.html">home</a>|&nbsp;</li>
+    <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.xarray</span></code></a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+
+    <h2>windspharm v2.0.0</h2>
+    <h3>Table of Contents</h3>
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../userguide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#full-documentation">Full documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/index.html">Developer Guide</a></li>
+</ul>
+
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="windspharm.iris.html"
+                          title="previous chapter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.iris</span></code></a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="windspharm.tools.html"
+                          title="next chapter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.tools</span></code></a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/windspharm.xarray.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+
+    <div class="document">
+  
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-windspharm.xarray">
+<span id="windspharm-xarray"></span><h1><a class="reference internal" href="#module-windspharm.xarray" title="windspharm.xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.xarray</span></code></a><a class="headerlink" href="#module-windspharm.xarray" title="Link to this heading">¶</a></h1>
+<p>Spherical harmonic vector wind computations (<a class="reference external" href="https://docs.xarray.dev/en/stable/index.html#module-xarray" title="(in xarray v2024.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray</span></code></a> interface).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">windspharm.xarray.</span></span><span class="sig-name descname"><span class="pre">VectorWind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rsphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6371200.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'stored'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind" title="Link to this definition">¶</a></dt>
+<dd><p>Vector wind computations (<a class="reference external" href="https://docs.xarray.dev/en/stable/index.html#module-xarray" title="(in xarray v2024.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray</span></code></a> interface).</p>
+<p>Initialize a VectorWind instance.</p>
+<p><strong>Arguments:</strong></p>
+<dl class="simple">
+<dt><em>u</em>, <em>v</em></dt><dd><p>Zonal and meridional components of the vector wind
+respectively. Both components should be <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a>
+instances. The components must have the same dimension
+coordinates and contain no missing values.</p>
+</dd>
+</dl>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>rsphere</em></dt><dd><p>The radius in metres of the sphere used in the spherical
+harmonic computations. Default is 6371200 m, the approximate
+mean spherical Earth radius.</p>
+</dd>
+<dt><em>legfunc</em></dt><dd><p>‘stored’ (default) or ‘computed’.  If ‘stored’, associated legendre
+functions are precomputed and stored when the class instance is
+created.  This uses O(nlat**3) memory, but speeds up the spectral
+transforms.  If ‘computed’, associated legendre functions are
+computed on the fly when transforms are requested.  This uses
+O(nlat**2) memory, but slows down the spectral transforms a bit.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<p>Initialize a <a class="reference internal" href="#windspharm.xarray.VectorWind" title="windspharm.xarray.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorWind</span></code></a> instance with zonal and meridional
+components of the vector wind:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">windspharm.xarray</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.u">
+<span class="sig-name descname"><span class="pre">u</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.u"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.u" title="Link to this definition">¶</a></dt>
+<dd><p>Zonal component of vector wind.</p>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>u</em></dt><dd><p>The zonal component of the wind.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<p>Get the zonal component of the vector wind:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">u</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.v">
+<span class="sig-name descname"><span class="pre">v</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.v"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.v" title="Link to this definition">¶</a></dt>
+<dd><p>Meridional component of vector wind.</p>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>v</em></dt><dd><p>The meridional component of the wind.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<p>Get the meridional component of the vector wind:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">v</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.magnitude">
+<span class="sig-name descname"><span class="pre">magnitude</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.magnitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.magnitude" title="Link to this definition">¶</a></dt>
+<dd><p>Wind speed (magnitude of vector wind).</p>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>speed</em></dt><dd><p>The wind speed.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<p>Get the magnitude of the vector wind:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spd</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">magnitude</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.vrtdiv">
+<span class="sig-name descname"><span class="pre">vrtdiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.vrtdiv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.vrtdiv" title="Link to this definition">¶</a></dt>
+<dd><p>Relative vorticity and horizontal divergence.</p>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>vrt</em>, <em>div</em></dt><dd><p>The relative vorticity and divergence respectively.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.vorticity" title="windspharm.xarray.VectorWind.vorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vorticity</span></code></a>, <a class="reference internal" href="#windspharm.xarray.VectorWind.divergence" title="windspharm.xarray.VectorWind.divergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divergence</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute the relative vorticity and divergence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vrt</span><span class="p">,</span> <span class="n">div</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">vrtdiv</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute the relative vorticity and divergence and apply spectral
+truncation at triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vrtT13</span><span class="p">,</span> <span class="n">divT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">vrtdiv</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.vorticity">
+<span class="sig-name descname"><span class="pre">vorticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.vorticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.vorticity" title="Link to this definition">¶</a></dt>
+<dd><p>Relative vorticity.</p>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>vrt</em></dt><dd><p>The relative vorticity.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.vrtdiv" title="windspharm.xarray.VectorWind.vrtdiv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vrtdiv</span></code></a>, <a class="reference internal" href="#windspharm.xarray.VectorWind.absolutevorticity" title="windspharm.xarray.VectorWind.absolutevorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">absolutevorticity</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute the relative vorticity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">vorticity</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute the relative vorticity and apply spectral truncation at
+triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vrtT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">vorticity</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.divergence">
+<span class="sig-name descname"><span class="pre">divergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.divergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.divergence" title="Link to this definition">¶</a></dt>
+<dd><p>Horizontal divergence.</p>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>div</em></dt><dd><p>The divergence.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.vrtdiv" title="windspharm.xarray.VectorWind.vrtdiv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vrtdiv</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute the divergence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">div</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">divergence</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute the divergence and apply spectral truncation at
+triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">divT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">divergence</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.planetaryvorticity">
+<span class="sig-name descname"><span class="pre">planetaryvorticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.planetaryvorticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.planetaryvorticity" title="Link to this definition">¶</a></dt>
+<dd><p>Planetary vorticity (Coriolis parameter).</p>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>omega</em></dt><dd><p>Earth’s angular velocity. The default value if not specified
+is 7.292x10**-5 s**-1.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>pvorticity</em></dt><dd><p>The planetary vorticity.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.absolutevorticity" title="windspharm.xarray.VectorWind.absolutevorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">absolutevorticity</span></code></a>.</p>
+<p><strong>Example:</strong></p>
+<p>Compute planetary vorticity using default values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pvrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">planetaryvorticity</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Override the default value for Earth’s angular velocity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pvrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">planetaryvorticity</span><span class="p">(</span><span class="n">omega</span><span class="o">=</span><span class="mf">7.2921150</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.absolutevorticity">
+<span class="sig-name descname"><span class="pre">absolutevorticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.absolutevorticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.absolutevorticity" title="Link to this definition">¶</a></dt>
+<dd><p>Absolute vorticity (sum of relative and planetary vorticity).</p>
+<p><strong>Optional arguments:</strong></p>
+<dl class="simple">
+<dt><em>omega</em></dt><dd><p>Earth’s angular velocity. The default value if not specified
+is 7.292x10**-5 s**-1.</p>
+</dd>
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>avorticity</em></dt><dd><p>The absolute (relative + planetary) vorticity.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.vorticity" title="windspharm.xarray.VectorWind.vorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vorticity</span></code></a>, <a class="reference internal" href="#windspharm.xarray.VectorWind.planetaryvorticity" title="windspharm.xarray.VectorWind.planetaryvorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">planetaryvorticity</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute absolute vorticity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">avrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">absolutevorticity</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute absolute vorticity and apply spectral truncation at
+triangular T13, also override the default value for Earth’s
+angular velocity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">avrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">absolutevorticity</span><span class="p">(</span><span class="n">omega</span><span class="o">=</span><span class="mf">7.2921150</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.sfvp">
+<span class="sig-name descname"><span class="pre">sfvp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.sfvp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.sfvp" title="Link to this definition">¶</a></dt>
+<dd><p>Streamfunction and velocity potential.</p>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>sf</em>, <em>vp</em></dt><dd><p>The streamfunction and velocity potential respectively.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.streamfunction" title="windspharm.xarray.VectorWind.streamfunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">streamfunction</span></code></a>, <a class="reference internal" href="#windspharm.xarray.VectorWind.velocitypotential" title="windspharm.xarray.VectorWind.velocitypotential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocitypotential</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute streamfunction and velocity potential:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span><span class="p">,</span> <span class="n">vp</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sfvp</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute streamfunction and velocity potential and apply spectral
+truncation at triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sfT13</span><span class="p">,</span> <span class="n">vpT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sfvp</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.streamfunction">
+<span class="sig-name descname"><span class="pre">streamfunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.streamfunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.streamfunction" title="Link to this definition">¶</a></dt>
+<dd><p>Streamfunction.</p>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>sf</em></dt><dd><p>The streamfunction.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.sfvp" title="windspharm.xarray.VectorWind.sfvp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfvp</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute streamfunction:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">streamfunction</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute streamfunction and apply spectral truncation at
+triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sfT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">streamfunction</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.velocitypotential">
+<span class="sig-name descname"><span class="pre">velocitypotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.velocitypotential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.velocitypotential" title="Link to this definition">¶</a></dt>
+<dd><p>Velocity potential.</p>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>vp</em></dt><dd><p>The velocity potential.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.sfvp" title="windspharm.xarray.VectorWind.sfvp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfvp</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute velocity potential:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vp</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">velocity</span> <span class="n">potential</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute velocity potential and apply spectral truncation at
+triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vpT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">velocity</span> <span class="n">potential</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.helmholtz">
+<span class="sig-name descname"><span class="pre">helmholtz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.helmholtz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.helmholtz" title="Link to this definition">¶</a></dt>
+<dd><p>Irrotational and non-divergent components of the vector wind.</p>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>uchi</em>, <em>vchi</em>, <em>upsi</em>, <em>vpsi</em></dt><dd><p>Zonal and meridional components of irrotational and
+non-divergent wind components respectively.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.irrotationalcomponent" title="windspharm.xarray.VectorWind.irrotationalcomponent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">irrotationalcomponent</span></code></a>,
+<a class="reference internal" href="#windspharm.xarray.VectorWind.nondivergentcomponent" title="windspharm.xarray.VectorWind.nondivergentcomponent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nondivergentcomponent</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute the irrotational and non-divergent components of the
+vector wind:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span><span class="p">,</span> <span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">helmholtz</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute the irrotational and non-divergent components of the
+vector wind and apply spectral truncation at triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uchiT13</span><span class="p">,</span> <span class="n">vchiT13</span><span class="p">,</span> <span class="n">upsiT13</span><span class="p">,</span> <span class="n">vpsiT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">helmholtz</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.irrotationalcomponent">
+<span class="sig-name descname"><span class="pre">irrotationalcomponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.irrotationalcomponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.irrotationalcomponent" title="Link to this definition">¶</a></dt>
+<dd><p>Irrotational (divergent) component of the vector wind.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If both the irrotational and non-divergent components are
+required then <a class="reference internal" href="#windspharm.xarray.VectorWind.helmholtz" title="windspharm.xarray.VectorWind.helmholtz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">helmholtz</span></code></a> should be used instead.</p>
+</div>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>uchi</em>, <em>vchi</em></dt><dd><p>The zonal and meridional components of the irrotational wind
+respectively.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.helmholtz" title="windspharm.xarray.VectorWind.helmholtz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">helmholtz</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute the irrotational component of the vector wind:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uchi</span><span class="p">,</span> <span class="n">vchi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">irrotationalcomponent</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute the irrotational component of the vector wind and apply
+spectral truncation at triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uchiT13</span><span class="p">,</span> <span class="n">vchiT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">irrotationalcomponent</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.nondivergentcomponent">
+<span class="sig-name descname"><span class="pre">nondivergentcomponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.nondivergentcomponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.nondivergentcomponent" title="Link to this definition">¶</a></dt>
+<dd><p>Non-divergent (rotational) component of the vector wind.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If both the non-divergent and irrotational components are
+required then <a class="reference internal" href="#windspharm.xarray.VectorWind.helmholtz" title="windspharm.xarray.VectorWind.helmholtz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">helmholtz</span></code></a> should be used instead.</p>
+</div>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>upsi</em>, <em>vpsi</em></dt><dd><p>The zonal and meridional components of the non-divergent
+wind respectively.</p>
+</dd>
+</dl>
+<p><strong>See also:</strong></p>
+<p><a class="reference internal" href="#windspharm.xarray.VectorWind.helmholtz" title="windspharm.xarray.VectorWind.helmholtz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">helmholtz</span></code></a>.</p>
+<p><strong>Examples:</strong></p>
+<p>Compute the non-divergent component of the vector wind:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">upsi</span><span class="p">,</span> <span class="n">vpsi</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">nondivergentcomponent</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Compute the non-divergent component of the vector wind and apply
+spectral truncation at triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">upsiT13</span><span class="p">,</span> <span class="n">vpsiT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">nondivergentcomponent</span><span class="p">(</span><span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.gradient">
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.gradient" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the vector gradient of a scalar field on the sphere.</p>
+<p><strong>Argument:</strong></p>
+<dl class="simple">
+<dt><em>chi</em></dt><dd><p>A scalar field. It must be a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a> with the
+same latitude and longitude dimensions as the vector wind
+components that initialized the <a class="reference internal" href="#windspharm.xarray.VectorWind" title="windspharm.xarray.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorWind</span></code></a> instance.</p>
+</dd>
+</dl>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>uchi</em>, <em>vchi</em></dt><dd><p>The zonal and meridional components of the vector gradient
+respectively.</p>
+</dd>
+</dl>
+<p><strong>Examples:</strong></p>
+<p>Compute the vector gradient of absolute vorticity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">avrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">absolutevorticity</span><span class="p">()</span>
+<span class="n">avrt_zonal</span><span class="p">,</span> <span class="n">avrt_meridional</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">avrt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compute the vector gradient of absolute vorticity and apply
+spectral truncation at triangular T13:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">avrt</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">absolutevorticity</span><span class="p">()</span>
+<span class="n">avrt_zonalT13</span><span class="p">,</span> <span class="n">avrt_meridionalT13</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">avrt</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="windspharm.xarray.VectorWind.truncate">
+<span class="sig-name descname"><span class="pre">truncate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/windspharm/xarray.html#VectorWind.truncate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#windspharm.xarray.VectorWind.truncate" title="Link to this definition">¶</a></dt>
+<dd><p>Apply spectral truncation to a scalar field.</p>
+<p>This is useful to represent other fields in a way consistent
+with the output of other <a class="reference internal" href="#windspharm.xarray.VectorWind" title="windspharm.xarray.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorWind</span></code></a> methods.</p>
+<p><strong>Argument:</strong></p>
+<dl class="simple">
+<dt><em>field</em></dt><dd><p>A scalar field. It must be a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataArray</span></code></a> with the
+same latitude and longitude dimensions as the vector wind
+components that initialized the <a class="reference internal" href="#windspharm.xarray.VectorWind" title="windspharm.xarray.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorWind</span></code></a> instance.</p>
+</dd>
+</dl>
+<p><strong>Optional argument:</strong></p>
+<dl class="simple">
+<dt><em>truncation</em></dt><dd><p>Truncation limit (triangular truncation) for the spherical
+harmonic computation. If not specified it will default to
+<em>nlats - 1</em> where <em>nlats</em> is the number of latitudes.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="simple">
+<dt><em>truncated_field</em></dt><dd><p>The field with spectral truncation applied.</p>
+</dd>
+</dl>
+<p><strong>Examples:</strong></p>
+<p>Truncate a scalar field to the computational resolution of the
+<a class="reference internal" href="#windspharm.xarray.VectorWind" title="windspharm.xarray.VectorWind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorWind</span></code></a> instance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scalar_field_truncated</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">scalar_field</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Truncate a scalar field to T21:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scalar_field_T21</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">scalar_field</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">21</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <script type=text/javascript src="/windspharm/version_switch.js" async></script>
+
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="windspharm.tools.html" title="windspharm.tools"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="windspharm.iris.html" title="windspharm.iris"
+             >previous</a> |</li>
+    <li><a href="../index.html">home</a>|&nbsp;</li>
+    <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" >API reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-obj docutils literal notranslate"><span class="pre">windspharm.xarray</span></code></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2012-2024, Andrew Dawson.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>
