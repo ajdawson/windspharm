@@ -23,9 +23,8 @@ from windspharm.examples import example_data_path
 mpl.rcParams['mathtext.default'] = 'regular'
 
 
-# Read zonal and meridional wind components from file using the cdms2 module
-# from CDAT. The components are defined on pressure levels and are in separate
-# files.
+# Read zonal and meridional wind component, the components are defined on
+# pressure levels and are in separate files.
 ncu = Dataset(example_data_path('uwnd_mean.nc'), 'r')
 uwnd = ncu.variables['uwnd'][:]
 lons = ncu.variables['longitude'][:]

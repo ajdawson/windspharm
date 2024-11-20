@@ -33,13 +33,6 @@ except ImportError:
 __all__ = []
 
 try:
-    from . import cdms
-    __all__.append('cdms')
-    metadata = cdms
-except ImportError:
-    pass
-
-try:
     from . import iris
     __all__.append('iris')
 except ImportError:

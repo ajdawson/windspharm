@@ -3,6 +3,14 @@ Changelog
 
 Source code downloads for released versions can be downloaded from `Github <https://github.com/ajdawson/windspharm/releases>`_.
 
+v2.0
+----
+
+:Release: v2.0.0
+
+The v2.0.0 release removes the cdms interface. The cdms2 package is no longer maintained and therefore support has been dropped.
+
+
 v1.7
 ----
 
