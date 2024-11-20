@@ -1,5 +1,7 @@
 # Created by https://www.gitignore.io/api/vim,code,emacs,python
 
+windspharm/_version.py
+
 ### Code ###
 # Visual Studio Code - https://code.visualstudio.com/
 .settings/

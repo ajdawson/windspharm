@@ -1,0 +1,74 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools>=42",
+  "setuptools-scm",
+  "wheel",
+]
+
+[project]
+name = "windspharm"
+description = "vector wind analysis in spherical coordinates"
+license = { text = "MIT" }
+authors = [
+  { name = "Andrew Dawson", email = "ajdatm@gmail.com" },
+]
+requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dynamic = [
+  "readme",
+  "version",
+]
+dependencies = [
+  "numpy",
+  "pyspharm>=1.0.9",
+]
+optional-dependencies.iris = [
+  "scitools-iris",
+]
+optional-dependencies.xarray = [
+  "xarray",
+]
+urls.documentation = "https://ajdawson.github.io/windspharm"
+urls.homepage = "https://github.com/ajdawson/windspharm"
+urls.repository = "https://github.com/ajdawson/windspharm"
+
+[tool.setuptools]
+license-files = [ "license.txt" ]
+include-package-data = true
+[tool.setuptools.package-data]
+"windspharm.examples" = [
+  "example_data/*",
+]
+"windspharm.tests" = [
+  "data/regular/*.npy",
+  "data/gaussian/*.npy",
+]
+[tool.setuptools.dynamic]
+readme = { file = "README.md", content-type = "text/markdown" }
+
+[tool.setuptools_scm]
+write_to = "windspharm/_version.py"
+write_to_template = "__version__ = '{version}'"
+tag_regex = "^(?P<prefix>v)?(?P<version>[^\\+]+)(?P<suffix>.*)?$"
+
+[tool.ruff]
+lint.select = [
+  "E", # pycodecstyle
+]
+lint.per-file-ignores."docs/conf.py" = [
+  "E401",
+  "E402",
+]
+
+[tool.pytest.ini_options]
+addopts = "-vrsx"
+testpaths = "windspharm"
