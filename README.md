@@ -1,7 +1,7 @@
 windspharm - spherical harmonic vector wind analysis in Python
 ==============================================================
 
-[![Build Status](https://api.travis-ci.org/repositories/ajdawson/windspharm.svg?branch=master)](https://travis-ci.org/ajdawson/windspharm) [![DOI (paper)](https://img.shields.io/badge/DOI%20%28paper%29-10.5334%2Fjors.129-blue.svg)](http://doi.org/10.5334/jors.129) [![DOI (latest release)](https://zenodo.org/badge/20448/ajdawson/windspharm.svg)](https://zenodo.org/badge/latestdoi/20448/ajdawson/windspharm)
+[![DOI (paper)](https://img.shields.io/badge/DOI%20%28paper%29-10.5334%2Fjors.129-blue.svg)](http://doi.org/10.5334/jors.129) [![DOI (latest release)](https://zenodo.org/badge/4715033.svg)](https://zenodo.org/records/1401190)
 
 Overview
 --------
@@ -17,9 +17,7 @@ windspharm provides a replacement for the windfield package from CDAT.
 Requirements
 ------------
 
-`windspharm` only requires [`numpy`](http://numpy.org) and [`pyspharm`](https://github.com/jswhit/pyspharm) (version 1.0.8 or higher), but for full functionality (meta-data interfaces) one or more of [`iris`](http://scitools.org.uk/iris/), [`xarray`](http://xarray.pydata.org) or the `cdms2` module (from [UV-CDAT](http://uvcdat.llnl.gov) is required.
-The setuptools package is required for installation.
-windspharm runs on Python 2 and 3.
+`windspharm` only requires [`numpy`](http://numpy.org) and [`pyspharm`](https://github.com/jswhit/pyspharm) (version 1.0.9 or higher), but for full functionality (meta-data interfaces) one or both of [`iris`](http://scitools.org.uk/iris/) and/or [`xarray`](http://xarray.pydata.org) are required.
 
 
 Documentation
@@ -39,8 +37,8 @@ You can additionally cite the [Zenodo DOI](https://zenodo.org/badge/latestdoi/20
 Frequently asked questions
 --------------------------
 
-* **Do I need UV-CDAT/iris/xarray to use windspharm?**
-  No. All the computation code uses numpy only. The iris, xarray and  cdms2 modules are only required for the meta-data preserving interfaces.
+* **Do I need iris/xarray to use windspharm?**
+  No. All the computation code uses numpy only. The iris and/or xarray modules are only required for the meta-data preserving interfaces.
 * **Is windspharm a drop in replacement for windfield?**
   No. Because windspharm was written from scratch the naming conventions for methods
   are different. Some new methods have been added compared to windfield, and some
@@ -54,7 +52,9 @@ The easiest way to install is via [conda](http://conda.pydata.org):
 
     conda install -c conda-forge windspharm
 
-You can also install from the source distribution.
-Download the archive, unpack it, then enter the source directory and use:
+You can also install with pip::
 
-    python setup.py install
+    python -m pip install windspharm
+
+> [!CAUTION]
+> Make sure you already have pyspharm dependency installed, as it may fail to install if pip tries to do it.

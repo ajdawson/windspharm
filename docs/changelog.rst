@@ -3,6 +3,14 @@ Changelog
 
 Source code downloads for released versions can be downloaded from `Github <https://github.com/ajdawson/windspharm/releases>`_.
 
+v2.0
+----
+
+:Release: v2.0.0
+
+The v2.0.0 release removes the cdms interface. The cdms2 package is no longer maintained and therefore support has been dropped.
+
+
 v1.7
 ----
 
@@ -13,7 +21,7 @@ The v1.7.0 release makes further progress on the road to more modern tooling and
 
 * Support for using Legendre functions computed on-the-fly or stored, implemented by `@rcomer <https://github.com/rcomer>`_ [:issue:`97`, :pr:`98`].
 * The source code directories have been reorganised, the ``lib/windspharm`` directory has been moved to ``windspharm/`` (``lib/`` is removed) and the ``doc/`` directory has been renamed ``docs/`` [:pr:`105`].
-* The package version is now controlled by `versioneer <https://github.com/warner/python-versioneer>`_.
+* The package version is now controlled by `versioneer <https://github.com/python-versioneer/python-versioneer>`_.
 
 In addition, this is the first release where documentation and PyPI packages will be built automatically as part of the continuous integration system.
 
@@ -27,7 +35,7 @@ v1.6
 This release has no major user-facing changes, its main purpose is to modernise the test suite and fix problems with NumPy compatibility, although the modifications to the test suite may have knock-on effects for package maintainers.
 
 * Fixes for NumPy compatibility [:issue:`89`, :pr:`90`].
-* Switch from `nose` to `pytest <http://pytest.org>`_ for the test suite [:pr:`91`, :pr:`94`].
+* Switch from `nose` to `pytest <https://docs.pytest.org/en/stable/>`_ for the test suite [:pr:`91`, :pr:`94`].
 
 
 v1.5
@@ -50,7 +58,7 @@ v1.4
 :Release: v1.4.0
 :Date: 1 March 2016
 
-* Added an `xarray <http://xarray.pydata.org>`_ interface allowing use of `windspharm` with `xarray.DataArray` objects.
+* Added an `xarray <https://xarray.dev>`_ interface allowing use of `windspharm` with `xarray.DataArray` objects.
 * Fixed a bug in the identification of Gaussian grids in the iris interface.
 * Fixed a bug where the `truncate` method would not work on inverted latitude grids in the iris interface.
 

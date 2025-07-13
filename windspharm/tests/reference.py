@@ -44,21 +44,6 @@ def __read_reference_solutions(gridtype):
     return exact
 
 
-def _wrap_cdms(reference, lats, lons):
-    try:
-        import cdms2
-    except ImportError:
-        raise ValueError("cannot use container 'cdms' without cdms2")
-    londim = cdms2.createAxis(lons, id='longitude')
-    londim.designateLongitude()
-    latdim = cdms2.createAxis(lats, id='latitude')
-    latdim.designateLatitude()
-    for name in reference.keys():
-        reference[name] = cdms2.createVariable(reference[name],
-                                               axes=[latdim, londim],
-                                               id=name)
-
-
 def _wrap_iris(reference, lats, lons):
     try:
         from iris.cube import Cube
@@ -100,9 +85,7 @@ def _wrap_xarray(reference, lats, lons):
 
 
 def _get_wrapper(container_type):
-    if container_type == 'cdms':
-        return _wrap_cdms
-    elif container_type == 'iris':
+    if container_type == 'iris':
         return _wrap_iris
     elif container_type == 'xarray':
         return _wrap_xarray
@@ -113,7 +96,7 @@ def _get_wrapper(container_type):
 def reference_solutions(container_type, gridtype):
     """Generate reference solutions in the required container."""
     container_type = container_type.lower()
-    if container_type not in ('standard', 'iris', 'cdms', 'xarray'):
+    if container_type not in ('standard', 'iris', 'xarray'):
         raise ValueError("unknown container type: "
                          "'{!s}'".format(container_type))
     reference = __read_reference_solutions(gridtype)

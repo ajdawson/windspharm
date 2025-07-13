@@ -1,0 +1,65 @@
+name: Publish to PyPI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  release:
+    types:
+      - published
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build_wheels:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Setup Micromamba Python
+      uses: mamba-org/setup-micromamba@v2
+      with:
+        environment-name: PYPI
+        init-shell: bash
+        create-args: >-
+          python
+          pip
+          pytest
+          numpy
+          pyspharm
+          --channel conda-forge
+
+    - name: Install build tools
+      shell: bash -l {0}
+      run: |
+        python -m pip install --upgrade build check-manifest twine
+
+    - name: Build binary wheel
+      shell: bash -l {0}
+      run: |
+        python -m build --sdist --wheel . --outdir dist
+
+    - name: Check manifest
+      shell: bash -l {0}
+      run: |
+        ls dist
+        check-manifest --verbose
+
+    - name: Test wheels
+      shell: bash -l {0}
+      run: |
+        cd dist && python -m pip install *.whl
+        python -m twine check *
+
+    - name: Publish a Python distribution to PyPI
+      if: success() && github.event_name == 'release'
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_PASSWORD }}

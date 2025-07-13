@@ -35,10 +35,9 @@ except ImportError:
 
 
 def __tomasked(*args):
-    """Convert cdms2 variables or iris cubes to masked arrays.
+    """Convert supported data types to masked arrays.
 
-    The conversion is safe, so if non-variables/cubes are passed they
-    are just returned.
+    The conversion is safe, so anything not recognised is just returned.
 
     """
     def __asma(a):
@@ -47,13 +46,6 @@ def __tomasked(*args):
                 # Retrieve the data from the cube.
                 a = a.data
         except NameError:
-            pass
-        try:
-            # Retrieve data from cdms variable.
-            a = a.asma()
-        except AttributeError:
-            # The input is already an array or masked array, either extracted
-            # from an iris cube, or was like that to begin with.
             pass
         try:
             if isinstance(a, xr.DataArray):

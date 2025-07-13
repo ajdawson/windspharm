@@ -17,13 +17,9 @@ the iris interface::
 
     from windspharm.iris import VectorWind
 
-the xarray interface::
+and the xarray interface::
 
     from windspharm.xarray import VectorWind
-
-and the cdms interface::
-
-    from windspharm.cdms import VectorWind
 
 
 Creating a **VectorWind** object
