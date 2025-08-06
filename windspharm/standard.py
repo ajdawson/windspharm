@@ -137,7 +137,7 @@ class VectorWind(object):
             spd = w.magnitude()
 
         """
-        return (self.u ** 2 + self.v ** 2) ** 0.5
+        return np.hypot(self.u, self.v)
 
     def vrtdiv(self, truncation=None):
         """Relative vorticity and horizontal divergence.
