@@ -22,6 +22,9 @@ except ImportError:
 def create_data(package: str, wind_units: str):
     """Create data for use by test functions."""
     data = np.zeros((7, 12), dtype="f4")
+    data[[1, -1], :] = 1
+    data[[2, -2], :] = np.sqrt(3)
+    data[3, :] = 2
     lats = np.arange(-90, 91, 30, dtype="f4")
     lons = np.arange(0, 360, 30, dtype="f4")
     if package == "iris":
@@ -59,6 +62,7 @@ def test_iris_convert_units(units):
     vec_wind = windspharm.iris.VectorWind(cube, cube)
     assert np.any(vec_wind.u() != cube)
     assert np.any(vec_wind.v() != cube)
+    assert np.all(np.around(vec_wind.u().data[3, :]) == 1)
 
 
 @pytest.mark.skipif("xr is None")
