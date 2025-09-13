@@ -4,9 +4,9 @@ This example uses the xarray interface.
 
 Additional requirements for this example:
 
-* xarray (http://xarray.pydata.org)
-* matplotlib (http://matplotlib.org/)
-* cartopy (http://scitools.org.uk/cartopy/)
+* xarray (https://docs.xarray.dev)
+* matplotlib (https://matplotlib.org/)
+* cartopy (https://cartopy.readthedocs.io/)
 
 """
 import cartopy.crs as ccrs
