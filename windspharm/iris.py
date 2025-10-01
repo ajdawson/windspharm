@@ -96,7 +96,7 @@ class VectorWind(object):
         v = v.copy()
         u.transpose(apiorder)
         v.transpose(apiorder)
-        if u.units != "unknown":
+        if not u.units.is_unknown():
             u.convert_units("m/s")
             v.convert_units("m/s")
         # Records the current shape and dimension coordinates of the inputs.
