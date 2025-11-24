@@ -1,7 +1,7 @@
 windspharm - spherical harmonic vector wind analysis in Python
 ==============================================================
 
-[![DOI (paper)](https://img.shields.io/badge/DOI%20%28paper%29-10.5334%2Fjors.129-blue.svg)](http://doi.org/10.5334/jors.129) [![DOI (latest release)](https://zenodo.org/badge/4715033.svg)](https://zenodo.org/records/1401190)
+[![DOI (paper)](https://img.shields.io/badge/DOI%20%28paper%29-10.5334%2Fjors.129-blue.svg)](https://doi.org/10.5334/jors.129) [![DOI (latest release)](https://zenodo.org/badge/4715033.svg)](https://zenodo.org/records/1401190)
 
 Overview
 --------
@@ -17,20 +17,20 @@ windspharm provides a replacement for the windfield package from CDAT.
 Requirements
 ------------
 
-`windspharm` only requires [`numpy`](http://numpy.org) and [`pyspharm`](https://github.com/jswhit/pyspharm) (version 1.0.9 or higher), but for full functionality (meta-data interfaces) one or both of [`iris`](http://scitools.org.uk/iris/) and/or [`xarray`](http://xarray.pydata.org) are required.
+`windspharm` only requires [`numpy`](https://numpy.org) and [`pyspharm`](https://github.com/jswhit/pyspharm) (version 1.0.9 or higher), but for full functionality (meta-data interfaces) one or both of [`iris`](https://scitools-iris.readthedocs.io/) and/or [`xarray`](https://docs.xarray.dev) are required.
 
 
 Documentation
 -------------
 
-Documentation is available [online](http://ajdawson.github.io/windspharm).
+Documentation is available [online](https://ajdawson.github.io/windspharm).
 The package docstrings are also very complete and can be used as a source of reference when working interactively.
 
 
 Citation
 --------
 
-If you use windspharm in published research, please cite it by referencing the [peer-reviewed paper](http://doi.org/10.5334/jors.129).
+If you use windspharm in published research, please cite it by referencing the [peer-reviewed paper](https://doi.org/10.5334/jors.129).
 You can additionally cite the [Zenodo DOI](https://zenodo.org/badge/latestdoi/20448/ajdawson/windspharm) if you need to cite a particular version (but please also cite the paper, it helps me justify my time working on this and similar projects).
 
 
@@ -48,7 +48,7 @@ Frequently asked questions
 Installation
 ------------
 
-The easiest way to install is via [conda](http://conda.pydata.org):
+The easiest way to install is via [conda](https://docs.conda.io):
 
     conda install -c conda-forge windspharm
 

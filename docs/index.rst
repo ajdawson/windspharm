@@ -93,7 +93,7 @@ The following is a very simple illustrative example which computes the streamfun
 Citation
 --------
 
-If you use windspharm in published research, please cite it by referencing the `peer-reviewed paper <http://doi.org/10.5334/jors.129>`_.
+If you use windspharm in published research, please cite it by referencing the `peer-reviewed paper <https://doi.org/10.5334/jors.129>`_.
 You can additionally cite the `Zenodo DOI <https://zenodo.org/records/1401190>`_ if you need to cite a particular version (but please also cite the paper, it helps me justify my time working on this and similar projects).
 
 
