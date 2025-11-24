@@ -20,6 +20,7 @@
 # THE SOFTWARE.
 from __future__ import absolute_import
 
+from cf_units import Unit
 from iris.cube import Cube
 from iris.util import reverse
 
@@ -95,6 +96,9 @@ class VectorWind(object):
         v = v.copy()
         u.transpose(apiorder)
         v.transpose(apiorder)
+        if not u.units.is_unknown():
+            u.convert_units("m/s")
+            v.convert_units("m/s")
         # Records the current shape and dimension coordinates of the inputs.
         self._ishape = u.shape
         self._coords = u.dim_coords
@@ -673,6 +677,7 @@ class VectorWind(object):
         if type(chi) is not Cube:
             raise TypeError('scalar field must be an iris cube')
         name = chi.name()
+        chi_units = chi.units
         lat, lat_dim = _dim_coord_and_dim(chi, 'latitude')
         lon, lon_dim = _dim_coord_and_dim(chi, 'longitude')
         if (lat.points[0] < lat.points[1]):
@@ -698,6 +703,10 @@ class VectorWind(object):
         vchi.transpose(reorder)
         uchi.long_name = 'zonal_gradient_of_{!s}'.format(name)
         vchi.long_name = 'meridional_gradient_of_{!s}'.format(name)
+        if not chi_units.is_unknown():
+            result_units = chi_units / Unit("m")
+            uchi.units = result_units
+            vchi.units = result_units
         return uchi, vchi
 
     def truncate(self, field, truncation=None):

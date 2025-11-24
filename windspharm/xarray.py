@@ -19,6 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 from __future__ import absolute_import
+import warnings
 
 try:
     import xarray as xr
@@ -41,7 +42,8 @@ class VectorWind(object):
             Zonal and meridional components of the vector wind
             respectively. Both components should be `~xarray.DataArray`
             instances. The components must have the same dimension
-            coordinates and contain no missing values.
+            coordinates and contain no missing values.  The wind
+            components should be in units of meters per second.
 
         **Optional argument:**
 
@@ -78,6 +80,11 @@ class VectorWind(object):
         if not all([(uc == vc).all() for uc, vc in zip(ucoords, vcoords)]):
             msg = 'u and v must have the same dimension coordinate values'
             raise ValueError(msg)
+        if any(
+                comp.attrs.get("units", "m/s").replace(" ", "").replace("**", "^") not in ("m/s", "ms^-1")
+                for comp in (u, v)
+        ):
+            warnings.warn("Winds should have units of m/s", UserWarning)
         # Find the latitude and longitude coordinates and reverse the latitude
         # dimension if necessary.
         lat, lat_dim = _find_latitude_coordinate(u)
@@ -665,6 +672,12 @@ class VectorWind(object):
         if not isinstance(chi, xr.DataArray):
             raise TypeError('scalar field must be an xarray.DataArray')
         name = chi.name
+        try:
+            chi_units = chi.attrs["units"]
+        except KeyError:
+            grad_units = None
+        else:
+            grad_units = f"{chi_units:s} / m"
         lat, lat_dim = _find_latitude_coordinate(chi)
         lon, lon_dim = _find_longitude_coordinate(chi)
         if (lat.values[0] < lat.values[1]):
@@ -689,6 +702,9 @@ class VectorWind(object):
                             attrs={'long_name': vchi_name})
         uchi = uchi.transpose(*reorder)
         vchi = vchi.transpose(*reorder)
+        if grad_units is not None:
+            uchi.attrs["units"] = grad_units
+            vchi.attrs["units"] = grad_units
         return uchi, vchi
 
     def truncate(self, field, truncation=None):
