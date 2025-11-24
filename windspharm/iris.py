@@ -703,7 +703,7 @@ class VectorWind(object):
         vchi.transpose(reorder)
         uchi.long_name = 'zonal_gradient_of_{!s}'.format(name)
         vchi.long_name = 'meridional_gradient_of_{!s}'.format(name)
-        if chi_units != "unknown":
+        if not chi_units.is_unknown():
             result_units = chi_units / Unit("m")
             uchi.units = result_units
             vchi.units = result_units
