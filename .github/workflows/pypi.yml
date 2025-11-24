@@ -17,7 +17,7 @@ jobs:
   build_wheels:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Get tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
