@@ -74,7 +74,7 @@ sf_fill = ax1.contourf(lons_c, lats, sf_dec * 1e-06, clevs,
 ax1.coastlines()
 ax1.gridlines()
 ax1.set_xticks([0, 60, 120, 180, 240, 300, 359.99], crs=ccrs.PlateCarree())
-ax1.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs=ccrs.PlateCarree())
+ax1.set_yticks([-89.8, -60, -30, 0, 30, 60, 89.8], crs=ccrs.PlateCarree())
 lon_formatter = LongitudeFormatter(zero_direction_label=True,
                                    number_format='.0f')
 lat_formatter = LatitudeFormatter()
@@ -93,10 +93,10 @@ vp_fill = ax2.contourf(lons_c, lats, vp_dec * 1e-06, clevs,
 ax2.coastlines()
 ax2.gridlines()
 ax2.set_xticks([0, 60, 120, 180, 240, 300, 359.99], crs=ccrs.PlateCarree())
-ax2.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs=ccrs.PlateCarree())
+ax2.set_yticks([-89.8, -60, -30, 0, 30, 60, 89.8], crs=ccrs.PlateCarree())
 lon_formatter = LongitudeFormatter(zero_direction_label=True,
                                    number_format='.0f')
-lat_formatter = LatitudeFormatter()
+lat_formatter = LatitudeFormatter(number_format='.0f')
 ax2.xaxis.set_major_formatter(lon_formatter)
 ax2.yaxis.set_major_formatter(lat_formatter)
 plt.colorbar(vp_fill, orientation='horizontal')

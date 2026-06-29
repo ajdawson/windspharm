@@ -74,10 +74,10 @@ fill = ax.contourf(lons_c, lats, S_dec * 1e11, clevs, cmap=plt.cm.RdBu_r,
 ax.coastlines()
 ax.gridlines()
 ax.set_xticks([0, 60, 120, 180, 240, 300, 359.99], crs=ccrs.PlateCarree())
-ax.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs=ccrs.PlateCarree())
+ax.set_yticks([-89.8, -60, -30, 0, 30, 60, 89.8], crs=ccrs.PlateCarree())
 lon_formatter = LongitudeFormatter(zero_direction_label=True,
                                    number_format='.0f')
-lat_formatter = LatitudeFormatter()
+lat_formatter = LatitudeFormatter(number_format='.0f')
 ax.xaxis.set_major_formatter(lon_formatter)
 ax.yaxis.set_major_formatter(lat_formatter)
 plt.colorbar(fill, orientation='horizontal')
