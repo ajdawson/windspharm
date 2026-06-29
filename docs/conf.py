@@ -186,6 +186,13 @@ intersphinx_mapping = {
         'xarray': ('https://docs.xarray.dev/en/stable', None)
 }
 
+linkcheck_ignore = [
+    # The DOI should always resolve, but the URL it redirects to isn't always
+    # accessible from GitHub CI runners. We can skip this check since the DOI
+    # URL is canonical and we don't need to test doi.org redirects.
+    r"https://doi\.org/10\.5334/jors\.129",
+]
+
 
 # -- Options for LaTeX output --------------------------------------------------
 
