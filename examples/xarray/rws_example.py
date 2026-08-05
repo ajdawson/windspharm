@@ -55,5 +55,5 @@ fill = S_dec[0].plot.contourf(ax=ax, levels=clevs, cmap=plt.cm.RdBu_r,
 ax.coastlines()
 ax.gridlines()
 plt.colorbar(fill, orientation='horizontal')
-plt.title('Rossby Wave Source ($10^{-11}$s$^{-1}$)', fontsize=16)
+plt.title('Rossby Wave Source ($10^{-11}$s$^{-2}$)', fontsize=16)
 plt.show()
