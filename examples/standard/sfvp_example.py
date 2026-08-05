@@ -69,7 +69,7 @@ vp_dec, lons_c = add_cyclic_point(vp[11], lons)
 ax1 = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
 clevs = [-120, -100, -80, -60, -40, -20, 0, 20, 40, 60, 80, 100, 120]
 sf_fill = ax1.contourf(lons_c, lats, sf_dec * 1e-06, clevs,
-                       transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r,
+                       transform=ccrs.PlateCarree(), cmap='RdBu_r',
                        extend='both')
 ax1.coastlines()
 ax1.gridlines()
@@ -88,7 +88,7 @@ plt.figure()
 ax2 = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
 clevs = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10]
 vp_fill = ax2.contourf(lons_c, lats, vp_dec * 1e-06, clevs,
-                       transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r,
+                       transform=ccrs.PlateCarree(), cmap='RdBu_r', 
                        extend='both')
 ax2.coastlines()
 ax2.gridlines()

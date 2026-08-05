@@ -49,7 +49,7 @@ S_dec = S[S['time.month'] == 12]
 clevs = [-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30]
 ax = plt.subplot(111, projection=ccrs.PlateCarree(central_longitude=180))
 S_dec *= 1e11
-fill = S_dec[0].plot.contourf(ax=ax, levels=clevs, cmap=plt.cm.RdBu_r,
+fill = S_dec[0].plot.contourf(ax=ax, levels=clevs, cmap='RdBu_r',
                               transform=ccrs.PlateCarree(), extend='both',
                               add_colorbar=False)
 ax.coastlines()
