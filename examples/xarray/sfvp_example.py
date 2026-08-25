@@ -44,7 +44,7 @@ vp_dec = vp[vp['time.month'] == 12]
 clevs = [-120, -100, -80, -60, -40, -20, 0, 20, 40, 60, 80, 100, 120]
 ax = plt.subplot(111, projection=ccrs.PlateCarree(central_longitude=180))
 sf_dec *= 1e-6
-fill_sf = sf_dec[0].plot.contourf(ax=ax, levels=clevs, cmap=plt.cm.RdBu_r,
+fill_sf = sf_dec[0].plot.contourf(ax=ax, levels=clevs, cmap='RdBu_r',
                                   transform=ccrs.PlateCarree(), extend='both',
                                   add_colorbar=False)
 ax.coastlines()
@@ -57,7 +57,7 @@ plt.figure()
 clevs = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10]
 ax = plt.subplot(111, projection=ccrs.PlateCarree(central_longitude=180))
 vp_dec *= 1e-6
-fill_vp = vp_dec[0].plot.contourf(ax=ax, levels=clevs, cmap=plt.cm.RdBu_r,
+fill_vp = vp_dec[0].plot.contourf(ax=ax, levels=clevs, cmap='RdBu_r',
                                   transform=ccrs.PlateCarree(), extend='both',
                                   add_colorbar=False)
 ax.coastlines()

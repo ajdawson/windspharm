@@ -69,7 +69,7 @@ S_dec, lons_c = add_cyclic_point(S[11], lons)
 # Plot Rossby wave source.
 ax = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
 clevs = [-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30]
-fill = ax.contourf(lons_c, lats, S_dec * 1e11, clevs, cmap=plt.cm.RdBu_r,
+fill = ax.contourf(lons_c, lats, S_dec * 1e11, clevs, cmap='RdBu_r',
                    transform=ccrs.PlateCarree(), extend='both')
 ax.coastlines()
 ax.gridlines()
