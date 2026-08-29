@@ -747,6 +747,61 @@ class VectorWind(object):
         field = field.transpose(*reorder)
         return field
 
+    def getuv(self, vorticity, divergence):
+        """Compute vector winds from vorticity and divergence fields.
+
+        **Argument:**
+
+        *vorticity*
+            A scalar field of vorticity. Its shape must be either (nlat, nlon) or
+            (nlat, nlon, nfields) where nlat and nlon are the same
+            as those for the vector wind components that initialized the
+            `VectorWind` instance.
+
+        *divergence*
+            A scalar field of divergence. Its shape must be either (nlat, nlon) or
+            (nlat, nlon, nfields) where nlat and nlon are the same
+            as those for the vector wind components that initialized the
+            `VectorWind` instance.
+
+        **Returns:**
+
+        *u*, *v*
+            Zonal and meridional wind components respectively. Their types will 
+            match input types to passed to `VectorWind` instance. 
+        """
+        def clean_array(field):
+            if not isinstance(field, xr.DataArray):
+                raise TypeError('scalar field must be an xarray.DataArray')
+            name = field.name
+            lat, lat_dim = _find_latitude_coordinate(field)
+            lon, lon_dim = _find_longitude_coordinate(field)
+            if (lat.values[0] < lat.values[1]):
+                # need to reverse latitude dimension
+                field = _reverse(field, lat_dim)
+                lat, lat_dim = _find_latitude_coordinate(field)
+            apiorder, _ = get_apiorder(field.ndim, lat_dim, lon_dim)
+            apiorder = [field.dims[i] for i in apiorder]
+            reorder = field.dims
+            field = field.copy().transpose(*apiorder)
+            ishape = field.shape
+            coords = [field.coords[n] for n in field.dims]
+            field = to3d(field.values)
+            return field
+
+        vortic = clean_array(vorticity)
+        diverg = clean_array(divergence)
+
+        ugrd, vgrd = self._api.getuv(vortic, diverg)
+        ugrd = self._metadata(ugrd, 'u',
+                    units='m s**-1',
+                    standard_name='eastward_wind',
+                    long_name='eastward_component_of_wind')
+        vgrd = self._metadata(vgrd, 'v',
+                    units='m s**-1',
+                    standard_name='northward_wind',
+                    long_name='northward_component_of_wind')
+        return ugrd, vgrd
 
 def _reverse(array, dim):
     """Reverse an `xarray.DataArray` along a given dimension."""

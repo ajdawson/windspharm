@@ -756,6 +756,62 @@ class VectorWind(object):
         field.transpose(reorder)
         return field
 
+    def getuv(self, vorticity, divergence):
+        """Compute vector winds from vorticity and divergence fields.
+
+        **Argument:**
+
+        *vorticity*
+            A scalar field of vorticity. It must be a `~iris.cube.Cube`
+            with the same latitude and longitude dimensions as the
+            vector wind components that initialized the `VectorWind`
+            instance.
+
+        *divergence*
+            A scalar field of divergence. It must be a `~iris.cube.Cube`
+            with the same latitude and longitude dimensions as the
+            vector wind components that initialized the `VectorWind`
+            instance.
+
+        **Returns:**
+
+        *u*, *v*
+            Zonal and meridional wind components respectively. Their types will 
+            match input types to passed to `VectorWind` instance. 
+        """
+
+        def clean_array(field):
+            if type(field) is not Cube:
+                raise TypeError('scalar field must be an iris cube')
+            name = field.name()
+            lat, lat_dim = _dim_coord_and_dim(field, 'latitude')
+            lon, lon_dim = _dim_coord_and_dim(field, 'longitude')
+            if (lat.points[0] < lat.points[1]):
+                # need to reverse latitude dimension
+                field = reverse(field, lat_dim)
+                lat, lat_dim = _dim_coord_and_dim(field, 'latitude')
+            apiorder, reorder = get_apiorder(field.ndim, lat_dim, lon_dim)
+            field = field.copy()
+            field.transpose(apiorder)
+            ishape = field.shape
+            coords = field.dim_coords
+            field = to3d(field.data)
+            return field
+        
+        vortic = clean_array(vorticity)
+        diverg = clean_array(divergence)
+
+        ugrd, vgrd = self._api.getuv(vortic, diverg)
+        ugrd = self._metadata(ugrd, 
+                    units='m s**-1',
+                    standard_name='eastward_wind',
+                    long_name='eastward_component_of_wind')
+        vgrd = self._metadata(vgrd, 
+                    units='m s**-1',
+                    standard_name='northward_wind',
+                    long_name='northward_component_of_wind')
+        return ugrd, vgrd
+
 
 def _dim_coord_and_dim(cube, coord):
     """
